@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/activity_my_status"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="meijia.com.meijianet.ui.MyStatusActivity">
+    <include layout="@layout/comment_defout_toolbar"/>
+    <View
+        android:background="@color/hint_color"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <TextView
+        android:id="@+id/tv_ac_status"
+        android:layout_margin="15dp"
+        android:text="审核状态：已审"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_ac_status_creattime"
+        android:layout_margin="15dp"
+        android:text="注册时间：1996-9-9 12:20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_ac_status_logintime"
+        android:layout_margin="15dp"
+        android:text="登录时间：1996-9-9 12:20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

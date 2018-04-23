@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="182dp">
+
+            <com.donkingliang.banner.CustomBanner
+                android:id="@+id/iv_fm_banner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:indicatorInterval="5dp"
+                app:indicatorSelectRes="@drawable/landian"
+                app:indicatorStyle="ORDINARY"
+                app:indicatorUnSelectRes="@drawable/baidian" />
+            <RelativeLayout
+                android:background="@drawable/bg_home_search"
+                android:layout_marginLeft="19dp"
+                android:layout_marginRight="19dp"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginTop="10dp"
+                >
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/home_icon_more_normal"
+                    android:padding="10dp"
+                    android:text="衢州"
+                    android:textColor="#4D4D4D"
+                    android:textSize="14sp"/>
+                <View
+                    android:layout_centerVertical="true"
+                    android:id="@+id/tv_address_view"
+                    android:layout_toRightOf="@id/tv_address"
+                    android:layout_width="1dp"
+                    android:layout_height="13dp"
+                    android:background="#ffe5e5e5"
+                    />
+                <TextView
+                    android:id="@+id/tv_fm_first_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/tv_address_view"
+                    android:drawableLeft="@mipmap/home_icon_search_disabaled"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="搜索"
+                    android:textColor="#999999"
+                    android:textSize="14sp"/>
+            </RelativeLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="91dp"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+
+            <LinearLayout
+                android:id="@+id/baoming"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_marginTop="17dp"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:background="@drawable/baoming" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="报名"
+                    android:textColor="#666666"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/paihangbang"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_marginTop="17dp"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:background="@drawable/paihangbang" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="排行榜"
+                    android:textColor="#666666"
+                    android:textSize="12dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/choujiang"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="17dp"
+                    android:background="@drawable/choujiang" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="抽奖"
+                    android:textColor="#666666"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/huiyuanka"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_marginTop="17dp"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:background="@drawable/huiyuanka" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="会员卡"
+                    android:textColor="#666666"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="91dp"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_marginTop="17dp"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:background="@drawable/baoming" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="报名"
+                    android:textColor="#666666"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_marginTop="17dp"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:background="@drawable/paihangbang" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="排行榜"
+                    android:textColor="#666666"
+                    android:textSize="12dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
+            android:id="@+id/videoplayer"
+           android:layout_marginRight="14dp"
+            android:layout_marginLeft="14dp"
+            android:layout_width="match_parent"
+            android:layout_height="186dp"/>
+
+
+
+        <RelativeLayout
+            android:paddingTop="29dp"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingBottom="24dp"
+            android:background="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:textColor="@color/import_color"
+                android:drawablePadding="9dp"
+                android:drawableLeft="@mipmap/shape_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="最新房源"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tv_fm_first_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="更多"
+                android:gravity="center"
+                android:drawableRight="@mipmap/iicon_enter"
+                android:drawablePadding="5dp"
+                android:textColor="@color/hint_color"
+                android:textSize="12sp"/>
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

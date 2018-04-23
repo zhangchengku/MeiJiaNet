@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="meijia.com.meijianet">
+    <!-- 添加必要的权限 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
+
+    <application
+        android:name=".activity.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="meijia.com.meijianet.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path"
+                tools:replace="android:resource" />
+        </provider>
+        <meta-data
+            android:name="Mob-AppKey"
+            android:value="254ab94e26800" />
+        <meta-data
+            android:name="Mob-AppSecret"
+            android:value="5962f434bbe4f166ac702c21e1e8b463" />
+        <!--集成分享所需的配置-->
+        <!-- ShareSDK的activity -->
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+            <intent-filter>
+                <data android:scheme="tencent1106746323" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- 调用新浪原生SDK，需要注册的回调activity -->
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!--集成line客户端登录授权，需要添如下格式的过滤器-->
+            <!--<intent-filter>
+                <data android:scheme="line.1477692153" />
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>-->
+
+        </activity>
+        <activity
+            android:name=".ui.ContentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 微信分享回调 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+
+        <activity android:name=".ui.SearchActivity"></activity>
+        <activity android:name=".ui.SearchDetailActivity"></activity>
+        <activity android:name=".ui.SearchMoreActivity"></activity>
+        <activity android:name=".ui.SettingActivity"></activity>
+        <activity android:name=".ui.LoginActivity"></activity>
+        <activity android:name=".ui.RigestActivity"></activity>
+        <activity android:name=".ui.ForgetActivity" />
+        <activity android:name=".ui.PersonCenterActivity"></activity>
+        <activity android:name=".ui.UpdateNameActivity"></activity>
+        <activity android:name=".ui.AddressActivity"></activity>
+        <activity android:name=".ui.NumberActivity" />
+        <activity android:name=".ui.UpdatePhoenActivity" />
+        <activity android:name=".ui.YouxiangActivity" />
+        <activity android:name=".ui.UpdatePswActivity" />
+        <activity android:name=".ui.MyStatusActivity"></activity>
+        <activity android:name=".ui.ProcessActivity"></activity>
+        <activity android:name=".ui.SellerNoticeActivity"></activity>
+        <activity android:name=".ui.PostHouseActivity"></activity>
+        <activity android:name=".ui.KnockdownActivity"></activity>
+        <activity android:name=".ui.MyEntrustActivity"></activity>
+        <activity android:name=".ui.MyIntentionActivity"></activity>
+        <activity android:name=".ui.HouseDetailActivity"></activity>
+        <activity android:name=".ui.MapActivity"></activity>
+        <activity android:name=".ui.MyCollectActivity"></activity>
+        <activity android:name=".ui.MyBrowseActivity"></activity>
+        <activity android:name=".ui.PayActivity"></activity>
+        <activity android:name=".ui.StandardActivity"></activity>
+        <activity android:name=".ui.ProveActivity"></activity>
+        <activity android:name=".ui.LawyerActivity"></activity>
+        <activity android:name=".ui.LoansActivity"></activity>
+        <activity android:name=".ui.TaxrateActivity"></activity>
+        <activity android:name=".ui.RefundActivity"></activity>
+    </application>
+
+</manifest>

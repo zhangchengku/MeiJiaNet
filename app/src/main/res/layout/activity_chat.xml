@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/activity_chat"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="meijia.com.meijianet.activity.ChatActivity">
+    <View
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+    <com.aspsine.swipetoloadlayout.SwipeToLoadLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:background="#eeeeee"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <meijia.com.meijianet.activity.RefreshHeaderView
+            android:id="@+id/swipe_refresh_header"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/swipe_target"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <meijia.com.meijianet.activity.LoadMoreFooterView
+            android:id="@+id/swipe_load_more_footer"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="40dp" />
+    </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
+    <LinearLayout
+        android:id="@+id/msg"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <EditText
+                android:id="@+id/et"
+                android:background="@color/colorAccent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"/>
+            <TextView
+                android:id="@+id/ex"
+                android:text="切换"
+                android:padding="10dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <View
+            android:visibility="gone"
+            android:id="@+id/view"
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+    </LinearLayout>
+
+</LinearLayout>

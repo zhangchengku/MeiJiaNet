@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/activity_search_more"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:context="meijia.com.meijianet.ui.SearchMoreActivity">
+<LinearLayout
+    android:id="@+id/ll_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="@color/color_white"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/nav_icon_return_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_marginLeft="14dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="@drawable/bg_search_et"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="28dp">
+            <EditText
+                android:id="@+id/et_ac_search"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="#F5F5F5"
+                android:hint="按输入小区名"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textSize="12sp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:textColorHint="#999999"
+                android:drawablePadding="10dp"
+                android:layout_marginLeft="10dp"
+                android:drawableLeft="@mipmap/home_icon_search_disabaled"
+                android:layout_height="match_parent"/>
+            <ImageView
+                android:id="@+id/iv_ac_search_delete"
+                android:padding="5dp"
+                android:visibility="invisible"
+                android:layout_marginRight="20dp"
+                android:src="@mipmap/searchbox_icon_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+<TextView
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:text="搜索"
+    android:textColor="#333333"
+    android:textSize="17sp"
+    android:layout_gravity="center_vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <meijia.com.meijianet.adpter.menu.DropDownMenus
+        android:id="@+id/dropDownMenu"
+        app:ddmenuTextSize="13sp"
+        app:ddtextUnselectedColor="@color/drop_down_unselected"
+        app:ddtextSelectedColor="@color/drop_down_selected"
+        app:dddividerColor="@color/colorTransparent"
+        app:ddunderlineColor="@color/gray"
+        app:ddmenuMenuHeightPercent="0.5"
+        app:ddmenuSelectedIcon="@mipmap/drop_down_selected_icon"
+        app:ddmaskColor="@color/mask_color"
+        app:ddmenuBackgroundColor="@color/white"
+        app:ddmenuUnselectedIcon="@mipmap/drop_down_unselected_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>
+
+</LinearLayout>

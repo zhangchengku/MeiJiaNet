@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f4ecec</color>
+    <color name="colorPrimaryDark">#f4ecec</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorTransparent">#00000000</color>
+
+    <color name="tab_gb">#F3F5F4</color>
+    <color name="tab_normal_color">#515051</color>
+    <color name="tab_selected_color">#D33D3C</color>
+
+    <color name="line_normal">#2DD0CF</color>
+    <color name="jmui_jpush_blue">#2DD0CF</color>
+
+    <color name="toolbar_btn_select">#D9D9D9</color>
+    <color name="toolbar_btn_nomal">@color/color_white</color>
+    <color name="text_back_ground">#7E1D22</color>
+
+    <!--下拉菜单-->
+    <color name="white">#ffffff</color>
+    <color name="press">#e8e8e8</color>
+    <color name="gray">#cccccc</color>
+
+    <color name="drop_down_selected">#408c56</color>
+    <color name="drop_down_unselected">#333333</color>
+
+    <color name="mask_color">#88888888</color>
+    <color name="check_bg">#f2f2f2</color>
+    <color name="un_press_color">#9C27B0</color>
+
+    <color name="color_white">#ffffff</color>
+    <color name="color_bg_gray">#f4eeee</color>
+    <color name="statusColor">#f4ecec</color>
+    <color name="color_white30">#4bffffff</color>
+    <color name="color_white60">#9BFFFFFF</color>
+    <color name="color_black60">#AA000000</color>
+
+
+    <color name="zhu_color">#408c56</color>
+    <color name="tab_color_normal">#aaaaaa</color>
+    <color name="import_color">#333333</color>
+    <color name="normal_color">#777777</color>
+    <color name="hint_color">#aaaaaa</color>
+    <color name="fuzhu_color">#dddddd</color>
+    <color name="indcator_color">#e6e6e6</color>
+    <color name="bg_color">#eeeeee</color>
+</resources>

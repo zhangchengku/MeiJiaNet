@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Created by 岱青海蓝信息系统(北京)有限公司 on 17-6-14 下午5:10
+  ~ Copyright (c) 2017. All rights reserved.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/rg_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/tv_home"
+            style="@style/main_bottom_tab_item"
+            android:checked="true"
+            android:drawableTop="@drawable/select_bottom_home_consulation"
+            android:text="首页" />
+
+        <RadioButton
+            android:id="@+id/tv_buy_home"
+            style="@style/main_bottom_tab_item"
+            android:drawableTop="@drawable/select_bottom_fanger"
+            android:text="房小二" />
+        <RadioButton
+            android:id="@+id/tv_selling_home"
+            style="@style/main_bottom_tab_item"
+            android:drawableTop="@drawable/select_bottom_fanger"
+            android:text="房小二" />
+
+        <RadioButton
+            android:id="@+id/tv_fanger"
+            style="@style/main_bottom_tab_item"
+            android:drawableTop="@drawable/select_bottom_fanger"
+            android:text="房小二" />
+
+
+        <RadioButton
+            android:id="@+id/tv_personal"
+            style="@style/main_bottom_tab_item"
+            android:drawableTop="@drawable/select_bottom_personal"
+            android:text="我的" />
+    </RadioGroup>
+</LinearLayout>

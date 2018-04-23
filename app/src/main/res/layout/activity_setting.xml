@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_loading"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_bg_gray">
+    <include layout="@layout/comment_defout_toolbar"/>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:background="@color/color_white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_ac_set_msg"
+            android:padding="15dp"
+            android:text="个人资料"
+            android:textSize="15sp"
+            android:textColor="#181918"
+            android:drawableRight="@mipmap/icon_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View
+            android:background="@color/color_bg_gray"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_height="1dp"/>
+        <TextView
+            android:id="@+id/tv_ac_set_uploadpwd"
+            android:padding="15dp"
+            android:text="修改密码"
+            android:textSize="15sp"
+            android:textColor="#181918"
+            android:drawableRight="@mipmap/icon_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View
+            android:background="@color/color_bg_gray"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_height="1dp"/>
+        <TextView
+            android:id="@+id/tv_ac_set_mystatus"
+            android:padding="15dp"
+            android:text="我的状态"
+            android:textSize="15sp"
+            android:textColor="#181918"
+            android:drawableRight="@mipmap/icon_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View
+            android:background="@color/color_bg_gray"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_height="1dp"/>
+        <TextView
+            android:id="@+id/tv_ac_set_liucheng"
+            android:padding="15dp"
+            android:text="交易流程"
+            android:textSize="15sp"
+            android:textColor="#181918"
+            android:drawableRight="@mipmap/icon_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_ac_set_loginout"
+        android:layout_marginTop="30dp"
+        android:text="退出登录"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:background="@color/color_white"
+        android:layout_marginBottom="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

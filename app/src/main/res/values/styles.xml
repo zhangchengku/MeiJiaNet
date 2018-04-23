@@ -1,0 +1,43 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AppTheme" parent="BaseAppTheme" />
+    <!--网络访问遮罩-->
+    <style name="Transparent">
+        <item name="android:windowBackground">@color/colorTransparent</item>
+    </style>
+
+    <!-- 首页radiobutton 样式 -->
+    <style name="main_bottom_tab_item">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@drawable/select_main_botton_text</item>
+    </style>
+
+    <!--  自定义dialog style -->
+    <style name="CustomDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <style name="dialogFullscreen">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="et_style" parent="@android:style/Widget.EditText">
+        <item name="android:background">@drawable/et_bg</item>
+    </style>
+
+</resources>

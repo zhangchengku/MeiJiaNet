@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/activity_knockdown"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_color"
+    tools:context="meijia.com.meijianet.ui.KnockdownActivity">
+    <include layout="@layout/comment_defout_toolbar"/>
+    <View
+        android:background="@color/hint_color"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:visibility="invisible"
+            android:id="@+id/rl_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/iv_empty"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:background="@mipmap/pic_none"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_below="@id/iv_empty"
+                android:layout_marginTop="20dp"
+                android:text="暂无成交房源"
+                android:textColor="@color/hint_color"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="10dp"
+            android:id="@+id/rv_ac_knockdown_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+
+</LinearLayout>

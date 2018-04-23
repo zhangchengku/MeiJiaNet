@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/color_white">
+
+        <RelativeLayout
+            android:id="@+id/rl_ac_chezhu_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_white"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_empty"
+                android:layout_above="@+id/tv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pic_notfound"/>
+
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
+                android:text="暂无更多相关房源"
+                android:textColor="#4d4d4d"
+                android:textSize="14sp"/>
+        </RelativeLayout>
+
+        <com.aspsine.swipetoloadlayout.SwipeToLoadLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <meijia.com.meijianet.activity.RefreshHeaderView
+                android:id="@+id/swipe_refresh_header"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/swipe_target"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+
+            <meijia.com.meijianet.activity.LoadMoreFooterView
+                android:id="@+id/swipe_load_more_footer"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"/>
+        </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
+    </RelativeLayout>
+</LinearLayout>
