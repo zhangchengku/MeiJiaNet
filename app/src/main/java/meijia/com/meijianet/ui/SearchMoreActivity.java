@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,16 +55,16 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
     private String headers[] = {"区域", "总价", "厅室", "更多"};
     private List<View> popupViews = new ArrayList<>();
 
-    private String citys[] = {"不限", "柯城", "衢江", "巨化", "其他区域"};
-    private String ages[] = {"不限", "50万以下", "50-80万", "80-100万", "100-120万", "120-150万",
+    private String citys[] = {"柯城", "衢江", "巨化", "其他地方"};
+    private String ages[] = { "50万以下", "50-80万", "80-100万", "100-120万", "120-150万",
             "150-200万", "200-300万", "300万以上"};
-    private String sexs[] = {"不限", "1室", "2室", "3室", "4室", "5室", "6室"};
-    private String constellations[] = {"不限", "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "摩羯座", "水瓶座", "双鱼座"};
+    private String sexs[] = { "一室", "二室", "三室", "四室", "五室", "六室及以上"};
+    private String constellations[] = { "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "摩羯座", "水瓶座", "双鱼座"};
     //more
-    private String louceng[] = {"1楼", "2楼", "3楼", "4楼", "5楼", "6楼"};
-    private String chaoxiang[] = {"东", "南", "西", "北", "东南", "东北", "西南", "西北"};
+    private String louceng[] = {"1楼", "2楼", "3楼", "4楼", "5楼", "6楼", "7-12楼", "12楼以上"};
+    private String chaoxiang[] = {"南", "北", "东", "西", "东南", "东北", "西南", "西北","东西", "南北" };
     private String zhuangxiu[] = {"毛坯", "简单装修", "中档装修", "精装修", "豪华装修"};
-    private String paixu[] = {"默认排序", "总价从高到低", "总价从低到高", "面积从大到小", "面积从小到大"};
+    private String paixu[] = { "50以下", "50-70", "70-90", "90-130", "130-150", "150-200", "200-300", "300以上"};
     private String leixing[] = {"单体别墅", "排屋", "多层", "复式", "小高楼", "店面", "写字楼"};
 
     private int tagPosition = 0;//总价标记
@@ -129,18 +130,38 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
         ivBack = (ImageView) findViewById(R.id.iv_back);
         ToolUtil.setInputListener(etSearch, ivDelete);
         mDropDownMenu = (DropDownMenus) findViewById(R.id.dropDownMenu);
-        RecyclerView recyclerView = new RecyclerView(this);
-        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setBackgroundColor(Color.WHITE);
-        recyclerView.setPadding(0, 0, 0, 50);
-        recyclerView.setLayoutManager(manager);
-        CityAdapter adapter = new CityAdapter(this, Arrays.asList(citys));
-        recyclerView.setAdapter(adapter);
+        View quyuView = LayoutInflater.from(SearchMoreActivity.this).inflate(R.layout.muen_quyu, null);
+        TagLayout quyutagLayout = (TagLayout) quyuView.findViewById(R.id.tag_layout);
+        TextView quyutvConnmit = (TextView) quyuView.findViewById(R.id.tv_confirm);
+        TextView quyutv_buxian = (TextView) quyuView.findViewById(R.id.tv_buxian);
+        quyutagLayout.setAdapter(new BaseAdapter() {
+            @Override
+            public int getCount() {
+                return citys.length;
+            }
+
+            @Override
+            public View getView(int position, ViewGroup parent) {
+                TextView view = (TextView) LayoutInflater.from(SearchMoreActivity.this).inflate(R.layout.item_tag, parent, false);
+                view.setText(citys[position]);
+                return view;
+            }
+        });
+
+
         View zongjiaView = LayoutInflater.from(SearchMoreActivity.this).inflate(R.layout.muen_zongjia, null);
         TagLayout tagLayout = (TagLayout) zongjiaView.findViewById(R.id.tag_layout);
         EditText etZuidi = (EditText) zongjiaView.findViewById(R.id.et_zuidi);
         EditText etZuigao = (EditText) zongjiaView.findViewById(R.id.et_zuigao);
         TextView tvConnmit = (TextView) zongjiaView.findViewById(R.id.tv_confirm);
+        TextView tv_buxian = (TextView) zongjiaView.findViewById(R.id.tv_buxian);
+        tv_buxian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                autoRefresh();
+                mDropDownMenu.closeMenu();
+            }
+        });
         tagLayout.setAdapter(new BaseAdapter() {
             @Override
             public int getCount() {
@@ -154,50 +175,49 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
                 return view;
             }
         });
-        tagLayout.setItemSelecte(0);
+//        tagLayout.setItemSelecte(0);
         tagLayout.setOnChildViewClickListener(new TagLayout.OnChildViewClickListener() {
             @Override
             public void onChildClick(View view, int postion) {
                 tagLayout.setItemSelecte(postion);
                 tagPosition = postion;
-
                 switch (postion) {
                     case 0:
-                        minPrice = "0";
-                        maxPrice = "10";
+                        minPrice = "";
+                        maxPrice = "50";
                         break;
                     case 1:
-                        minPrice = "100";
-                        maxPrice = "150";
+                        minPrice = "50";
+                        maxPrice = "80";
                         break;
                     case 2:
-                        minPrice = "150";
-                        maxPrice = "160";
+                        minPrice = "80";
+                        maxPrice = "100";
                         break;
                     case 3:
-                        minPrice = "10";
-                        maxPrice = "200";
+                        minPrice = "100";
+                        maxPrice = "120";
                         break;
                     case 4:
-                        minPrice = "50";
-                        maxPrice = "90";
+                        minPrice = "120";
+                        maxPrice = "150";
                         break;
                     case 5:
-                        minPrice = "300";
-                        maxPrice = "350";
+                        minPrice = "150";
+                        maxPrice = "200";
                         break;
                     case 6:
-                        minPrice = "350";
-                        maxPrice = "500";
-                        break;
-                    case 7:
                         minPrice = "200";
                         maxPrice = "300";
                         break;
-                    case 8:
-                        minPrice = "200";
-                        maxPrice = "210";
+                    case 7:
+                        minPrice = "300";
+                        maxPrice = "";
                         break;
+//                    case 8:
+//                        minPrice = "200";
+//                        maxPrice = "210";
+//                        break;
 
                 }
             }
@@ -208,9 +228,7 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
             public void onClick(View v) {
                 String zuidi = etZuidi.getText().toString().trim();
                 String zuigao = etZuigao.getText().toString().trim();
-
                 if (!zuidi.equals("") && !zuigao.equals("")) {
-
                     if (Float.parseFloat(zuigao) > Float.parseFloat(zuidi)) {
                         mDropDownMenu.setTabText(zuidi + "-" + zuigao + "万");
                         etZuidi.setText("");
@@ -224,7 +242,6 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
                     }
 
                 } else {
-
                     mDropDownMenu.setTabText(tagPosition == 0 ? headers[1] : ages[tagPosition]);
                 }
 //                if (!maxPrice.equals("0")){
@@ -243,6 +260,14 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
         EditText etTing = (EditText) shiView.findViewById(R.id.et_ting);
         EditText etWei = (EditText) shiView.findViewById(R.id.et_wei);
         TextView tvConnmit2 = (TextView) shiView.findViewById(R.id.tv_confirm);
+        TextView tvgengduo = (TextView) shiView.findViewById(R.id.tv_gengduo);
+        tvgengduo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                autoRefresh();
+                mDropDownMenu.closeMenu();
+            }
+        });
         tagLayout2.setAdapter(new BaseAdapter() {
             @Override
             public int getCount() {
@@ -262,7 +287,7 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
             public void onChildClick(View view, int postion) {
                 tagLayout2.setItemSelecte(postion);
                 tagPosition2 = postion;
-                room = postion+2;
+                room = postion;
             }
         });
 
@@ -303,7 +328,7 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
             }
         });
 
-        //initMore
+        //initMore更多
         View moreView = LayoutInflater.from(SearchMoreActivity.this).inflate(R.layout.muen_more, null);
         mTag_paixu = (TagLayout) moreView.findViewById(R.id.tag_paixu);
         mTag_zhuangxiu = (TagLayout) moreView.findViewById(R.id.tag_zhuangxiu);
@@ -345,22 +370,22 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
         setOnItemClick(mTag_louceng, 4);
 
         //init popupViews
-        popupViews.add(recyclerView);
+        popupViews.add(quyuView);
         popupViews.add(zongjiaView);
         popupViews.add(shiView);
         popupViews.add(moreView);
 
         //区域点击事件
-        adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                adapter.setCheckItem(position);
-                quYu = position;
-                mDropDownMenu.setTabText(position == 0 ? headers[0] : citys[position]);
-                autoRefresh();
-                mDropDownMenu.closeMenu();
-            }
-        });
+//        adapter.setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(int position) {
+//                adapter.setCheckItem(position);
+//                quYu = position;
+//                mDropDownMenu.setTabText(position == 0 ? headers[0] : citys[position]);
+//                autoRefresh();
+//                mDropDownMenu.closeMenu();
+//            }
+//        });
 
         //init context view
 
@@ -482,10 +507,10 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
                 break;
 
         }
-        if (Float.parseFloat(maxPrice) <= 0) {
+        if (maxPrice.equals("0")) {
 
         } else {
-            params.add("totalpriceMin", 0+"");
+            params.add("totalpriceMin", minPrice);
             params.add("totalpriceMax", maxPrice);
         }
         if (room > 0) {
@@ -614,6 +639,7 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
     }
 
     private void loadMore() {
+
         more();
     }
 

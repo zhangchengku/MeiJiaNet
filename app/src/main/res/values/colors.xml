@@ -39,8 +39,8 @@
     <color name="zhu_color">#408c56</color>
     <color name="tab_color_normal">#aaaaaa</color>
     <color name="import_color">#333333</color>
-    <color name="normal_color">#777777</color>
-    <color name="hint_color">#aaaaaa</color>
+    <color name="normal_color">#666666</color>
+    <color name="hint_color">#CCCCCC</color>
     <color name="fuzhu_color">#dddddd</color>
     <color name="indcator_color">#e6e6e6</color>
     <color name="bg_color">#eeeeee</color>
