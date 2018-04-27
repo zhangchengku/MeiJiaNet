@@ -34,7 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
-                        android:id="@+id/et_zuidi"
+                        android:id="@+id/et_mixm"
                         android:textColorHint="@color/hint_color"
                         android:inputType="number"
                         android:hint="最小平米"
@@ -51,7 +51,7 @@
                         android:layout_width="6dp"
                         android:layout_height="1dp"/>
                     <EditText
-                        android:id="@+id/et_zuigao"
+                        android:id="@+id/et_maxm"
                         android:textColorHint="@color/hint_color"
                         android:hint="最大平米"
                         android:inputType="number"
@@ -144,6 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:id="@+id/mixlc"
                         android:textColorHint="@color/hint_color"
                         android:inputType="number"
                         android:hint="最低楼层"
@@ -160,6 +161,7 @@
                         android:layout_width="6dp"
                         android:layout_height="1dp"/>
                     <EditText
+                        android:id="@+id/maxlc"
                         android:textColorHint="@color/hint_color"
                         android:hint="最高楼层"
                         android:inputType="number"

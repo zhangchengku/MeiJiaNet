@@ -134,7 +134,7 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
     private void getBanner() {
         OkHttpUtils.post()
                 .tag(this)
-                .url("http://192.168.1.58:8080/api/carousel/getcarousels")
+                .url(BaseURL.BASE_URL + SHOUYELUNBOTU)
                 .build()
                 .execute(new ResultCallBack() {
                     @Override

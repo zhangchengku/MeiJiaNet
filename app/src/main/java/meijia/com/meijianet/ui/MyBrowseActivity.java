@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import meijia.com.meijianet.R;
 import meijia.com.meijianet.activity.CollectAdapter;
 import meijia.com.meijianet.bean.MyBrowseVo;
 import meijia.com.meijianet.activity.MyCollectInfo;
+import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.activity.RequestParams;
 import meijia.com.meijianet.api.ResultCallBack;
@@ -37,7 +39,7 @@ import meijia.com.srdlibrary.myutil.StatusBarUtils;
 public class MyBrowseActivity extends BaseActivity implements OnRefreshListener, OnLoadMoreListener, CollectAdapter.onMyItemClickListener {
     private TextView tvTitle;
     private ImageView ivMenu;
-    private RelativeLayout rlLajitong;
+
 
     private SwipeToLoadLayout swipeToLoadLayout;
     private RelativeLayout rlEmpty;
@@ -48,28 +50,37 @@ public class MyBrowseActivity extends BaseActivity implements OnRefreshListener,
     public static final int PAGE_SIZE = 10;
     private ArrayList<String> ids = new ArrayList<>();//删除的收藏id集合
     private ArrayList<Integer> positions = new ArrayList<>();
+    private LinearLayout llParent;
+
     @Override
     protected void setContent() {
         setContentView(R.layout.activity_my_browse);
-        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.statusColor));
+        StatusBarUtils.setStatusBarFontDark(this,true);
+        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
     }
 
     @Override
     protected void initView() {
+        llParent=(LinearLayout)findViewById(R.id.activity_my_collect);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
-        tvTitle.setText("我的足迹");
+        tvTitle.setText("浏览记录");
         ivMenu = (ImageView) findViewById(R.id.iv_toolbar_menu);
-        ivMenu.setImageResource(R.mipmap.nav_icon_edit);
+        ivMenu.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
         setNavigationFinish(toolbar);
         setNavigationHomeAsUp(true);
-        rlLajitong = (RelativeLayout) findViewById(R.id.rl_lajitong);
     }
 
     @Override
     protected void initData() {
+        llParent.post(new Runnable() {
+            @Override
+            public void run() {
+                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(MyBrowseActivity.this), 0, 0);
+            }
+        });
         swipeToLoadLayout = (SwipeToLoadLayout)findViewById(R.id.refresh_layout);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
@@ -85,47 +96,13 @@ public class MyBrowseActivity extends BaseActivity implements OnRefreshListener,
     @Override
     protected void initClick() {
         ivMenu.setOnClickListener(this);
-        rlLajitong.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         if (v != null) {
             switch (v.getId()) {
-                case R.id.iv_toolbar_menu:
-                    if (datas.size()>0){
-                        mAdapter.setCheck();
-                        if (rlLajitong.getVisibility() == View.GONE){
-                            rlLajitong.setVisibility(View.VISIBLE);
-                        }else {
-                            rlLajitong.setVisibility(View.GONE);
-                        }
-                    }else {
-                        ToastUtil.showShortToast(MyBrowseActivity.this,"暂无更多收藏");
-                    }
 
-                    break;
-                case R.id.rl_lajitong:
-                    try{
-                        ids.clear();
-                        Map<Integer, Boolean> map = mAdapter.getMap();
-                        for (int i = 0; i < map.size(); i++) {
-                            Log.e(TAG, "onClick: map = "+map.get(i) );
-                            if (map.get(i)){
-                                ids.add(datas.get(i).getId()+"");
-                            }
-                        }
-                        if (ids.size()<datas.size()){
-                            collectHouse(StringUtil.linkStrings(ids),true);
-                        }else {
-                            collectHouse(StringUtil.linkStrings(ids),false);
-                        }
-                    }catch (Exception e){
-
-                    }
-
-
-                    break;
             }
         }
 
@@ -148,7 +125,6 @@ public class MyBrowseActivity extends BaseActivity implements OnRefreshListener,
                     public void onSuccess(String body) {
                         ToastUtil.showShortToast(MyBrowseActivity.this, "删除收藏");
                         mAdapter.setCheck();
-                        rlLajitong.setVisibility(View.GONE);
                         autoRefresh();
                     }
 

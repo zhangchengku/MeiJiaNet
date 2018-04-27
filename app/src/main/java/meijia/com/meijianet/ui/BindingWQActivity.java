@@ -185,10 +185,12 @@ public class BindingWQActivity extends BaseActivity implements TextView.OnEditor
                             timer.cancel();
                         }
                         ToastUtil.showShortToast(BindingWQActivity.this,"修改成功");
-                        Intent intent = new Intent();
-                        intent.putExtra("phone",phone);
-                        setResult(2,intent);
-                        finish();
+                        startActivity(new Intent(BindingWQActivity.this,QuedingWQActivity.class));
+
+//                        Intent intent = new Intent();
+//                        intent.putExtra("phone",phone);
+//                        setResult(2,intent);
+//                        finish();
                     }
 
                     @Override

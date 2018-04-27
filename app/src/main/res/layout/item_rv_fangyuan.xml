@@ -51,6 +51,8 @@
         android:id="@+id/tv_item_fangyuan_msg"
         android:layout_width="0dp"
         android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:layout_height="wrap_content"
         android:text="四室两厅一卫 . 62"
         android:textColor="#999999"/>

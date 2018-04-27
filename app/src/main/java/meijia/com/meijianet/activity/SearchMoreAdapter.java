@@ -36,9 +36,9 @@ public class SearchMoreAdapter extends CommonRecyclerAdapter<NewHouseInfo> {
     public void convert(ViewHolder holder, List<NewHouseInfo> data, int position) {
         NewHouseInfo houseInfo = data.get(position);
         holder.setText(R.id.tv_item_fangyuan_title, houseInfo.getTitle());
-        holder.setText(R.id.tv_item_fangyuan_price, houseInfo.getTotalprice());
+        holder.setText(R.id.tv_item_fangyuan_price, subZeroAndDot(houseInfo.getTotalprice()));
         holder.setText(R.id.tv_item_fangyuan_msg,houseInfo.getRoom()+"室"+houseInfo.getHall()+
-        "厅"+houseInfo.getToilet()+"卫");
+                "厅"+houseInfo.getToilet()+"卫 | "+subZeroAndDot(houseInfo.getAcreage())+"㎡|第"+houseInfo.getStorey()+"层/共"+houseInfo.getSumfloor()+"层");
         holder.setText(R.id.tv_item_fangyuan_address,houseInfo.getAddress());
         holder.setText(R.id.tv2,houseInfo.getBrowse_count()+"");
         holder.setText(R.id.tv1,houseInfo.getIntentionCount()+"");
@@ -47,8 +47,9 @@ public class SearchMoreAdapter extends CommonRecyclerAdapter<NewHouseInfo> {
                 .placeholder(R.mipmap.icon_fang_defout)
                 .error(R.mipmap.icon_fang_defout)
                 .into(((ImageView) holder.getView(R.id.iv_item_fangyuan)));
-        setTextBigSize(((TextView) holder.getView(R.id.tv_item_fangyuan_price)));
-        setM2(((TextView) holder.getView(R.id.tv_item_fangyuan_msg)));
+//        setTextBigSize(((TextView) holder.getView(R.id.tv_item_fangyuan_price)));
+//        setM2(((TextView) holder.getView(R.id.tv_item_fangyuan_msg)));
+
         String application = houseInfo.getApplication();
         String type = "";
         switch (application) {
@@ -77,7 +78,13 @@ public class SearchMoreAdapter extends CommonRecyclerAdapter<NewHouseInfo> {
         holder.setText(R.id.tv_type,type);
     }
 
-
+    public static String subZeroAndDot(String s){
+        if(s.indexOf(".") > 0){
+            s = s.replaceAll("0+?$", "");//去掉多余的0
+            s = s.replaceAll("[.]$", "");//如最后一位是.则去掉
+        }
+        return s;
+    }
     private void setTextBigSize(TextView textView) {
         String text = textView.getText().toString().trim();
         SpannableStringBuilder builder = new SpannableStringBuilder(text);

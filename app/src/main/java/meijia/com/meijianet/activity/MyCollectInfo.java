@@ -71,6 +71,25 @@ public class MyCollectInfo {
     private int decoration;//装修情况(1毛坯,2简单装修,3 中档装修,4,精装修,5豪华装修//
     private int intentionCount;//
     private String uptime;//
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getOnShow() {
+        return onShow;
+    }
+
+    public void setOnShow(int onShow) {
+        this.onShow = onShow;
+    }
+
+    private int onShow;
 
     public long getId() {
         return id;

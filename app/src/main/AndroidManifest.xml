@@ -122,6 +122,8 @@
         <activity android:name=".ui.LoansActivity"></activity>
         <activity android:name=".ui.TaxrateActivity"></activity>
         <activity android:name=".ui.RefundActivity"></activity>
+        <activity android:name=".ui.TransactionRecordActivity"></activity>
+
     </application>
 
 </manifest>

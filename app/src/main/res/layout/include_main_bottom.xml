@@ -25,13 +25,13 @@
         <RadioButton
             android:id="@+id/tv_buy_home"
             style="@style/main_bottom_tab_item"
-            android:drawableTop="@drawable/select_bottom_fanger"
-            android:text="房小二" />
+            android:drawableTop="@drawable/select_buyhome"
+            android:text="买房" />
         <RadioButton
             android:id="@+id/tv_selling_home"
             style="@style/main_bottom_tab_item"
-            android:drawableTop="@drawable/select_bottom_fanger"
-            android:text="房小二" />
+            android:drawableTop="@drawable/select_buy_home"
+            android:text="卖房" />
 
         <RadioButton
             android:id="@+id/tv_fanger"

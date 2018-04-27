@@ -1,20 +1,16 @@
-package meijia.com.meijianet.fragment;
+package meijia.com.meijianet.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,17 +29,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import meijia.com.meijianet.R;
-import meijia.com.meijianet.activity.CityAdapter;
 import meijia.com.meijianet.activity.NewHouseInfo;
 import meijia.com.meijianet.activity.RequestParams;
-import meijia.com.meijianet.activity.SearchMoreAdapter;
+import meijia.com.meijianet.adpter.TransactionRecordAdapter;
 import meijia.com.meijianet.adpter.menu.DropDownMenus;
 import meijia.com.meijianet.api.OnItemClickListener;
 import meijia.com.meijianet.api.ResultCallBack;
-import meijia.com.meijianet.base.BaseFragment;
+import meijia.com.meijianet.base.BaseActivity;
 import meijia.com.meijianet.base.BaseURL;
-import meijia.com.meijianet.ui.HouseDetailActivity;
-import meijia.com.meijianet.ui.SearchMoreActivity;
 import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.util.ToastUtil;
@@ -53,10 +46,9 @@ import meijia.com.srdlibrary.liushibuju.TagLayout;
 import meijia.com.srdlibrary.myutil.StatusBarUtils;
 
 /**
- * Created by Administrator on 2018/4/20.
+ * Created by Administrator on 2018/4/26.
  */
-
-public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener, OnItemClickListener {
+public class TransactionRecordActivity extends BaseActivity implements OnRefreshListener, OnLoadMoreListener, OnItemClickListener {
 
     private DropDownMenus mDropDownMenu;
     private String headers[] = {"区域", "总价", "厅室", "更多"};
@@ -90,14 +82,14 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
     private SwipeToLoadLayout swipeToLoadLayout;
     private RelativeLayout rlEmpty;
     private RecyclerView rvList;
-    private SearchMoreAdapter mAdapter;
+    private TransactionRecordAdapter mAdapter;
     private List<NewHouseInfo> datas = new ArrayList<>();
     private int pageNo = 1;
     public static final int PAGE_SIZE = 10;
 
     private EditText etSearch;
     private ImageView ivDelete;
-
+    private ImageView ivBack;
     private  boolean isEdixd = false;
     private int quYu = 4;
     private String minPrice = "0";
@@ -118,50 +110,56 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
     private int zhangggg = 0;
     private String sumfloorMin ="";
     private String sumfloorMax = "";
-    private ImageView ivback;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_search_more,container,false);
-        super.onCreateView(inflater, container, savedInstanceState);
-        return view;
+    protected void setContent() {
+        setContentView(R.layout.activity_search_more);
+        StatusBarUtils.setStatusBarFontDark(this,true);
+        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
     }
+
+
+    private void hideNavigationBar() {
+        Window window = getWindow();
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE;
+        window.setAttributes(params);
+    }
+
     @Override
     protected void initView() {
-        ivback=(ImageView)view.findViewById(R.id.iv_back);
-        ivback.setVisibility(View.GONE);
-        llParent=(LinearLayout)view.findViewById(R.id.ll_parent);
-        TextView sousuo = (TextView)view. findViewById(R.id.sousuo);
+        llParent=(LinearLayout)findViewById(R.id.ll_parent);
+        TextView sousuo = (TextView) findViewById(R.id.sousuo);
         sousuo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String psw = etSearch.getText().toString().trim();
                 if (TextUtils.isEmpty(psw)){
-                    ToastUtil.showShortToast(getActivity(),"小区名称不能为空");
+                    ToastUtil.showShortToast(TransactionRecordActivity.this,"小区名称不能为空");
                     return ;
                 }
                 xiaoquName = psw;
                 //隐藏软键盘
-                InputMethodManager imm= (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if(imm.isActive()){
                     imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                 }
                 autoRefresh();
             }
         });
-        etSearch = (EditText) view.findViewById(R.id.et_ac_search);
+        etSearch = (EditText) findViewById(R.id.et_ac_search);
         etSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 xiaoquName = "";
             }
         });
-        ivDelete = (ImageView) view.findViewById(R.id.iv_ac_search_delete);
-
+        ivDelete = (ImageView) findViewById(R.id.iv_ac_search_delete);
+        ivBack = (ImageView) findViewById(R.id.iv_back);
         ToolUtil.setInputListener(etSearch, ivDelete);
-        mDropDownMenu = (DropDownMenus) view.findViewById(R.id.dropDownMenu);
-        View quyuView = LayoutInflater.from(getActivity()).inflate(R.layout.muen_quyu, null);
+        mDropDownMenu = (DropDownMenus) findViewById(R.id.dropDownMenu);
+        View quyuView = LayoutInflater.from(TransactionRecordActivity.this).inflate(R.layout.muen_quyu, null);
         TagLayout quyutagLayout = (TagLayout) quyuView.findViewById(R.id.tag_layout);
         TextView quyutvConnmit = (TextView) quyuView.findViewById(R.id.tv_confirm);
         TextView quyutv_buxian = (TextView) quyuView.findViewById(R.id.tv_buxian);
@@ -191,7 +189,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
 
             @Override
             public View getView(int position, ViewGroup parent) {
-                TextView view = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.item_tag, parent, false);
+                TextView view = (TextView) LayoutInflater.from(TransactionRecordActivity.this).inflate(R.layout.item_tag, parent, false);
                 view.setText(citys[position]);
                 return view;
             }
@@ -205,7 +203,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
 
             }
         });
-        View zongjiaView = LayoutInflater.from(getActivity()).inflate(R.layout.muen_zongjia, null);
+        View zongjiaView = LayoutInflater.from(TransactionRecordActivity.this).inflate(R.layout.muen_zongjia, null);
         TagLayout tagLayout = (TagLayout) zongjiaView.findViewById(R.id.tag_layout);
         EditText etZuidi = (EditText) zongjiaView.findViewById(R.id.et_zuidi);
         EditText etZuigao = (EditText) zongjiaView.findViewById(R.id.et_zuigao);
@@ -230,7 +228,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
 
             @Override
             public View getView(int position, ViewGroup parent) {
-                TextView view = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.item_tag, parent, false);
+                TextView view = (TextView) LayoutInflater.from(TransactionRecordActivity.this).inflate(R.layout.item_tag, parent, false);
                 view.setText(ages[position]);
                 return view;
             }
@@ -254,11 +252,11 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                         mDropDownMenu.setTabText(zuidi + "-" + zuigao + "万");
                         etZuidi.setText("");
                         etZuigao.setText("");
-                        ToolUtil.closeKeyboard(etZuidi, getActivity());
+                        ToolUtil.closeKeyboard(etZuidi, TransactionRecordActivity.this);
                         maxPrice = zuigao;
                         minPrice = zuidi;
                     } else {
-                        ToastUtil.showShortToast(getActivity(), "最高的价格不能低于最低的价格");
+                        ToastUtil.showShortToast(TransactionRecordActivity.this, "最高的价格不能低于最低的价格");
                         return;
                     }
                 } else {
@@ -271,7 +269,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
         });
 
         //init庭室
-        View shiView = LayoutInflater.from(getActivity()).inflate(R.layout.muen_shi, null);
+        View shiView = LayoutInflater.from(TransactionRecordActivity.this).inflate(R.layout.muen_shi, null);
         TagLayout tagLayout2 = (TagLayout) shiView.findViewById(R.id.tag_layout);
         EditText etShi = (EditText) shiView.findViewById(R.id.et_shi);
         EditText etTing = (EditText) shiView.findViewById(R.id.et_ting);
@@ -298,7 +296,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
 
             @Override
             public View getView(int position, ViewGroup parent) {
-                TextView view = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.item_tag, parent, false);
+                TextView view = (TextView) LayoutInflater.from(TransactionRecordActivity.this).inflate(R.layout.item_tag, parent, false);
                 view.setText(sexs[position]);
                 return view;
             }
@@ -324,7 +322,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                     mDropDownMenu.setTabText(sexs[tagPosition2]);
                 } else {
                     if (shi.equals("") || ting.equals("")) {
-                        ToastUtil.showShortToast(getActivity(), "室、厅是必填的哦亲");
+                        ToastUtil.showShortToast(TransactionRecordActivity.this, "室、厅是必填的哦亲");
                         return;
                     } else {
                         if (wei.equals("")) {
@@ -339,7 +337,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                         room = Integer.parseInt(shi);
                         hall = Integer.parseInt(ting);
                         toilet = Integer.parseInt(wei);
-                        ToolUtil.closeKeyboard(etZuidi, getActivity());
+                        ToolUtil.closeKeyboard(etZuidi, TransactionRecordActivity.this);
                     }
 
                 }
@@ -349,7 +347,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
         });
 
         //initMore更多
-        View moreView = LayoutInflater.from(getActivity()).inflate(R.layout.muen_more, null);
+        View moreView = LayoutInflater.from(TransactionRecordActivity.this).inflate(R.layout.muen_more, null);
         EditText moremixm = (EditText) moreView.findViewById(R.id.et_mixm);
         EditText moremaxm = (EditText) moreView.findViewById(R.id.et_maxm);
         EditText moremixlc = (EditText) moreView.findViewById(R.id.mixlc);
@@ -386,23 +384,23 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                         if (Float.parseFloat(moremaxl) > Float.parseFloat(moremixl)) {
                             moremixlc.setText("");
                             moremaxlc.setText("");
-                            ToolUtil.closeKeyboard(etZuidi, getActivity());
+                            ToolUtil.closeKeyboard(etZuidi, TransactionRecordActivity.this);
                             sumfloorMin = moremixl;
                             sumfloorMax = moremaxl;
 
                         } else {
-                            ToastUtil.showShortToast(getActivity(), "最高的价格不能低于最低的价格");
+                            ToastUtil.showShortToast(TransactionRecordActivity.this, "最高的价格不能低于最低的价格");
                             return;
                         }
                     }
                     if (Float.parseFloat(moremam) > Float.parseFloat(moremim)) {
                         moremixm.setText("");
                         moremaxm.setText("");
-                        ToolUtil.closeKeyboard(etZuidi, getActivity());
+                        ToolUtil.closeKeyboard(etZuidi, TransactionRecordActivity.this);
                         acreageMin = moremim;
                         acreageMax = moremam;
                     } else {
-                        ToastUtil.showShortToast(getActivity(), "最高的价格不能低于最低的价格");
+                        ToastUtil.showShortToast(TransactionRecordActivity.this, "最高的价格不能低于最低的价格");
                         return;
                     }
                     autoRefresh();
@@ -412,11 +410,11 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                         if (Float.parseFloat(moremaxl) > Float.parseFloat(moremixl)) {
                             moremixlc.setText("");
                             moremaxlc.setText("");
-                            ToolUtil.closeKeyboard(etZuidi, getActivity());
+                            ToolUtil.closeKeyboard(etZuidi, TransactionRecordActivity.this);
                             sumfloorMin = moremixl;
                             sumfloorMax = moremaxl;
                         } else {
-                            ToastUtil.showShortToast(getActivity(), "最高的价格不能低于最低的价格");
+                            ToastUtil.showShortToast(TransactionRecordActivity.this, "最高的价格不能低于最低的价格");
                             return;
                         }
                     }
@@ -443,15 +441,15 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
         popupViews.add(zongjiaView);
         popupViews.add(shiView);
         popupViews.add(moreView);
-        LinearLayout content = (LinearLayout) LayoutInflater.from(getActivity())
+        LinearLayout content = (LinearLayout) LayoutInflater.from(TransactionRecordActivity.this)
                 .inflate(R.layout.layout_house_content, null);
         swipeToLoadLayout = (SwipeToLoadLayout) content.findViewById(R.id.refresh_layout);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
         rvList = (RecyclerView) content.findViewById(R.id.swipe_target);
         rlEmpty = (RelativeLayout) content.findViewById(R.id.rl_ac_chezhu_empty);
-        rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new SearchMoreAdapter(getActivity(), datas);
+        rvList.setLayoutManager(new LinearLayoutManager(TransactionRecordActivity.this));
+        mAdapter = new TransactionRecordAdapter(TransactionRecordActivity.this, datas);
         rvList.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
 
@@ -505,7 +503,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                     leiii = postion+1;
                 } else if (type == 3) {
                     zhangggg = postion+1;
-
+                    Log.d(TAG, "onChildClick:装修 "+ zhuangxiu[postion]);
                 } else if (type == 4) {
                     switch (postion) {
                         case 0:
@@ -541,7 +539,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                             sumfloorMax = "";
                             break;
                     }
-
+                    Log.d(TAG, "onChildClick:楼层 "+ louceng[postion]);
 
                 }
             }
@@ -557,7 +555,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
 
             @Override
             public View getView(int position, ViewGroup parent) {
-                TextView view = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.item_tag, parent, false);
+                TextView view = (TextView) LayoutInflater.from(TransactionRecordActivity.this).inflate(R.layout.item_tag, parent, false);
                 view.setText(datas[position]);
                 return view;
             }
@@ -569,31 +567,42 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
         llParent.post(new Runnable() {
             @Override
             public void run() {
-                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(getActivity()), 0, 0);
+                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(TransactionRecordActivity.this), 0, 0);
             }
         });
         autoRefresh();
     }
     @Override
     protected void initClick() {
-
+        ivBack.setOnClickListener(this);
 
     }
 
+    @Override
+    public void onClick(View v) {
+        finish();
+    }
 
-
-
+    @Override
+    public void onBackPressed() {
+        //退出activity前关闭菜单
+        if (mDropDownMenu.isShowing()) {
+            mDropDownMenu.closeMenu();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     private int floorType = 0;
 
     private void getDataByNet() {
         //检查网络
-        if (!NetworkUtil.checkNet(getActivity())) {
-            ToastUtil.showShortToast(getActivity(), "没网啦，请检查网络");
+        if (!NetworkUtil.checkNet(this)) {
+            ToastUtil.showShortToast(this, "没网啦，请检查网络");
             swipeToLoadLayout.setRefreshing(false);
             return;
         }
-        final RequestParams params = new RequestParams(getActivity());
+        final RequestParams params = new RequestParams(this);
         params.add("pageNo", 1);
         params.add("pageSize", PAGE_SIZE);
         switch (quYu) {
@@ -679,6 +688,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
             params.add("acreageMax", acreageMax);
         }
         if(!chaooo.equals("")){
+            Log.d(TAG, "getDataByNet: "+chaooo);
             params.add("orientation", chaooo);
         }
         if(leiii!=0){
@@ -704,7 +714,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
         }
         OkHttpUtils.post()
                 .tag(this)
-                .url(BaseURL.BASE_URL + SEARCH_HOUSE)
+                .url("http://192.168.1.16:8080/api/house/searchRecentlySell")
                 .params(params.getMap())
                 .build()
                 .execute(new ResultCallBack() {
@@ -725,7 +735,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
 
                     @Override
                     public void onFail(int returnCode, String returnTip) {
-                        ToastUtil.showShortToast(getActivity(), returnTip);
+                        ToastUtil.showShortToast(TransactionRecordActivity.this, returnTip);
                     }
 
                     @Override
@@ -777,8 +787,8 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
     }
 
     private void more() {
-        if (!NetworkUtil.checkNet(getActivity())) {
-            ToastUtil.showShortToast(getActivity(), "没网了，请检查网络");
+        if (!NetworkUtil.checkNet(this)) {
+            ToastUtil.showShortToast(this, "没网了，请检查网络");
             swipeToLoadLayout.setLoadingMore(false);
             return;
         }
@@ -786,7 +796,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
             swipeToLoadLayout.setLoadingMore(false);
             return;
         }
-        RequestParams params = new RequestParams(getActivity());
+        RequestParams params = new RequestParams(this);
 //        params.add("flag","true");
         params.add("pageNo", pageNo + 1);
         params.add("pageSize", PAGE_SIZE);
@@ -873,7 +883,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
             params.add("acreageMax", acreageMax);
         }
         if(!chaooo.equals("")){
-
+            Log.d(TAG, "getDataByNet: "+chaooo);
             params.add("orientation", chaooo);
         }
         if(leiii!=0){
@@ -900,7 +910,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
         OkHttpUtils
                 .get()
                 .tag(this)
-                .url(BaseURL.BASE_URL + SEARCH_HOUSE)
+                .url(BaseURL.BASE_URL + TRANSACTIONRECORD)
                 .params(params.getMap())
                 .build()
                 .execute(new ResultCallBack() {
@@ -914,13 +924,13 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                             mAdapter.notifyDataSetChanged();
                             pageNo++;
                         } else {
-                            ToastUtil.showShortToast(getActivity(), "没有更多了...");
+                            ToastUtil.showShortToast(TransactionRecordActivity.this, "没有更多了...");
                         }
                     }
 
                     @Override
                     public void onFail(int returnCode, String returnTip) {
-                        ToastUtil.showShortToast(getActivity(), returnTip);
+                        ToastUtil.showShortToast(TransactionRecordActivity.this, returnTip);
                     }
 
                     @Override
@@ -932,14 +942,11 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
+        Intent intent = new Intent(TransactionRecordActivity.this, HouseDetailActivity.class);
         intent.putExtra("id", datas.get(position).getId());
         startActivity(intent);
     }
 
 
-    @Override
-    public void onClick(View v) {
-
-    }
 }
+

@@ -9,6 +9,7 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.SuperscriptSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,58 +62,21 @@ public class CollectAdapter extends CommonRecyclerAdapter<MyCollectInfo> {
 
     @Override
     public void convert(final ViewHolder holder, List<MyCollectInfo> data, final int position) {
-        if (isCheck){
-            holder.setViewVisibility(R.id.iv, View.VISIBLE);
-            if (map.get(position) == null){
-                map.put(position,false);
-            }
-            if (map.get(position)){
-                holder.setImageResource(R.id.iv,R.mipmap.radio_selected);
-            }else {
-                holder.setImageResource(R.id.iv,R.mipmap.radio_normal);
-            }
-        }else {
-            holder.setViewVisibility(R.id.iv, View.GONE);
-        }
-        holder.getView(R.id.iv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (map.get(position)){
-                    holder.setImageResource(R.id.iv,R.mipmap.radio_normal);
-                    map.put(position,false);
-                }else {
-                    holder.setImageResource(R.id.iv,R.mipmap.radio_selected);
-                    map.put(position,true);
-                }
-                notifyItemChanged(position);
-            }
-        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isCheck){
-                    if (map.get(position)){
-                        holder.setImageResource(R.id.iv,R.mipmap.radio_normal);
-                        map.put(position,false);
-                    }else {
-                        holder.setImageResource(R.id.iv,R.mipmap.radio_selected);
-                        map.put(position,true);
-                    }
-                    notifyItemChanged(position);
-                }else {
-                    if (mListener!=null){
-                        mListener.onItemClick(position);
-                    }
+                if (mListener!=null){
+                    mListener.onItemClick(position);
                 }
             }
         });
 
         MyCollectInfo houseInfo = data.get(position);
         holder.setText(R.id.tv_item_fangyuan_title, houseInfo.getTitle());
-        holder.setText(R.id.tv_item_fangyuan_price, houseInfo.getTotalprice()+"万");
+        holder.setText(R.id.tv_item_fangyuan_price, subZeroAndDot(houseInfo.getTotalprice()));
         holder.setText(R.id.tv_item_fangyuan_msg,houseInfo.getRoom()+"室"+houseInfo.getHall()+
-                "厅"+houseInfo.getToilet()+"卫"+" · "+houseInfo.getAcreage());
+                "厅"+houseInfo.getToilet()+"卫 | "+subZeroAndDot(houseInfo.getAcreage())+"㎡|第"+houseInfo.getStorey()+"层/共"+houseInfo.getSumfloor()+"层");
         holder.setText(R.id.tv_item_fangyuan_address,houseInfo.getAddress());
         holder.setText(R.id.tv2,houseInfo.getBrowseCount()+"");
         holder.setText(R.id.tv1,houseInfo.getIntentionCount()+"");
@@ -121,9 +85,24 @@ public class CollectAdapter extends CommonRecyclerAdapter<MyCollectInfo> {
                 .placeholder(R.mipmap.icon_fang_defout)
                 .error(R.mipmap.icon_fang_defout)
                 .into(((ImageView) holder.getView(R.id.iv_item_fangyuan)));
-        setTextBigSize(((TextView) holder.getView(R.id.tv_item_fangyuan_price)));
-        setM2(((TextView) holder.getView(R.id.tv_item_fangyuan_msg)));
+//        setTextBigSize(((TextView) holder.getView(R.id.tv_item_fangyuan_price)));
+//        setM2(((TextView) holder.getView(R.id.tv_item_fangyuan_msg)));
         String application = houseInfo.getApplication();
+        Log.d("asdfasdf ", "convert: "+houseInfo.getStatus());
+        Log.d("asdfasdf ", "convert: "+houseInfo.getOnShow());
+                if(houseInfo.getStatus()==1){
+                    holder.setViewVisibility(R.id.tv_cheng_status,View.VISIBLE);
+                }else {
+                    if(houseInfo.getOnShow()==1){
+                        holder.setViewVisibility(R.id.tv_cheng_status,View.GONE);
+                    }else {
+                        holder.setViewVisibility(R.id.tv_cheng_status,View.VISIBLE);
+                        holder.getView(R.id.tv_cheng_status).setBackgroundColor(Color.parseColor("#999999"));
+                        holder.setText(R.id.tv_cheng_status,"已下架");
+                    }
+                }
+
+
         String type = "";
         switch (application) {
             case "1":
@@ -150,13 +129,19 @@ public class CollectAdapter extends CommonRecyclerAdapter<MyCollectInfo> {
         }
         holder.setText(R.id.tv_type,type);
     }
-
+    public static String subZeroAndDot(String s){
+        if(s.indexOf(".") > 0){
+            s = s.replaceAll("0+?$", "");//去掉多余的0
+            s = s.replaceAll("[.]$", "");//如最后一位是.则去掉
+        }
+        return s;
+    }
     private void setTextBigSize(TextView textView) {
         String text = textView.getText().toString().trim();
         SpannableStringBuilder builder = new SpannableStringBuilder(text);
         AbsoluteSizeSpan sizeSpan = new AbsoluteSizeSpan(20, true);
         builder.setSpan(sizeSpan, 0, text.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#ffa64e"));
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#F44848"));
         builder.setSpan(colorSpan, 0, text.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         textView.setText(builder);
     }

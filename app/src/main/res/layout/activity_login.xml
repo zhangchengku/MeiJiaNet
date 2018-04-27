@@ -46,8 +46,8 @@
         android:inputType="number"
         android:hint="请输入手机号"
         android:textSize="12sp"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#7DFFFFFF"
+        android:textColor="#C0FDE7"
+        android:textColorHint="#C0FDE7"
         android:layout_marginLeft="38dp"
         android:layout_marginRight="38dp"
         android:layout_marginTop="20dp"
@@ -60,8 +60,8 @@
         android:imeOptions="actionDone"
         android:singleLine="true"
         android:textSize="12sp"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#7DFFFFFF"
+        android:textColor="#C0FDE7"
+        android:textColorHint="#C0FDE7"
         android:layout_marginLeft="38dp"
         android:layout_marginRight="38dp"
         android:layout_marginTop="20dp"
@@ -73,7 +73,7 @@
         android:text="登录"
         android:textSize="14sp"
         android:gravity="center"
-        android:textColor="@color/zhu_color"
+        android:textColor="#20CF98"
         android:background="@color/white"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -94,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="忘记密码"
-            android:textColor="@color/white"
+            android:textColor="#C0FDE7"
             android:textSize="12sp"/>
         <TextView
 
@@ -103,7 +103,7 @@
             android:padding="5dp"
             android:textSize="12sp"
             android:layout_alignParentRight="true"
-            android:textColor="@color/white"
+            android:textColor="#C0FDE7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </RelativeLayout>
@@ -122,7 +122,7 @@
             android:text="第三方登录"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:textColor="#7DFFFFFF"
+            android:textColor="#C0FDE7"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -131,13 +131,13 @@
             android:layout_toRightOf="@id/tv_center"
             android:layout_width="50dp"
             android:layout_height="1dp"
-            android:background="#7DFFFFFF"/>
+            android:background="#C0FDE7"/>
         <View
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/tv_center"
             android:layout_width="50dp"
             android:layout_height="1dp"
-            android:background="#7DFFFFFF"/>
+            android:background="#C0FDE7"/>
     </RelativeLayout>
 
     <RelativeLayout

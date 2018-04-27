@@ -85,13 +85,13 @@
                     android:layout_marginTop="17dp"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
-                    android:background="@drawable/baoming" />
+                    android:background="@drawable/ershoufang" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="报名"
+                    android:text="二手房"
                     android:textColor="#666666"
                     android:textSize="12dp" />
 
@@ -109,13 +109,13 @@
                     android:layout_marginTop="17dp"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
-                    android:background="@drawable/paihangbang" />
+                    android:background="@drawable/mianfeimaifang" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="排行榜"
+                    android:text="免费卖房"
                     android:textColor="#666666"
                     android:textSize="12dp"/>
 
@@ -133,13 +133,13 @@
                     android:layout_width="46dp"
                     android:layout_height="46dp"
                     android:layout_marginTop="17dp"
-                    android:background="@drawable/choujiang" />
+                    android:background="@drawable/fangwugujia" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="抽奖"
+                    android:text="房屋估价"
                     android:textColor="#666666"
                     android:textSize="12dp" />
 
@@ -157,13 +157,13 @@
                     android:layout_marginTop="17dp"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
-                    android:background="@drawable/huiyuanka" />
+                    android:background="@drawable/daikuanjisuan" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="会员卡"
+                    android:text="贷款计算"
                     android:textColor="#666666"
                     android:textSize="12dp" />
 
@@ -190,13 +190,13 @@
                     android:layout_marginTop="17dp"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
-                    android:background="@drawable/baoming" />
+                    android:background="@drawable/jiaoyiliuheng" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="报名"
+                    android:text="交易流程"
                     android:textColor="#666666"
                     android:textSize="12dp" />
 
@@ -213,13 +213,13 @@
                     android:layout_marginTop="17dp"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
-                    android:background="@drawable/paihangbang" />
+                    android:background="@drawable/houfeibiaozhun" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="排行榜"
+                    android:text="收费标准"
                     android:textColor="#666666"
                     android:textSize="12dp"/>
 
@@ -288,7 +288,7 @@
                 android:gravity="center"
                 android:drawableRight="@mipmap/iicon_enter"
                 android:drawablePadding="5dp"
-                android:textColor="@color/hint_color"
+                android:textColor="#999999"
                 android:textSize="12sp"/>
         </RelativeLayout>
 

@@ -14,6 +14,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:orientation="horizontal"
         android:background="@color/color_white"
@@ -40,7 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:background="#F5F5F5"
-                android:hint="按输入小区名"
+                android:hint="请输入楼盘名或区域"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
                 android:textSize="12sp"
@@ -61,6 +62,7 @@
                 android:layout_height="match_parent"/>
         </LinearLayout>
 <TextView
+    android:id="@+id/sousuo"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:text="搜索"

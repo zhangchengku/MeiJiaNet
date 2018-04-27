@@ -267,7 +267,7 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
                 .execute(new ResultCallBack() {
                     @Override
                     public void onSuccess(String body) {//已注册
-
+                            startActivity(new Intent(LoginActivity.this,QuedingWQActivity.class));
                     }
 
                     @Override

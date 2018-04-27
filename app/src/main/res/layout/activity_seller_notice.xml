@@ -81,13 +81,12 @@
         android:id="@+id/tv_notice"
         android:background="@drawable/bg_notice_normal"
         android:text="我已阅读并同意"
-        android:textColor="@color/white"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:layout_marginBottom="30dp"
-        android:layout_gravity="center_horizontal"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/jilu"
+        android:text="跳转到成交记录"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
 </LinearLayout>

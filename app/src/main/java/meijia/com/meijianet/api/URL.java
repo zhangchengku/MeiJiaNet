@@ -7,6 +7,7 @@ package meijia.com.meijianet.api;
 public interface URL {
     String NEW_HOUSE = "/api/house/getNewHouse";
     String SEARCH_HOUSE = "/api/house/searchHouse";
+    String TRANSACTIONRECORD = "/api/house/searchRecentlySell";
     String MY_ENTRUST ="/api/member/myConsignation";//我的委托
     String MY_ITENTION = "/api/member/myItention";//意向房源
     String LOGIN = "/api/member/memberLogin";
@@ -16,9 +17,10 @@ public interface URL {
     String FORGEST_PSW = "/api/member/findAndModify";
     String HOUSE_DETAIL = "/api/house/getHouseDetails";
     String VIDEO = "/api/homePage/video";
+    String SHOUYELUNBOTU = "/api/carousel/getcarousels";
     String COLLECT_HOUSE = "/api/collect/collectHouse";
     String DELETE_COLLECT = "/api/collect/deleteCollect";
-    String MY_COLLECT = "/api/collect/myCollect";
+    String MY_COLLECT = "/api/collect/myCollect";//我的收藏
     String MY_BROWSE = "/api/member/browseRecord";
     String DELETE_BROWSE = "/api/member/deleteBrowseRecord";
     String UPDATE_MSG = "/api/member/modifyPersonalData";
