@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 
-
     <application
         android:name=".activity.MyApplication"
         android:allowBackup="true"
@@ -123,6 +122,8 @@
         <activity android:name=".ui.TaxrateActivity"></activity>
         <activity android:name=".ui.RefundActivity"></activity>
         <activity android:name=".ui.TransactionRecordActivity"></activity>
+        <activity android:name=".ui.BindingWQActivity"></activity>
+        <activity android:name=".ui.QuedingWQActivity"></activity>
 
     </application>
 

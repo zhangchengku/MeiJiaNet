@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -27,9 +30,13 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import meijia.com.meijianet.R;
 import meijia.com.meijianet.bean.BannerVo;
+import meijia.com.meijianet.ui.ContentActivity;
 import meijia.com.meijianet.ui.HouseDetailActivity;
 import meijia.com.meijianet.activity.MyScollerLinearlayoutManager;
 import meijia.com.meijianet.ui.LoginActivity;
+import meijia.com.meijianet.ui.ProcessActivity;
+import meijia.com.meijianet.ui.RefundActivity;
+import meijia.com.meijianet.ui.StandardActivity;
 import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.activity.NewHouseInfo;
@@ -74,6 +81,22 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
     private JCVideoPlayerStandard mJc;
     private String videoUrl = "https://mjkf.oss-cn-beijing.aliyuncs.com/mjw-video/index.mp4" ;
     private List<BannerVo> newHouseInfos;
+    private ImageView fistfragmentdkjsq;
+    private ImageView fistfragmentjylc;
+    private ImageView fistfragmentsfbz;
+    private static final int FIRST = 0; //首页
+    private static final int SECOND = 1;//我的
+    private static final int THIRD = 2;//房小二
+    private static final int FOUR = 3;//买房
+    private static final int FIVE = 4;//卖房
+    private FirstFragment mHomeFragment;
+    private MyFragment mMeFragment;
+    private HouserFragment houserFragment;
+    private BuyHomeFragment buyHomeFragment;
+    private SellingHomeFragment sellingHomeFragment;
+    private ImageView fistfragmentesf;
+    private ImageView fistfragmentmf;
+    private ImageView fistfragmentkf;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,12 +109,16 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
     protected void initView() {
         rvList = (RecyclerView) view.findViewById(R.id.rv_list);
         llParent = (LinearLayout) view.findViewById(R.id.ll_parent);
-//        ivSell = (ImageView) view.findViewById(R.id.iv_sell);
         tvMore = (TextView) view.findViewById(R.id.tv_fm_first_more);
         tvAddress = (TextView) view.findViewById(R.id.tv_address);
         tvSearch = (TextView) view.findViewById(R.id.tv_fm_first_search);
         ivBanner = (CustomBanner) view.findViewById(R.id.iv_fm_banner);
-//        ivBanner.setBackgroundColor(Color.BLUE);
+        fistfragmentdkjsq = (ImageView) view.findViewById(R.id.fist_fragment_dkjsq);
+        fistfragmentjylc = (ImageView) view.findViewById(R.id.fist_fragment_jylc);
+        fistfragmentsfbz = (ImageView) view.findViewById(R.id.fist_fragment_sfbz);
+        fistfragmentesf = (ImageView) view.findViewById(R.id.fist_fragment_esf);
+        fistfragmentmf = (ImageView) view.findViewById(R.id.fist_fragment_mf);
+        fistfragmentkf = (ImageView) view.findViewById(R.id.fist_fragment_kf);
         mJc = (JCVideoPlayerStandard) view.findViewById(R.id.videoplayer);
         mJc.backButton.setVisibility(View.GONE);
         mJc.thumbImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -105,13 +132,6 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
     private int mHeight;
     @Override
     protected void initData() {
-//
-//        llParent.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(getActivity()), 0, 0);
-//            }
-//        });
         tvAddress.post(new Runnable() {
             @Override
             public void run() {
@@ -187,6 +207,12 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
 
     @Override
     protected void initClick() {
+        fistfragmentesf.setOnClickListener(this);
+        fistfragmentmf.setOnClickListener(this);
+        fistfragmentkf.setOnClickListener(this);
+        fistfragmentdkjsq.setOnClickListener(this);
+        fistfragmentjylc.setOnClickListener(this);
+        fistfragmentsfbz.setOnClickListener(this);
         tvSearch.setOnClickListener(this);
         tvMore.setOnClickListener(this);
 
@@ -215,6 +241,25 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
 //                        startActivity(new Intent(getActivity(),PostHouseActivity.class));
 //                    }
 //                    break;
+                case R.id.fist_fragment_dkjsq:
+                    startActivity(new Intent(getActivity(), RefundActivity.class));
+                    break;
+                case R.id.fist_fragment_jylc:
+                    startActivity(new Intent(getActivity(), ProcessActivity.class));
+                    break;
+                case R.id.fist_fragment_sfbz:
+                    startActivity(new Intent(getActivity(), StandardActivity.class));
+                    break;
+                case R.id.fist_fragment_esf:
+                    startActivity(new Intent(getActivity(), SearchMoreActivity.class));
+                    break;
+                case R.id.fist_fragment_mf:
+                    startActivity(new Intent(getActivity(),PostHouseActivity.class));
+                    break;
+                case R.id.fist_fragment_kf:
+                    ToastUtil.showShortToast(getActivity(),"跳转到客服界面");
+                    break;
+
                 default:
                     break;
             }

@@ -15,6 +15,7 @@ public interface URL {
     String REGIST = "/api/member/registMember";
     String LOGIN_OUT = "/api/member/logout";
     String FORGEST_PSW = "/api/member/findAndModify";
+
     String HOUSE_DETAIL = "/api/house/getHouseDetails";
     String VIDEO = "/api/homePage/video";
     String SHOUYELUNBOTU = "/api/carousel/getcarousels";

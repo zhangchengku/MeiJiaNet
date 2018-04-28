@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import meijia.com.meijianet.R;
@@ -31,14 +33,18 @@ import meijia.com.srdlibrary.myutil.StatusBarUtils;
  * Created by Administrator on 2018/4/20.
  */
 
-public class BindingWQActivity extends BaseActivity implements TextView.OnEditorActionListener {
+public class BindingWQActivity extends BaseActivity  {
+
+
     private LinearLayout llContent;
     private ImageView ivFinish;
     private EditText etPhone;
     private EditText etYanzheng;
-    private EditText etPsw;
     private TextView tvSure;
     private TextView tvCode;
+    private String style;
+    private String userId;
+
     @Override
     protected void setContent() {
         setContentView(R.layout.layout_wq);
@@ -51,13 +57,15 @@ public class BindingWQActivity extends BaseActivity implements TextView.OnEditor
         ivFinish = (ImageView) findViewById(R.id.iv_ac_regist_finish);
         etPhone = (EditText) findViewById(R.id.et_ac_forget_phone);
         etYanzheng = (EditText) findViewById(R.id.et_ac_forget_yanzheng);
-        etPsw = (EditText) findViewById(R.id.et_ac_forget_psw);
         tvSure = (TextView) findViewById(R.id.tv_ac_forget_complete);
         tvCode = (TextView) findViewById(R.id.tv_ac_forget_send);
     }
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+        style = intent.getStringExtra("style");
+        userId = intent.getStringExtra("UserId");
         llContent.post(new Runnable() {
             @Override
             public void run() {
@@ -70,7 +78,6 @@ public class BindingWQActivity extends BaseActivity implements TextView.OnEditor
         ivFinish.setOnClickListener(this);
         tvSure.setOnClickListener(this);
         tvCode.setOnClickListener(this);
-        etPsw.setOnEditorActionListener(this);
     }
 
     @Override
@@ -96,8 +103,7 @@ public class BindingWQActivity extends BaseActivity implements TextView.OnEditor
                 case R.id.tv_ac_forget_complete:
                     String phone = etPhone.getText().toString().trim();
                     String code = etYanzheng.getText().toString().trim();
-                    String psw = etPsw.getText().toString().trim();
-                    if (phone.equals("") || psw.equals("") || code.equals("")){
+                    if (phone.equals("") || code.equals("")){
                         ToastUtil.showShortToast(BindingWQActivity.this,"手机号、密码或验证码不能为空");
                         return;
                     }
@@ -105,7 +111,7 @@ public class BindingWQActivity extends BaseActivity implements TextView.OnEditor
                         ToastUtil.showShortToast(BindingWQActivity.this,"请输入正确的手机格式");
                         return;
                     }
-                    rigest(phone,code,psw);
+                    rigest(phone,code);
                     break;
                 default:
                     break;
@@ -161,7 +167,7 @@ public class BindingWQActivity extends BaseActivity implements TextView.OnEditor
                 });
     }
 
-    private void rigest(String phone, String code, String psw) {
+    private void rigest(String phone, String code) {
         //检查网络
         if (!NetworkUtil.checkNet(this)){
             ToastUtil.showShortToast(this,"没网啦，请检查网络");
@@ -170,12 +176,10 @@ public class BindingWQActivity extends BaseActivity implements TextView.OnEditor
         PromptUtil.showTransparentProgress(this,false);
         RequestParams params = new RequestParams(this);
         params.add("phone",phone);
-        params.add("password",psw);
         params.add("smscode",code);
-        params.add("codetype","1");
         OkHttpUtils.post()
                 .tag(this)
-                .url(BaseURL.BASE_URL + FORGEST_PSW)
+                .url(BaseURL.BASE_URL + CHECK_PHONE)
                 .params(params.getMap())
                 .build()
                 .execute(new ResultCallBack() {
@@ -184,19 +188,19 @@ public class BindingWQActivity extends BaseActivity implements TextView.OnEditor
                         if (timer != null) {
                             timer.cancel();
                         }
-                        ToastUtil.showShortToast(BindingWQActivity.this,"修改成功");
-                        startActivity(new Intent(BindingWQActivity.this,QuedingWQActivity.class));
 
-//                        Intent intent = new Intent();
-//                        intent.putExtra("phone",phone);
-//                        setResult(2,intent);
-//                        finish();
+                            ToastUtil.showShortToast(BindingWQActivity.this,"登陆成功");
+
+                       
                     }
 
                     @Override
                     public void onFail(int returnCode, String returnTip) {
-                        ToastUtil.showShortToast(BindingWQActivity.this,returnTip);
-                        PromptUtil.closeTransparentDialog();
+                        Intent intent=new Intent(BindingWQActivity.this,QuedingWQActivity.class);
+                        intent.putExtra("style",style);
+                        intent.putExtra("UserId",userId);
+                        intent.putExtra("phone",phone);
+                        startActivity(intent);
                     }
 
                     @Override
@@ -207,30 +211,7 @@ public class BindingWQActivity extends BaseActivity implements TextView.OnEditor
     }
 
 
-    @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
-
-        //判断是否是“DOWN”键
-        if(actionId == EditorInfo.IME_ACTION_DONE){
-            // 对应逻辑操作
-            String psw = etPsw.getText().toString().trim();
-            String code = etYanzheng.getText().toString().trim();
-            String phone = etPhone.getText().toString().trim();
-            if (TextUtils.isEmpty(psw) || code.equals("") || phone.equals("")){
-                ToastUtil.showShortToast(BindingWQActivity.this,"手机号、验证码或新密码不能为空");
-                return false;
-            }
-            //隐藏软键盘
-            InputMethodManager imm= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if(imm.isActive()){
-                imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-            }
-            rigest(phone,code,psw);
-            return true;
-        }
-        return false;
-    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

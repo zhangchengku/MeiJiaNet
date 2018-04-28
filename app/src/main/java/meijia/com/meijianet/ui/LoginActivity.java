@@ -22,8 +22,11 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.mob.tools.utils.UIHandler;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +37,7 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
 import meijia.com.meijianet.R;
+import meijia.com.meijianet.bean.BaseVO;
 import meijia.com.meijianet.bean.LoginVo;
 import meijia.com.meijianet.util.MD5;
 import meijia.com.meijianet.util.NetworkUtil;
@@ -48,6 +52,8 @@ import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.meijianet.util.ToolUtil;
 import meijia.com.srdlibrary.commondialog.CommonDialog;
 import meijia.com.srdlibrary.myutil.StatusBarUtils;
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static android.R.attr.action;
 
@@ -264,19 +270,31 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
                 .url(BaseURL.BASE_URL + LOGIN_QW)
                 .params(params.getMap())
                 .build()
-                .execute(new ResultCallBack() {
+                .execute(new Callback() {
+
                     @Override
-                    public void onSuccess(String body) {//已注册
-                            startActivity(new Intent(LoginActivity.this,QuedingWQActivity.class));
+                    public Object parseNetworkResponse(Response response, int id) throws Exception {
+                        String result = response.body().string();
+                       BaseVO baseVO = JSON.parseObject(result, BaseVO.class);
+                        if (baseVO.getCode().equals("success") ) {
+                            Log.d("buggggggg", "parseNetworkResponse: 登陆成功");
+                        }else {
+                            Log.d("buggggggg", "parseNetworkResponse: 跳转到三方登陆成功");
+                            Intent intent=new Intent(LoginActivity.this,BindingWQActivity.class);
+                            intent.putExtra("style",String.valueOf(style));
+                            intent.putExtra("UserId",UserId);
+                            startActivity(intent);
+                        }
+                        return result;
                     }
 
                     @Override
-                    public void onFail(int returnCode, String returnTip) {
+                    public void onError(Call call, Exception e, int id) {
 
                     }
 
                     @Override
-                    public void onAfter(int id) {
+                    public void onResponse(Object response, int id) {
 
                     }
                 });

@@ -30,7 +30,7 @@ public class RefundActivity extends BaseActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
-        tvTitle.setText("收费标准");
+        tvTitle.setText("贷款计算器");
 
         setSupportActionBar(toolbar);
         setNavigationFinish(toolbar);

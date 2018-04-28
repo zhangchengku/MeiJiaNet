@@ -3,6 +3,8 @@ package meijia.com.meijianet.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -44,7 +46,7 @@ import meijia.com.meijianet.util.ToolUtil;
 import meijia.com.srdlibrary.myutil.StatusBarUtils;
 
 import static meijia.com.meijianet.api.URL.UPDATE_MSG;
-
+import static meijia.com.meijianet.api.URL.LOGIN_OUT;
 public class PersonCenterActivity extends TakePhotoActivity implements View.OnClickListener {
     private MyApplication app;
     protected String TAG;
@@ -54,8 +56,8 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
     private RoundedImageView ivIcon;
     private LinearLayout llName;
     private TextView tvName;
-    private LinearLayout llAddress;
-    private TextView tvAddress;
+
+
     private LinearLayout llPhone;
     private TextView tvPhone;
     private LinearLayout llEmail;
@@ -63,6 +65,9 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
     private LinearLayout llNumber;
     private TextView tvNumber;
     private String path = "";
+    private LinearLayout tvacsetuploadpwd;
+    private TextView tvacsetloginout;
+    private TextView versionsText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +84,7 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
 
     protected void setContent() {
         setContentView(R.layout.activity_personer_center);
-        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.statusColor));
+        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
     }
 
     protected void initView() {
@@ -88,16 +93,32 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
         ivIcon = (RoundedImageView) findViewById(R.id.riv_ac_center_icon);
         llName = (LinearLayout) findViewById(R.id.ll_ac_center_name);
         tvName = (TextView) findViewById(R.id.tv_ac_center_name);
-        llAddress = (LinearLayout) findViewById(R.id.ll_ac_center_address);
-        tvAddress = (TextView) findViewById(R.id.tv_ac_center_address);
+
         llPhone = (LinearLayout) findViewById(R.id.ll_ac_center_phone);
         tvPhone = (TextView) findViewById(R.id.tv_ac_center_phone);
         llEmail = (LinearLayout) findViewById(R.id.ll_ac_center_youxinag);
         tvEmail = (TextView) findViewById(R.id.tv_ac_center_youxinag);
         llNumber = (LinearLayout) findViewById(R.id.ll_ac_center_idnumber);
         tvNumber = (TextView) findViewById(R.id.tv_ac_center_idnumber);
-    }
+        tvacsetuploadpwd = (LinearLayout) findViewById(R.id.tv_ac_set_uploadpwd);
+        tvacsetloginout = (TextView) findViewById(R.id.tv_ac_set_loginout);
+        versionsText = (TextView) findViewById(R.id.banbenhao);
+        versionsText.setText("V"+getLocalVersionName(this));
 
+    }
+    public static String getLocalVersionName(Context ctx) {
+        String localVersion = "";
+        try {
+            PackageInfo packageInfo = ctx.getApplicationContext()
+                    .getPackageManager()
+                    .getPackageInfo(ctx.getPackageName(), 0);
+            localVersion = packageInfo.versionName;
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return localVersion;
+    }
     protected void initData() {
         LoginVo info = SharePreUtil.getUserInfo(PersonCenterActivity.this);
         if (info != null && !info.getName().equals("")) {
@@ -110,9 +131,7 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
             if (header!=null && !header.equals("")) {
                 Glide.with(PersonCenterActivity.this).load(header).into(ivIcon);
             }
-            if (address!=null && !address.equals("")) {
-                tvAddress.setText(address);
-            }
+
             if (email!=null && !email.equals("")) {
                 tvEmail.setText(email);
             }
@@ -130,11 +149,11 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
     }
 
     protected void initClick() {
+        tvacsetuploadpwd.setOnClickListener(this);
+        tvacsetloginout.setOnClickListener(this);
         ivFinish.setOnClickListener(this);
         llIcon.setOnClickListener(this);
         llName.setOnClickListener(this);
-        llAddress.setOnClickListener(this);
-//        llPhone.setOnClickListener(this);
         llNumber.setOnClickListener(this);
         llEmail.setOnClickListener(this);
     }
@@ -165,14 +184,14 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
                     Intent nameIntent = new Intent(this, UpdateNameActivity.class);
                     startActivityForResult(nameIntent, 103);
                     break;
-                case R.id.ll_ac_center_address:
-                    if (SharePreUtil.getUserInfo(PersonCenterActivity.this).getName().equals("")){
-                        ToastUtil.showShortToast(PersonCenterActivity.this,"您还没有登录");
-                        return;
-                    }
-                    Intent addressIntent = new Intent(this, AddressActivity.class);
-                    startActivityForResult(addressIntent, 103);
-                    break;
+//                case R.id.ll_ac_center_address:
+//                    if (SharePreUtil.getUserInfo(PersonCenterActivity.this).getName().equals("")){
+//                        ToastUtil.showShortToast(PersonCenterActivity.this,"您还没有登录");
+//                        return;
+//                    }
+//                    Intent addressIntent = new Intent(this, AddressActivity.class);
+//                    startActivityForResult(addressIntent, 103);
+//                    break;
 //                case R.id.ll_ac_center_phone:
 //                    if (SharePreUtil.getUserInfo(PersonCenterActivity.this).getName().equals("")){
 //                        ToastUtil.showShortToast(PersonCenterActivity.this,"您还没有登录");
@@ -201,12 +220,54 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
                     Intent numberIntent = new Intent(this, NumberActivity.class);
                     startActivityForResult(numberIntent, 103);
                     break;
+                case R.id.tv_ac_set_uploadpwd://修改密码
+                    startActivity(new Intent(this, UpdatePswActivity.class));
+                    break;
+                case R.id.tv_ac_set_loginout://退出
+                    appout();
+                    break;
+
                 default:
                     break;
             }
         }
     }
+    private void appout() {
+        //检查网络
+        if (!NetworkUtil.checkNet(this)){
+            ToastUtil.showShortToast(this,"没网啦，请检查网络");
+            return;
+        }
+        PromptUtil.showTransparentProgress(this,false);
+        OkHttpUtils.post()
+                .tag(this)
+                .url(BaseURL.BASE_URL + LOGIN_OUT)
+                .build()
+                .execute(new ResultCallBack() {
+                    @Override
+                    public void onSuccess(String body) {
+//                        ToastUtil.showShortToast(SettingActivity.this,"退出成功");
+                        LoginVo vo = new LoginVo();
+                        vo.setName("");
+                        vo.setHeader("");
+                        vo.setUuid("");
+                        SharePreUtil.setUserInfo(PersonCenterActivity.this,vo);
+                        EventBus.getDefault().post("logout");
+                        finish();
+                    }
 
+                    @Override
+                    public void onFail(int returnCode, String returnTip) {
+                        ToastUtil.showShortToast(PersonCenterActivity.this,returnTip);
+                        PromptUtil.closeTransparentDialog();
+                    }
+
+                    @Override
+                    public void onAfter(int id) {
+                        PromptUtil.closeTransparentDialog();
+                    }
+                });
+    }
     @Override
     public void takeSuccess(TResult result) {
         super.takeSuccess(result);
@@ -342,7 +403,7 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
                         tvName.setText(data.getStringExtra("name"));
                         break;
                     case 105:
-                        tvAddress.setText(data.getStringExtra("city"));
+
                         break;
                     case 106:
                         tvPhone.setText(ToolUtil.getMosaicPhone(data.getStringExtra("phone")));

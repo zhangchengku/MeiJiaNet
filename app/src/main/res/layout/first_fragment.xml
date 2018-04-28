@@ -82,6 +82,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/fist_fragment_esf"
                     android:layout_marginTop="17dp"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
@@ -106,6 +107,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/fist_fragment_mf"
                     android:layout_marginTop="17dp"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
@@ -130,6 +132,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/fist_fragment_kf"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
                     android:layout_marginTop="17dp"
@@ -154,6 +157,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/fist_fragment_dkjsq"
                     android:layout_marginTop="17dp"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
@@ -187,6 +191,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/fist_fragment_jylc"
                     android:layout_marginTop="17dp"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
@@ -210,6 +215,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/fist_fragment_sfbz"
                     android:layout_marginTop="17dp"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
