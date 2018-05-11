@@ -29,11 +29,10 @@
             <ImageView
                 android:id="@+id/iv_empty"
                 android:layout_above="@+id/tv"
+                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/pic_none"/>
+                android:background="@drawable/pic_notfound"/>
 
             <TextView
                 android:id="@+id/tv"
@@ -41,9 +40,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center_horizontal"
-                android:text="暂无更多信息"
                 android:textColor="#4d4d4d"
-                android:textSize="18sp"/>
+                android:textSize="14sp"/>
         </RelativeLayout>
 
         <com.aspsine.swipetoloadlayout.SwipeToLoadLayout
@@ -59,10 +57,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/swipe_target"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"/>
+                android:layout_height="match_parent" />
 
             <meijia.com.meijianet.activity.LoadMoreFooterView
                 android:id="@+id/swipe_load_more_footer"

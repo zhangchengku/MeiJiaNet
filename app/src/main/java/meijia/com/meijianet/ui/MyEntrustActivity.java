@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import java.util.List;
 
 import meijia.com.meijianet.R;
 import meijia.com.meijianet.activity.MyEntrustAdapter;
+import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.api.PermissionListener;
 import meijia.com.meijianet.api.ResultCallBack;
@@ -35,22 +37,27 @@ import meijia.com.srdlibrary.myutil.StatusBarUtils;
 /**
  * 我的委托
  */
-public class MyEntrustActivity extends BaseActivity implements MyEntrustAdapter.onPicClickListener {
+public class MyEntrustActivity extends BaseActivity {
     private RelativeLayout rlEmpty;
     private TextView tvTitle;
-    private TextView tvSell;
+
     private RecyclerView rvList;
     private MyEntrustAdapter mAdapter;
     private LinearLayoutManager mManager;
     private List<MyEntrustVo> datas = new ArrayList<>();
+    private LinearLayout linear;
+    private LinearLayout add;
+
     @Override
     protected void setContent() {
+        StatusBarUtils.setStatusBarFontDark(this,true);
+        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
         setContentView(R.layout.activity_my_entrust);
-        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.statusColor));
     }
 
     @Override
     protected void initView() {
+        linear = (LinearLayout) findViewById(R.id.activity_my_entrust);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
@@ -58,45 +65,49 @@ public class MyEntrustActivity extends BaseActivity implements MyEntrustAdapter.
         setSupportActionBar(toolbar);
         setNavigationFinish(toolbar);
         setNavigationHomeAsUp(true);
-
         rvList = (RecyclerView)findViewById(R.id.rv_list);
+        add = (LinearLayout) findViewById(R.id.add);
         rlEmpty = (RelativeLayout)findViewById(R.id.rl_ac_chezhu_empty);
-        tvSell = (TextView) findViewById(R.id.tv_sell);
+
     }
 
     @Override
     protected void initData() {
+        linear.post(new Runnable() {
+            @Override
+            public void run() {
+                linear.setPadding(0, BubbleUtils.getStatusBarHeight(MyEntrustActivity.this), 0, 0);
+            }
+        });
         mAdapter = new MyEntrustAdapter(MyEntrustActivity.this,datas);
         mManager = new LinearLayoutManager(MyEntrustActivity.this);
         rvList.setLayoutManager(mManager);
         rvList.setAdapter(mAdapter);
-        mAdapter.setOnPicClickListener(this);
+//        mAdapter.setOnPicClickListener(this);
     }
 
     @Override
     protected void initClick() {
-        tvSell.setOnClickListener(this);
+        add.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (!SharePreUtil.isFisrtSell(MyEntrustActivity.this)){
-            SharePreUtil.setFirstSell(MyEntrustActivity.this,true);
-            startActivity(new Intent(MyEntrustActivity.this,SellerNoticeActivity.class));
-        }else {
-            startActivity(new Intent(MyEntrustActivity.this,PostHouseActivity.class));
+        if (v != null) {
+        switch (v.getId()) {
+            case R.id.add:
+                Intent intent = new Intent(MyEntrustActivity.this,WebViewActivity.class);
+                intent.putExtra("istatle", "卖家须知");
+                intent.putExtra("url", BaseURL.BASE_URL+"/api/salerNotice");
+                startActivity(intent);
+
+                break;
+            default:
+                break;
         }
     }
 
-    private void call(int position) {
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:"+datas.get(position).getEmployee().getPhone() ));
-        if (ActivityCompat.checkSelfPermission(MyEntrustActivity.this, Manifest.permission.CALL_PHONE) !=
-                PackageManager.PERMISSION_GRANTED) {
-            return;
         }
-        startActivity(intent);
-    }
 
     @Override
     protected void onResume() {
@@ -141,25 +152,5 @@ public class MyEntrustActivity extends BaseActivity implements MyEntrustAdapter.
                 });
     }
 
-    @Override
-    public void onPicClick(int position) {
-        requestRuntimePermission(new String[]{Manifest.permission.CALL_PHONE}, new PermissionListener() {
-            @Override
-            public void onGranted() {
-                call(position);
-            }
 
-            @Override
-            public void onDenied(List<String> deniedPermission) {
-                PromptUtil.showCommonDialog(MyEntrustActivity.this, "请在设置中打开拨打电话权限", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(intent); //此为设置完成后返回到获取界面
-                        PromptUtil.closeCommonDialog();
-                    }
-                });
-            }
-        });
-    }
 }

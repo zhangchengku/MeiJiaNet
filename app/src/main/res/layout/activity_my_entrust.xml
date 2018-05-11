@@ -10,44 +10,21 @@
     tools:context="meijia.com.meijianet.ui.MyEntrustActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/comment_defout_toolbar"/>
+    <include
+        layout="@layout/comment_toolbar_sellinghome2"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/hint_color"/>
-
-    <LinearLayout
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textSize="16sp"
-            android:textColor="@color/import_color"
-            android:text="我的委托出售"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <View
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="1dp"/>
-        <TextView
-            android:id="@+id/tv_sell"
-            android:text="我要委托出售"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-
+        android:background="@color/bg_color"/>
     <RelativeLayout
+
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/color_white">
 
         <RelativeLayout
+
             android:id="@+id/rl_ac_chezhu_empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -55,23 +32,54 @@
             android:visibility="gone">
 
             <ImageView
+                android:layout_marginTop="@dimen/view_size_42"
                 android:id="@+id/iv_empty"
-                android:layout_above="@+id/tv"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/pic_none"/>
+                android:layout_marginLeft="@dimen/view_size_111"
+                android:layout_marginBottom="@dimen/view_size_22"
+                android:layout_width="@dimen/view_size_222"
+                android:layout_height="@dimen/view_size_222"
+                android:background="@mipmap/myentrust_queshangye"/>
+<LinearLayout
+  android:layout_centerHorizontal="true"
+    android:id="@+id/tv"
+    android:orientation="vertical"
+android:layout_below="@+id/iv_empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <LinearLayout
+      android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂无卖房信息，点击右上角"
+            android:textColor="#C1C1C1"
+            android:textSize="14sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="“发布”"
+            android:textColor="#4DD391"
+            android:textSize="14sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="按钮"
+            android:textColor="#C1C1C1"
+            android:textSize="14sp"/>
+    </LinearLayout>
+    <TextView
+        android:layout_marginTop="@dimen/view_size_22"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#C1C1C1"
+        android:textSize="14sp"
+        android:text="来发布你的第一条卖房信息吧。"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_centerInParent="true"
-                android:text="暂无信息"
-                android:textColor="#4d4d4d"
-                android:textSize="14sp"/>
+</LinearLayout>
+
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView

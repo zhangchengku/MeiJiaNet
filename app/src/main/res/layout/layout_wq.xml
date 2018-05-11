@@ -28,6 +28,7 @@
     </RelativeLayout>
 
     <EditText
+        android:maxLength="11"
         android:id="@+id/et_ac_forget_phone"
         style="@style/et_style"
         android:imeOptions="actionNext"

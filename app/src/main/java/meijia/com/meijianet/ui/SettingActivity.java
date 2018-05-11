@@ -77,9 +77,9 @@ public class SettingActivity extends BaseActivity {
                 case R.id.tv_ac_set_mystatus://我的状态
                     startActivity(new Intent(this, MyStatusActivity.class));
                     break;
-                case R.id.tv_ac_set_liucheng://交易流程
-                    startActivity(new Intent(this, ProcessActivity.class));
-                    break;
+//                case R.id.tv_ac_set_liucheng://交易流程
+//                    startActivity(new Intent(this, ProcessActivity.class));
+//                    break;
                 case R.id.tv_ac_set_loginout://退出
                     appout();
                     break;

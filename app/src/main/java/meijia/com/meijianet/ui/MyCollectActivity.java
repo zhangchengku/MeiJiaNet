@@ -248,9 +248,16 @@ public class MyCollectActivity extends BaseActivity implements OnRefreshListener
 
     @Override
     public void onItemClick(int positon) {
-        Intent intent = new Intent(MyCollectActivity.this,HouseDetailActivity.class);
-        intent.putExtra("id",datas.get(positon).getId());
+        Intent intent = new Intent(MyCollectActivity.this,WebViewActivity.class);
+        LoginVo userInfo = SharePreUtil.getUserInfo(MyCollectActivity.this);
+        intent.putExtra("istatle", "房屋详情");
+        if (!userInfo.getUuid().equals("")){
+            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(positon).getId()+"&uuid="+userInfo.getUuid());
+        }else {
+            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(positon).getId()+"&uuid="+"");
+        }
         startActivity(intent);
+
     }
 
 

@@ -89,19 +89,19 @@ public class ShareDialog extends PopupWindow {
         public void onClick(View v) {
             switch (v.getId()) {
 
-                case R.id.wechat_friend:
-                    Log.d("ListView", "点击了分享按钮"+shareBO.getId());
-                    ShareUtils.shareWX(context, shareBO);
-                    dismiss();
-                    break;
+//                case R.id.wechat_friend:
+//                    Log.d("ListView", "点击了分享按钮"+shareBO.getId());
+//                    ShareUtils.shareWX(context, shareBO);
+//                    dismiss();
+//                    break;
                 case R.id.wechat_quan:
-                    ShareUtils.shareWXCircle(context, shareBO);
+                    ShareUtils.shareWXCircle(context);
                     dismiss();
                     break;
-                case R.id.qq:
-                    ShareUtils.shareQQ(context, shareBO);
-                    dismiss();
-                    break;
+//                case R.id.qq:
+//                    ShareUtils.shareQQ(context, shareBO);
+//                    dismiss();
+//                    break;
 
             }
         }

@@ -5,12 +5,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhy.http.okhttp.OkHttpUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import meijia.com.meijianet.R;
 import meijia.com.meijianet.bean.LoginVo;
+import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.util.PromptUtil;
 import meijia.com.meijianet.api.ResultCallBack;
@@ -27,15 +32,19 @@ public class YouxiangActivity extends BaseActivity {
     private EditText etName;
     private ImageView ivDelete;
     private TextView tvComplete;
+    private LinearLayout llParent;
 
     @Override
     protected void setContent() {
+        StatusBarUtils.setStatusBarFontDark(this,true);
+        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
         setContentView(R.layout.activity_update_youxiang);
-        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.statusColor));
+
     }
 
     @Override
     protected void initView() {
+        llParent = (LinearLayout) findViewById(R.id.activity_update_name);
         tvComplete = (TextView) findViewById(R.id.tv_ac_name_complete);
         etName = (EditText) findViewById(R.id.et_ac_name);
         ivDelete = (ImageView) findViewById(R.id.iv_ac_name_delete);
@@ -51,6 +60,12 @@ public class YouxiangActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        llParent.post(new Runnable() {
+            @Override
+            public void run() {
+                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(YouxiangActivity.this), 0, 0);
+            }
+        });
         ToolUtil.setInputListener(etName,ivDelete);
     }
 
@@ -66,10 +81,18 @@ public class YouxiangActivity extends BaseActivity {
             ToastUtil.showShortToast(YouxiangActivity.this,"修改的名称不能为空");
             return;
         }
+        if( isEmail(trim)==true){
+            updateMsg("email",trim);
+        }else {
+            ToastUtil.showShortToast(YouxiangActivity.this,"请输入正确邮箱");
+        }
 
-        updateMsg("email",trim);
     }
-
+    public static boolean isEmail(String email){
+        Pattern p =  Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");//复杂匹配
+        Matcher m = p.matcher(email);
+        return m.matches();
+    }
     private void updateMsg(String params,String values){
         if (!NetworkUtil.checkNet(YouxiangActivity.this)){
             ToastUtil.showShortToast(YouxiangActivity.this,"没有网了，请检查网络");

@@ -44,16 +44,14 @@
     <TextView
         android:id="@+id/tv_ac_name_complete"
         android:text="完成"
-        android:textSize="16sp"
-        android:textColor="@color/color_white"
         android:gravity="center"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:background="@mipmap/icon_comment_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/button_anniu"
+        android:layout_below="@+id/sc"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
 </LinearLayout>

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import meijia.com.meijianet.R;
-import meijia.com.meijianet.activity.IntentionFragmentAdapter;
+
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseFragment;
@@ -46,7 +46,7 @@ public class IntentionFragment extends BaseFragment {
     private RecyclerView rvList;
     private List<IntentionVo> datas = new ArrayList<>();
     private LinearLayoutManager mManager;
-    private IntentionFragmentAdapter mAdapter;
+//    private IntentionFragmentAdapter mAdapter;
     private RelativeLayout rlEmpty;
     private CommonDialog mDialog;
 
@@ -68,12 +68,12 @@ public class IntentionFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        type = getArguments().getString("type");
-        mAdapter = new IntentionFragmentAdapter(getActivity(),datas);
-        mManager = new LinearLayoutManager(getActivity());
-        rvList.setLayoutManager(mManager);
-        rvList.setAdapter(mAdapter);
-        getDataByNet();
+//        type = getArguments().getString("type");
+//        mAdapter = new IntentionFragmentAdapter(getActivity(),datas);
+//        mManager = new LinearLayoutManager(getActivity());
+//        rvList.setLayoutManager(mManager);
+//        rvList.setAdapter(mAdapter);
+//        getDataByNet();
     }
 
     @Override
@@ -177,7 +177,7 @@ public class IntentionFragment extends BaseFragment {
                         if (intentionVos!=null && intentionVos.size()>0){
                             datas.clear();
                             datas.addAll(intentionVos);
-                            mAdapter.notifyDataSetChanged();
+//                            mAdapter.notifyDataSetChanged();
                             rlEmpty.setVisibility(View.GONE);
                         }else {
                             rlEmpty.setVisibility(View.VISIBLE);

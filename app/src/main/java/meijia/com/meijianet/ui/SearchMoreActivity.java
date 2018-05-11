@@ -34,6 +34,7 @@ import java.util.List;
 import meijia.com.meijianet.R;
 import meijia.com.meijianet.activity.CityAdapter;
 import meijia.com.meijianet.adpter.menu.DropDownMenus;
+import meijia.com.meijianet.bean.LoginVo;
 import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.activity.NewHouseInfo;
@@ -43,6 +44,7 @@ import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.activity.SearchMoreAdapter;
 import meijia.com.meijianet.base.BaseActivity;
 import meijia.com.meijianet.base.BaseURL;
+import meijia.com.meijianet.util.SharePreUtil;
 import meijia.com.meijianet.util.StatusBarCompat;
 import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.meijianet.util.ToolUtil;
@@ -712,7 +714,8 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
 
         }
         if(!xiaoquName.equals("")){
-            params.add("name", xiaoquName);
+            params.add("titleOrAddress", xiaoquName);
+            Log.d(TAG, "getDataByNet: "+xiaoquName);
         }
         OkHttpUtils.post()
                 .tag(this)
@@ -907,7 +910,7 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
 
         }
         if(!xiaoquName.equals("")){
-            params.add("name", xiaoquName);
+            params.add("titleOrAddress", xiaoquName);
         }
         OkHttpUtils
                 .get()
@@ -944,8 +947,14 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(SearchMoreActivity.this, HouseDetailActivity.class);
-        intent.putExtra("id", datas.get(position).getId());
+        Intent intent = new Intent(SearchMoreActivity.this,WebViewActivity.class);
+        LoginVo userInfo = SharePreUtil.getUserInfo(SearchMoreActivity.this);
+        intent.putExtra("istatle", "房屋详情");
+        if (!userInfo.getUuid().equals("")){
+            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(position).getId()+"&uuid="+userInfo.getUuid());
+        }else {
+            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(position).getId()+"&uuid="+"");
+        }
         startActivity(intent);
     }
 

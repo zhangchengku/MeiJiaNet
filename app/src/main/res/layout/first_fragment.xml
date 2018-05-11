@@ -14,8 +14,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="182dp">
-
+            android:layout_height="@dimen/view_size_203">
             <com.donkingliang.banner.CustomBanner
                 android:id="@+id/iv_fm_banner"
                 android:layout_width="match_parent"
@@ -24,46 +23,6 @@
                 app:indicatorSelectRes="@drawable/landian"
                 app:indicatorStyle="ORDINARY"
                 app:indicatorUnSelectRes="@drawable/baidian" />
-            <RelativeLayout
-                android:background="@drawable/bg_home_search"
-                android:layout_marginLeft="19dp"
-                android:layout_marginRight="19dp"
-                android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="10dp"
-                >
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:drawablePadding="10dp"
-                    android:drawableRight="@mipmap/home_icon_more_normal"
-                    android:padding="10dp"
-                    android:text="衢州"
-                    android:textColor="#4D4D4D"
-                    android:textSize="14sp"/>
-                <View
-                    android:layout_centerVertical="true"
-                    android:id="@+id/tv_address_view"
-                    android:layout_toRightOf="@id/tv_address"
-                    android:layout_width="1dp"
-                    android:layout_height="13dp"
-                    android:background="#ffe5e5e5"
-                    />
-                <TextView
-                    android:id="@+id/tv_fm_first_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_toRightOf="@id/tv_address_view"
-                    android:drawableLeft="@mipmap/home_icon_search_disabaled"
-                    android:drawablePadding="5dp"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:text="搜索"
-                    android:textColor="#999999"
-                    android:textSize="14sp"/>
-            </RelativeLayout>
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -235,10 +194,23 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/fist_fragment_zjcj"
+                    android:layout_marginTop="17dp"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:background="@drawable/houfeibiaozhun" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="收费标准"
+                    android:textColor="#666666"
+                    android:textSize="12dp"/>
 
             </LinearLayout>
 
@@ -259,18 +231,16 @@
 
         <fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
             android:id="@+id/videoplayer"
-           android:layout_marginRight="14dp"
-            android:layout_marginLeft="14dp"
             android:layout_width="match_parent"
-            android:layout_height="186dp"/>
+            android:layout_height="@dimen/view_size_186"/>
 
 
 
         <RelativeLayout
-            android:paddingTop="29dp"
+            android:paddingTop="20dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
-            android:paddingBottom="24dp"
+            android:paddingBottom="20dp"
             android:background="@color/color_white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

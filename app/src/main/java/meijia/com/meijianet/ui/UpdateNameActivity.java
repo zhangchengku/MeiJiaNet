@@ -5,12 +5,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import meijia.com.meijianet.R;
 import meijia.com.meijianet.bean.LoginVo;
+import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.util.PromptUtil;
 import meijia.com.meijianet.api.ResultCallBack;
@@ -27,15 +29,19 @@ public class UpdateNameActivity extends BaseActivity {
     private EditText etName;
     private ImageView ivDelete;
     private TextView tvComplete;
+    private LinearLayout llParent;
 
     @Override
     protected void setContent() {
+        StatusBarUtils.setStatusBarFontDark(this,true);
+        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
         setContentView(R.layout.activity_update_name);
-        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.statusColor));
     }
 
     @Override
     protected void initView() {
+        llParent = (LinearLayout) findViewById(R.id.activity_update_name);
+
         tvComplete = (TextView) findViewById(R.id.tv_ac_name_complete);
         etName = (EditText) findViewById(R.id.et_ac_name);
         ivDelete = (ImageView) findViewById(R.id.iv_ac_name_delete);
@@ -51,6 +57,12 @@ public class UpdateNameActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        llParent.post(new Runnable() {
+            @Override
+            public void run() {
+                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(UpdateNameActivity.this), 0, 0);
+            }
+        });
         ToolUtil.setInputListener(etName,ivDelete);
     }
 

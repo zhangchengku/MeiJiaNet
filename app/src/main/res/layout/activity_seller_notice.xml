@@ -1,92 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/activity_seller_notice"
+    android:id="@+id/activity_talk_list"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/color_white"
     tools:context="meijia.com.meijianet.ui.SellerNoticeActivity">
-    <include layout="@layout/comment_defout_toolbar"/>
+    <include
+        layout="@layout/comment_toolbar_sellinghome"/>
     <View
-        android:background="@color/hint_color"
+        android:background="@color/bg_color"
         android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_marginTop="10dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="1、保证所出售房产无权力瑕疵，包括但不限于无法院查封、个人抵押等情况，保证所提供的全部材料真实可靠。所出售房产如有法院查封、个人抵押等情况的，必须明确告知且在办理房地产过户登记前必须解除查封或抵押。"
-                android:textSize="14sp"
-                android:textColor="@color/import_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_marginTop="10dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="2、若房产系与他人共同所有，则出售该房产已经取得共有人的同意。"
-                android:textSize="14sp"
-                android:textColor="@color/import_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_marginTop="10dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="3、客服将在您登记房产信息后24小时内联系您，并进行房屋全景拍摄，并在拍摄完毕后24小时内将全景上传至网站。"
-                android:textSize="14sp"
-                android:textColor="@color/import_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_marginTop="10dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="4、如客服对您出售的房屋进行全景拍摄并上传至美家网网站，则您此次出售的房产系限时独家委托美家房地产营销策划有限公司作为中介方出售房产。时间为房屋全景在美家网网站上线后72小时内。"
-                android:textSize="14sp"
-                android:textColor="@color/import_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_marginTop="10dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="5、房屋全景上传至网站后72小时内如有买方缴纳意向金，客服将在客户意向金缴纳后72小时内安排实地看房，请您予以配合。"
-                android:textSize="14sp"
-                android:textColor="@color/import_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_marginTop="10dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="6、若房屋全景上线后72小时内无买方缴纳意向金，客服将与您联系，确认或变更交易方案。"
-                android:textSize="14sp"
-                android:textColor="@color/import_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-    <TextView
-        android:id="@+id/tv_notice"
-        android:background="@drawable/bg_notice_normal"
-        android:text="我已阅读并同意"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/jilu"
-        android:text="跳转到成交记录"
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
 </LinearLayout>

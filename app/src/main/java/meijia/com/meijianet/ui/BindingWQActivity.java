@@ -16,18 +16,26 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
+
+import org.greenrobot.eventbus.EventBus;
 
 import meijia.com.meijianet.R;
 import meijia.com.meijianet.activity.RequestParams;
 import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseActivity;
 import meijia.com.meijianet.base.BaseURL;
+import meijia.com.meijianet.bean.BaseVO;
+import meijia.com.meijianet.bean.LoginVo;
 import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.util.PromptUtil;
+import meijia.com.meijianet.util.SharePreUtil;
 import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.meijianet.util.ToolUtil;
 import meijia.com.srdlibrary.myutil.StatusBarUtils;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by Administrator on 2018/4/20.
@@ -44,6 +52,9 @@ public class BindingWQActivity extends BaseActivity  {
     private TextView tvCode;
     private String style;
     private String userId;
+    private String wxUserId;
+    private String qqUserId;
+    private String three;
 
     @Override
     protected void setContent() {
@@ -95,6 +106,7 @@ public class BindingWQActivity extends BaseActivity  {
                         return;
                     }
                     getSmsCode(phone1);
+                    tvCode.setEnabled(false);
                     timer.start();
                     break;
                 case R.id.iv_ac_regist_finish:
@@ -182,25 +194,68 @@ public class BindingWQActivity extends BaseActivity  {
                 .url(BaseURL.BASE_URL + CHECK_PHONE)
                 .params(params.getMap())
                 .build()
-                .execute(new ResultCallBack() {
+                .execute(new Callback() {
+
                     @Override
-                    public void onSuccess(String body) {
+                    public Object parseNetworkResponse(Response response, int id) throws Exception {
                         if (timer != null) {
                             timer.cancel();
                         }
+                        String result = response.body().string();
+                        BaseVO baseVO = JSON.parseObject(result, BaseVO.class);
+                        if (baseVO.getStatus()==1 ) {//已经注册
+                         getlongininformtion(phone);
+                        }else {//未注册
+                            Intent intent=new Intent(BindingWQActivity.this,QuedingWQActivity.class);
+                            intent.putExtra("style",style);
+                            intent.putExtra("UserId",userId);
+                            intent.putExtra("phone",phone);
+                            startActivity(intent);
+                            finish();
+                        }
+                        return result;
+                    }
 
-                            ToastUtil.showShortToast(BindingWQActivity.this,"登陆成功");
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
 
-                       
+                    }
+
+                    @Override
+                    public void onResponse(Object response, int id) {
+
+                    }
+                });
+    }
+
+    private void getlongininformtion(String phone) {
+        if (style.equals("1")) {//微信
+            three = "wxUserId";
+        }
+        if (style.equals("2")) {//QQ
+            three = "qqUserId";
+        }
+        //检查网络
+        if (!NetworkUtil.checkNet(this)){
+            ToastUtil.showShortToast(this,"没网啦，请检查网络");
+            return;
+        }
+        RequestParams params = new RequestParams(this);
+        params.add("phone",phone);
+        params.add(three,userId);
+        OkHttpUtils.post()
+                .tag(this)
+                .url(BaseURL.BASE_URL + BIND_REGIST)
+                .params(params.getMap())
+                .build()
+                .execute(new ResultCallBack() {
+                    @Override
+                    public void onSuccess(String body) {
+                        getlogding();
                     }
 
                     @Override
                     public void onFail(int returnCode, String returnTip) {
-                        Intent intent=new Intent(BindingWQActivity.this,QuedingWQActivity.class);
-                        intent.putExtra("style",style);
-                        intent.putExtra("UserId",userId);
-                        intent.putExtra("phone",phone);
-                        startActivity(intent);
                     }
 
                     @Override
@@ -210,6 +265,54 @@ public class BindingWQActivity extends BaseActivity  {
                 });
     }
 
+    private void getlogding() {
+        if (style .equals("1") ) {//微信
+            three = "wxUserId";
+        }
+        if (style .equals("2")) {//QQ
+            three = "qqUserId";
+
+        }
+        //检查网络
+        if (!NetworkUtil.checkNet(this)){
+            ToastUtil.showShortToast(this,"没网啦，请检查网络");
+            return;
+        }
+        PromptUtil.showTransparentProgress(this,false);
+        RequestParams params = new RequestParams(this);
+        params.add(three,userId);
+        OkHttpUtils.post()
+                .tag(this)
+                .url(BaseURL.BASE_URL + LOGIN_QW)
+                .params(params.getMap())
+                .build()
+                .execute(new ResultCallBack() {
+                    @Override
+                    public void onSuccess(String body) {
+                        Intent show=new Intent(BindingWQActivity.this,ContentActivity.class);
+                        ToastUtil.showShortToast(BindingWQActivity.this,"登录成功");
+                        LoginVo vo = JSON.parseObject(body, LoginVo.class);
+                        SharePreUtil.setUserInfo(BindingWQActivity.this,vo);
+                        EventBus.getDefault().post("login");
+                        show.putExtra("grxx",1);
+                        startActivity(show);
+                        finish();
+
+
+                    }
+
+                    @Override
+                    public void onFail(int returnCode, String returnTip) {
+                        ToastUtil.showShortToast(BindingWQActivity.this,returnTip);
+                        PromptUtil.closeTransparentDialog();
+                    }
+
+                    @Override
+                    public void onAfter(int id) {
+                        PromptUtil.closeTransparentDialog();
+                    }
+                });
+    }
 
 
     @Override

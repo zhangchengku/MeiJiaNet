@@ -710,11 +710,11 @@ public class TransactionRecordActivity extends BaseActivity implements OnRefresh
 
         }
         if(!xiaoquName.equals("")){
-            params.add("name", xiaoquName);
+            params.add("titleOrAddress", xiaoquName);
         }
         OkHttpUtils.post()
                 .tag(this)
-                .url("http://192.168.1.16:8080/api/house/searchRecentlySell")
+                .url(BaseURL.BASE_URL + TRANSACTIONRECORD)
                 .params(params.getMap())
                 .build()
                 .execute(new ResultCallBack() {
@@ -905,7 +905,7 @@ public class TransactionRecordActivity extends BaseActivity implements OnRefresh
 
         }
         if(!xiaoquName.equals("")){
-            params.add("name", xiaoquName);
+            params.add("titleOrAddress", xiaoquName);
         }
         OkHttpUtils
                 .get()

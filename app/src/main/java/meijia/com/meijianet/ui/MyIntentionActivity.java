@@ -1,162 +1,159 @@
 package meijia.com.meijianet.ui;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.alibaba.fastjson.JSON;
+import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
+import com.aspsine.swipetoloadlayout.OnRefreshListener;
+import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import meijia.com.meijianet.R;
+import meijia.com.meijianet.activity.CollectAdapter;
 import meijia.com.meijianet.activity.IntentionAdapter;
+import meijia.com.meijianet.api.ResultCallBack;
+import meijia.com.meijianet.base.BaseURL;
+import meijia.com.meijianet.bean.LoginVo;
 import meijia.com.meijianet.fragment.IntentionFragment;
 import meijia.com.meijianet.base.BaseActivity;
+import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.DisplayUtil;
+import meijia.com.meijianet.util.NetworkUtil;
+import meijia.com.meijianet.util.PromptUtil;
+import meijia.com.meijianet.util.SharePreUtil;
+import meijia.com.meijianet.util.ToastUtil;
+import meijia.com.meijianet.vo.intention.IntentionVo;
 import meijia.com.srdlibrary.myutil.StatusBarUtils;
 
-public class MyIntentionActivity extends BaseActivity {
+public class MyIntentionActivity extends BaseActivity implements CollectAdapter.onMyItemClickListener {
 
+    private List<IntentionVo> datas = new ArrayList<>();
     private TextView tvTitle;
-    private TabLayout mTabLayout;
-    private ViewPager mViewPager;
-    private String titles[] = {"全部","已缴纳","未缴纳"};
-    private String types[] = {"-1","1","0"};
-    private IntentionAdapter mAdapter;
-    private List<Fragment> datas = new ArrayList<>();
+    private SwipeToLoadLayout swipeToLoadLayout;
+    private RecyclerView rvList;
+    private RelativeLayout rlEmpty;
+    private CollectAdapter3 mAdapter;
+    private ImageView ivMenu;
+    private LinearLayout linear;
 
     @Override
     protected void setContent() {
+        StatusBarUtils.setStatusBarFontDark(this,true);
+        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
         setContentView(R.layout.activity_my_intention);
-        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.statusColor));
+
     }
 
     @Override
     protected void initView() {
+        linear = (LinearLayout) findViewById(R.id.activity_my_intention);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
         tvTitle.setText("意向房源");
-
+        ivMenu = (ImageView) findViewById(R.id.iv_toolbar_menu);
+        ivMenu.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
         setNavigationFinish(toolbar);
         setNavigationHomeAsUp(true);
+        rlEmpty = (RelativeLayout) findViewById(R.id.rl_ac_chezhu_empty);
+        rvList = (RecyclerView) findViewById(R.id.rv_fm_intention_list);
 
-        mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        mViewPager = (ViewPager) findViewById(R.id.view_pager);
     }
 
     @Override
     protected void initData() {
-        //设置指示器的宽度
-        mTabLayout.post(new Runnable() {
+        linear.post(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Field mTabStripField = mTabLayout.getClass().getDeclaredField("mTabStrip");
-                    mTabStripField.setAccessible(true);
-
-                    LinearLayout mTabStrip = (LinearLayout) mTabStripField.get(mTabLayout);
-
-                    int dp10 = 50;
-
-                    for (int i = 0; i < mTabStrip.getChildCount(); i++) {
-                        View tabView = mTabStrip.getChildAt(i);
-
-                        Field mTextViewField = tabView.getClass().getDeclaredField("mTextView");
-                        mTextViewField.setAccessible(true);
-
-                        TextView mTextView = (TextView) mTextViewField.get(tabView);
-
-                        tabView.setPadding(0, 0, 0, 0);
-
-                        int width = 0;
-                        width = mTextView.getWidth();
-                        if (width == 0) {
-                            mTextView.measure(0, 0);
-                            width = mTextView.getMeasuredWidth();
-                        }
-
-                        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabView.getLayoutParams();
-                        params.width = width;
-                        params.leftMargin = dp10;
-                        params.rightMargin = dp10;
-                        tabView.setLayoutParams(params);
-
-                        tabView.invalidate();
-                    }
-
-                } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
+                linear.setPadding(0, BubbleUtils.getStatusBarHeight(MyIntentionActivity.this), 0, 0);
             }
         });
-        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
-        mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        for (int i = 0; i < titles.length; i++) {
-            IntentionFragment fragment = new IntentionFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("type",types[i]);
-            fragment.setArguments(bundle);
-            datas.add(fragment);
-        }
-        mAdapter = new IntentionAdapter(getSupportFragmentManager(),titles,datas);
-        mViewPager.setAdapter(mAdapter);
-        mTabLayout.setupWithViewPager(mViewPager);
+        rvList.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new CollectAdapter3(this, datas);
+        rvList.setAdapter(mAdapter);
+        getDataByNet();
     }
 
     @Override
     protected void initClick() {
-
+        mAdapter.setOnMyItemClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
 
     }
-
-
-    private void setUpIndicatorWidth(TabLayout tabLayout, int marginLeft, int marginRight) {
-        Class<?> tabLayoutClass = tabLayout.getClass();
-        Field tabStrip = null;
-        try {
-            tabStrip = tabLayoutClass.getDeclaredField("mTabStrip");
-            tabStrip.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+    private void getDataByNet() {
+        //检查网络
+        if (!NetworkUtil.checkNet(this)){
+            ToastUtil.showShortToast(this,"没网啦，请检查网络");
+            return;
         }
+        PromptUtil.showTransparentProgress(this,false);
+        OkHttpUtils.post()
+                .tag(this)
+                .url(BaseURL.BASE_URL + MY_ITENTION)
+                .addParams("type","-1")
+                .build()
+                .execute(new ResultCallBack() {
+                    @Override
+                    public void onSuccess(String body) {
+                        List<IntentionVo> intentionVos = JSON.parseArray(body, IntentionVo.class);
+                        if (intentionVos!=null && intentionVos.size()>0){
+                            datas.clear();
+                            datas.addAll(intentionVos);
+                            mAdapter.notifyDataSetChanged();
+                            rlEmpty.setVisibility(View.GONE);
+                        }else {
+                            rlEmpty.setVisibility(View.VISIBLE);
+                        }
 
-        LinearLayout layout = null;
-        try {
-            if (tabStrip != null) {
-                layout = (LinearLayout) tabStrip.get(tabLayout);
-            }
-            for (int i = 0; i < layout.getChildCount(); i++) {
-                View child = layout.getChildAt(i);
-                child.setPadding(0, 0, 0, 0);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    params.setMarginStart(DisplayUtil.dip2px(MyIntentionActivity.this, marginLeft));
-                    params.setMarginEnd(DisplayUtil.dip2px(MyIntentionActivity.this, marginRight));
-                }
-                child.setLayoutParams(params);
-                child.invalidate();
-            }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+                    }
+
+                    @Override
+                    public void onFail(int returnCode, String returnTip) {
+
+                        PromptUtil.closeTransparentDialog();
+                    }
+
+                    @Override
+                    public void onAfter(int id) {
+                        PromptUtil.closeTransparentDialog();
+                    }
+                });
+
+
     }
 
+    @Override
+    public void onItemClick(int positon) {
+        Intent intent = new Intent(MyIntentionActivity.this,WebViewActivity.class);
+        LoginVo userInfo = SharePreUtil.getUserInfo(MyIntentionActivity.this);
+        intent.putExtra("istatle", "房屋详情");
+        if (!userInfo.getUuid().equals("")){
+            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(positon).getHouse().getId()+"&uuid="+userInfo.getUuid());
+        }else {
+            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(positon).getHouse().getId()+"&uuid="+"");
+        }
+        startActivity(intent);
 
+    }
 }

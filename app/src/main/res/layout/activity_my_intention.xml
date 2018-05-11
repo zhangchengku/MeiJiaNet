@@ -10,26 +10,53 @@
     android:background="@color/bg_color"
     tools:context="meijia.com.meijianet.ui.MyIntentionActivity">
 
-    <include layout="@layout/comment_defout_toolbar"/>
+    <include
+        layout="@layout/comment_toolbar_menu"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/hint_color"/>
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_layout"
-        android:background="@color/white"
-        app:tabIndicatorColor="@color/zhu_color"
-        app:tabIndicatorHeight="1dp"
-        app:tabSelectedTextColor="@color/zhu_color"
-        app:tabTextColor="@color/hint_color"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/color_white">
+
+            <RelativeLayout
+                android:id="@+id/rl_ac_chezhu_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_white"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_empty"
+                    android:layout_above="@+id/tv"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pic_notfound"/>
+
+                <TextView
+                    android:id="@+id/tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_horizontal"
+                    android:textColor="#4d4d4d"
+                    android:textSize="14sp"/>
+            </RelativeLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_fm_intention_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+

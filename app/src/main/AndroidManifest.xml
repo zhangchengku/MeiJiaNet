@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
 
     <application
@@ -48,9 +49,8 @@
             android:windowSoftInputMode="stateHidden|adjustResize">
 
             <intent-filter>
-                <data android:scheme="tencent1106746323" />
+                <data android:scheme="tencent1106801515" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -74,13 +74,16 @@
             android:name=".ui.ContentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".ui.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".ui.WelcomeGuideActivity"></activity>
         <!-- 微信分享回调 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
@@ -104,7 +107,7 @@
         <activity android:name=".ui.YouxiangActivity" />
         <activity android:name=".ui.UpdatePswActivity" />
         <activity android:name=".ui.MyStatusActivity"></activity>
-        <activity android:name=".ui.ProcessActivity"></activity>
+        <activity android:name=".ui.AdvertisementWe"></activity>
         <activity android:name=".ui.SellerNoticeActivity"></activity>
         <activity android:name=".ui.PostHouseActivity"></activity>
         <activity android:name=".ui.KnockdownActivity"></activity>
@@ -115,15 +118,94 @@
         <activity android:name=".ui.MyCollectActivity"></activity>
         <activity android:name=".ui.MyBrowseActivity"></activity>
         <activity android:name=".ui.PayActivity"></activity>
-        <activity android:name=".ui.StandardActivity"></activity>
+
         <activity android:name=".ui.ProveActivity"></activity>
-        <activity android:name=".ui.LawyerActivity"></activity>
         <activity android:name=".ui.LoansActivity"></activity>
         <activity android:name=".ui.TaxrateActivity"></activity>
         <activity android:name=".ui.RefundActivity"></activity>
         <activity android:name=".ui.TransactionRecordActivity"></activity>
         <activity android:name=".ui.BindingWQActivity"></activity>
         <activity android:name=".ui.QuedingWQActivity"></activity>
+        <activity android:name=".ui.WebViewActivity"></activity>
+
+        <!--聊天界面-->
+        <activity
+            android:name="com.meiqia.meiqiasdk.activity.MQConversationActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MQTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <!--图片查看界面-->
+        <activity
+            android:name="com.meiqia.meiqiasdk.activity.MQPhotoPreviewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MQTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <!--图片选择界面-->
+        <activity
+            android:name="com.meiqia.meiqiasdk.activity.MQPhotoPickerActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MQTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <!--图片选择预览界面-->
+        <activity
+            android:name="com.meiqia.meiqiasdk.activity.MQPhotoPickerPreviewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MQTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <!--WebView 界面-->
+        <activity
+            android:name="com.meiqia.meiqiasdk.activity.MQWebViewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MQTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <!--询前表单-->
+        <activity
+            android:name="com.meiqia.meiqiasdk.activity.MQInquiryFormActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MQTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.meiqia.meiqiasdk.activity.MQCollectInfoActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MQTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <service android:name="com.meiqia.core.MeiQiaService" />
+        <!--微信支付-->
+        <activity
+            android:name="meijia.com.meijianet.wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <!--支付宝支付-->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" />
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" />
 
     </application>
 

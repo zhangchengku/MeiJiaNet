@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">美家网</string>
+    <string name="app_name">美家看房</string>
     <!--搜索详情提示-->
     <string name="st_searchdetail_tip">很抱歉！暂无\'%1$s\'二手房信息</string>
 

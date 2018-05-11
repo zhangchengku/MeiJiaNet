@@ -7,7 +7,7 @@ package meijia.com.meijianet.api;
 public interface URL {
     String NEW_HOUSE = "/api/house/getNewHouse";
     String SEARCH_HOUSE = "/api/house/searchHouse";
-    String TRANSACTIONRECORD = "/api/house/searchRecentlySell";
+    String TRANSACTIONRECORD = "/api/house/searchRecentlySell";//最近成交的房源
     String MY_ENTRUST ="/api/member/myConsignation";//我的委托
     String MY_ITENTION = "/api/member/myItention";//意向房源
     String LOGIN = "/api/member/memberLogin";
@@ -39,6 +39,6 @@ public interface URL {
     String AUTO_LOGIN = "/api/member/autoLoginByUuid";
     String CANCLE_ORDER = "/api/cancel/order";
     String TUI_KUAN = "/api/order/apprefund";
-
-
+    String VERSION_CODE = "/version/version.json";
+    String EXCLUSIVE_TWO = "/api/member/getEmployee";
 }

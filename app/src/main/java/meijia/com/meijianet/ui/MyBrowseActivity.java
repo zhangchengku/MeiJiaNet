@@ -23,6 +23,7 @@ import java.util.Map;
 
 import meijia.com.meijianet.R;
 import meijia.com.meijianet.activity.CollectAdapter;
+import meijia.com.meijianet.bean.LoginVo;
 import meijia.com.meijianet.bean.MyBrowseVo;
 import meijia.com.meijianet.activity.MyCollectInfo;
 import meijia.com.meijianet.util.BubbleUtils;
@@ -32,6 +33,7 @@ import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseActivity;
 import meijia.com.meijianet.base.BaseURL;
 import meijia.com.meijianet.util.PromptUtil;
+import meijia.com.meijianet.util.SharePreUtil;
 import meijia.com.meijianet.util.StringUtil;
 import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.srdlibrary.myutil.StatusBarUtils;
@@ -282,8 +284,14 @@ public class MyBrowseActivity extends BaseActivity implements OnRefreshListener,
 
     @Override
     public void onItemClick(int positon) {
-        Intent intent = new Intent(MyBrowseActivity.this,HouseDetailActivity.class);
-        intent.putExtra("id",datas.get(positon).getId());
+        Intent intent = new Intent(MyBrowseActivity.this,WebViewActivity.class);
+        LoginVo userInfo = SharePreUtil.getUserInfo(MyBrowseActivity.this);
+        intent.putExtra("istatle", "房屋详情");
+        if (!userInfo.getUuid().equals("")){
+            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(positon).getId()+"&uuid="+userInfo.getUuid());
+        }else {
+            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(positon).getId()+"&uuid="+"");
+        }
         startActivity(intent);
     }
 }

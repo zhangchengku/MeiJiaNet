@@ -10,6 +10,7 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,7 +26,7 @@ import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseActivity;
 import meijia.com.meijianet.base.BaseURL;
 import meijia.com.meijianet.util.BubbleUtils;
-import meijia.com.meijianet.util.PromptUtil;
+
 import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.meijianet.util.ToolUtil;
 import meijia.com.srdlibrary.myutil.StatusBarUtils;
@@ -39,6 +40,8 @@ public class RigestActivity extends BaseActivity {
     private EditText etPsw;
     private TextView tvSure;
     private TextView tvSend;
+    private TextView yonghuxiey;
+
     @Override
     protected void setContent() {
         setContentView(R.layout.activity_rigest);
@@ -55,6 +58,8 @@ public class RigestActivity extends BaseActivity {
         etPsw = (EditText) findViewById(R.id.et_ac_regist_psw);
         tvSure = (TextView) findViewById(R.id.tv_ac_rigest_login);
         tvSend = (TextView) findViewById(R.id.tv_ac_rigest_send);
+        yonghuxiey = (TextView) findViewById(R.id.yonghuxiey);
+
     }
 
     @Override
@@ -70,6 +75,7 @@ public class RigestActivity extends BaseActivity {
 
     @Override
     protected void initClick() {
+        yonghuxiey.setOnClickListener(this);
         ivFinish.setOnClickListener(this);
         tvSure.setOnClickListener(this);
         tvSend.setOnClickListener(this);
@@ -80,6 +86,13 @@ public class RigestActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.iv_ac_regist_finish:
                 finish();
+                break;
+            case R.id.yonghuxiey:
+                Intent intent5 = new Intent(RigestActivity.this,WebViewActivity.class);
+                intent5.putExtra("istatle", "隐私声明");
+                intent5.putExtra("url", BaseURL.BASE_URL+"/business/notice");
+                Log.d("asdfasdfasdf", "onClick: "+BaseURL.BASE_URL+"/business/notice");
+                startActivity(intent5);
                 break;
             case R.id.tv_ac_rigest_send:
                 String phone1 = etPhone.getText().toString().trim();
@@ -92,6 +105,7 @@ public class RigestActivity extends BaseActivity {
                     return;
                 }
                 getSmsCode(phone1);
+                tvSend.setEnabled(false);
                 timer.start();
                 break;
             case R.id.tv_ac_rigest_login:
@@ -112,6 +126,7 @@ public class RigestActivity extends BaseActivity {
                 break;
         }
     }
+    //
     CountDownTimer timer = new CountDownTimer(60 * 1000, 1000) {
         @Override
         public void onTick(long millisUntilFinished) {
@@ -131,7 +146,6 @@ public class RigestActivity extends BaseActivity {
             ToastUtil.showShortToast(this,"没网啦，请检查网络");
             return;
         }
-        PromptUtil.showTransparentProgress(this,false);
         RequestParams params = new RequestParams(this);
         params.add("phone",phone);
         params.add("codetype","0");
@@ -149,12 +163,12 @@ public class RigestActivity extends BaseActivity {
                     @Override
                     public void onFail(int returnCode, String returnTip) {
                         ToastUtil.showShortToast(RigestActivity.this,returnTip);
-                        PromptUtil.closeTransparentDialog();
+
                     }
 
                     @Override
                     public void onAfter(int id) {
-                        PromptUtil.closeTransparentDialog();
+
                     }
                 });
     }
@@ -165,7 +179,7 @@ public class RigestActivity extends BaseActivity {
             ToastUtil.showShortToast(this,"没网啦，请检查网络");
             return;
         }
-        PromptUtil.showTransparentProgress(this,false);
+
         RequestParams params = new RequestParams(this);
         params.add("phone",phone);
         params.add("password",psw);
@@ -191,12 +205,12 @@ public class RigestActivity extends BaseActivity {
                     @Override
                     public void onFail(int returnCode, String returnTip) {
                         ToastUtil.showShortToast(RigestActivity.this,returnTip);
-                        PromptUtil.closeTransparentDialog();
+
                     }
 
                     @Override
                     public void onAfter(int id) {
-                        PromptUtil.closeTransparentDialog();
+
                     }
                 });
     }

@@ -29,7 +29,7 @@ import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseURL;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.util.ToastUtil;
-
+import static meijia.com.meijianet.api.URL.DELETE_COLLECT;
 /**
  * ----------------------------------------------------------
  * Copyright ©
@@ -40,7 +40,6 @@ import meijia.com.meijianet.util.ToastUtil;
  */
 public class CollectAdapter2 extends CommonRecyclerAdapter<MyCollectInfo> {
     private boolean isCheck ;
-    String DELETE_COLLECT = "/api/collect/deleteCollect";
     private Map<Integer,Boolean> map = new HashMap<>();
     private meijia.com.meijianet.activity.CollectAdapter.onMyItemClickListener mListener;
 

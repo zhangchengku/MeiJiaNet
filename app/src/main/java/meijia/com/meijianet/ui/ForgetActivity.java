@@ -92,6 +92,7 @@ public class ForgetActivity extends BaseActivity implements TextView.OnEditorAct
                         return;
                     }
                     getSmsCode(phone1);
+                    tvCode.setEnabled(false);
                     timer.start();
                     break;
                 case R.id.iv_ac_regist_finish:

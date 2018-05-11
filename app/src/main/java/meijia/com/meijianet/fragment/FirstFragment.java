@@ -21,23 +21,22 @@ import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.donkingliang.banner.CustomBanner;
+import com.meiqia.meiqiasdk.util.MQIntentBuilder;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import fm.jiecao.jcvideoplayer_lib.JCMediaManager;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import meijia.com.meijianet.R;
 import meijia.com.meijianet.bean.BannerVo;
-import meijia.com.meijianet.ui.ContentActivity;
-import meijia.com.meijianet.ui.HouseDetailActivity;
+import meijia.com.meijianet.bean.LoginVo;
 import meijia.com.meijianet.activity.MyScollerLinearlayoutManager;
-import meijia.com.meijianet.ui.LoginActivity;
-import meijia.com.meijianet.ui.ProcessActivity;
-import meijia.com.meijianet.ui.RefundActivity;
-import meijia.com.meijianet.ui.StandardActivity;
-import meijia.com.meijianet.util.BubbleUtils;
+import meijia.com.meijianet.ui.TransactionRecordActivity;
+import meijia.com.meijianet.ui.WebViewActivity;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.activity.NewHouseInfo;
 import meijia.com.meijianet.activity.SearchMoreAdapter;
@@ -46,14 +45,10 @@ import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseFragment;
 import meijia.com.meijianet.base.BaseURL;
 import meijia.com.meijianet.ui.PostHouseActivity;
-import meijia.com.meijianet.ui.SearchActivity;
 import meijia.com.meijianet.ui.SearchMoreActivity;
-import meijia.com.meijianet.ui.SellerNoticeActivity;
 import meijia.com.meijianet.util.PromptUtil;
 import meijia.com.meijianet.util.SharePreUtil;
 import meijia.com.meijianet.util.ToastUtil;
-import meijia.com.srdlibrary.myutil.StatusBarUtils;
-
 /**
  * ----------------------------------------------------------
  * Copyright ©
@@ -64,8 +59,8 @@ import meijia.com.srdlibrary.myutil.StatusBarUtils;
  */
 public class FirstFragment extends BaseFragment implements OnItemClickListener {
     private LinearLayout llParent;
-    private TextView tvAddress;
-    private TextView tvSearch;
+
+
     private TextView tvMore;
 
     private CustomBanner ivBanner;
@@ -79,7 +74,7 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
     private SearchMoreAdapter mAdapter;
     private MyScollerLinearlayoutManager mManager;
     private JCVideoPlayerStandard mJc;
-    private String videoUrl = "https://mjkf.oss-cn-beijing.aliyuncs.com/mjw-video/index.mp4" ;
+//    private String videoUrl = "https://mjkf.oss-cn-beijing.aliyuncs.com/mjw-video/index.mp4" ;
     private List<BannerVo> newHouseInfos;
     private ImageView fistfragmentdkjsq;
     private ImageView fistfragmentjylc;
@@ -97,6 +92,9 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
     private ImageView fistfragmentesf;
     private ImageView fistfragmentmf;
     private ImageView fistfragmentkf;
+    private ImageView fistfragmentzjcj;
+    private VideoVo videoVos;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -110,8 +108,6 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
         rvList = (RecyclerView) view.findViewById(R.id.rv_list);
         llParent = (LinearLayout) view.findViewById(R.id.ll_parent);
         tvMore = (TextView) view.findViewById(R.id.tv_fm_first_more);
-        tvAddress = (TextView) view.findViewById(R.id.tv_address);
-        tvSearch = (TextView) view.findViewById(R.id.tv_fm_first_search);
         ivBanner = (CustomBanner) view.findViewById(R.id.iv_fm_banner);
         fistfragmentdkjsq = (ImageView) view.findViewById(R.id.fist_fragment_dkjsq);
         fistfragmentjylc = (ImageView) view.findViewById(R.id.fist_fragment_jylc);
@@ -119,27 +115,17 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
         fistfragmentesf = (ImageView) view.findViewById(R.id.fist_fragment_esf);
         fistfragmentmf = (ImageView) view.findViewById(R.id.fist_fragment_mf);
         fistfragmentkf = (ImageView) view.findViewById(R.id.fist_fragment_kf);
+        fistfragmentzjcj = (ImageView) view.findViewById(R.id.fist_fragment_zjcj);
+
         mJc = (JCVideoPlayerStandard) view.findViewById(R.id.videoplayer);
         mJc.backButton.setVisibility(View.GONE);
         mJc.thumbImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        mJc.setUp("https://mjkf.oss-cn-beijing.aliyuncs.com/mjw-video/index.mp4",JCVideoPlayer.SCREEN_LAYOUT_NORMAL,"");
-        Glide.with(getActivity())
-                .load(R.drawable.img_video)
-                .into(mJc.thumbImageView);
-
+//        mJc.setUp("https://mjkf.oss-cn-beijing.aliyuncs.com/mjw-video/index.mp4",JCVideoPlayer.SCREEN_LAYOUT_NORMAL,"");
 
     }
     private int mHeight;
     @Override
     protected void initData() {
-        tvAddress.post(new Runnable() {
-            @Override
-            public void run() {
-                mHeight = tvAddress.getHeight();
-                mWidth = tvAddress.getWidth();
-            }
-        });
-
         mAdapter = new SearchMoreAdapter(getActivity(),datas);
         mManager = new MyScollerLinearlayoutManager(getActivity());
         mManager.setVerticalScrollFlag(false);
@@ -202,6 +188,15 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
             //设置轮播图的滚动速度
             ivBanner.setScrollDuration(300);
         }
+        ivBanner.setOnPageClickListener(new CustomBanner.OnPageClickListener<BannerVo>() {
+            @Override
+            public void onPageClick(int position, BannerVo str) {
+                Intent intent = new Intent(getActivity(),WebViewActivity.class);
+                intent.putExtra("istatle", "百度");
+                intent.putExtra("url",str.getAddress());
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -213,26 +208,22 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
         fistfragmentdkjsq.setOnClickListener(this);
         fistfragmentjylc.setOnClickListener(this);
         fistfragmentsfbz.setOnClickListener(this);
-        tvSearch.setOnClickListener(this);
+        fistfragmentzjcj.setOnClickListener(this);
         tvMore.setOnClickListener(this);
 
 //        ivSell.setOnClickListener(this);
-        tvAddress.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View v) {
         if (v != null) {
             switch (v.getId()) {
-                case R.id.tv_fm_first_search:
-                    startActivity(new Intent(getActivity(), SearchActivity.class));
-                    break;
+
                 case R.id.tv_fm_first_more:
                     startActivity(new Intent(getActivity(), SearchMoreActivity.class));
                     break;
-                case R.id.tv_address:
-                    showPop(tvAddress,mWidth,mHeight);
-                    break;
+
 //                case R.id.iv_sell:
 //                    if (!SharePreUtil.isFisrtSell(getActivity())){
 //                        SharePreUtil.setFirstSell(getActivity(),true);
@@ -242,22 +233,42 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
 //                    }
 //                    break;
                 case R.id.fist_fragment_dkjsq:
-                    startActivity(new Intent(getActivity(), RefundActivity.class));
+                    Intent intent3 = new Intent(getActivity(),WebViewActivity.class);
+                    intent3.putExtra("istatle", "贷款计算器");
+                    intent3.putExtra("url",BaseURL.BASE_URL+"/api/loanCalculator");
+                    startActivity(intent3);
+
                     break;
                 case R.id.fist_fragment_jylc:
-                    startActivity(new Intent(getActivity(), ProcessActivity.class));
+                    Intent intent1 = new Intent(getActivity(),WebViewActivity.class);
+                    intent1.putExtra("istatle", "交易流程");
+                    intent1.putExtra("url",BaseURL.BASE_URL+"/api/house/process");
+                    startActivity(intent1);
                     break;
                 case R.id.fist_fragment_sfbz:
-                    startActivity(new Intent(getActivity(), StandardActivity.class));
+                    Intent intent2 = new Intent(getActivity(),WebViewActivity.class);
+                    intent2.putExtra("istatle", "收费标准");
+                    intent2.putExtra("url",BaseURL.BASE_URL+"/api/house/standard");
+                    startActivity(intent2);
                     break;
                 case R.id.fist_fragment_esf:
                     startActivity(new Intent(getActivity(), SearchMoreActivity.class));
                     break;
                 case R.id.fist_fragment_mf:
+                    if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
+                        ToastUtil.showShortToast(getActivity(),"您还没有登录");
+                        return;
+                    }
                     startActivity(new Intent(getActivity(),PostHouseActivity.class));
                     break;
                 case R.id.fist_fragment_kf:
-                    ToastUtil.showShortToast(getActivity(),"跳转到客服界面");
+                    Intent intent = new MQIntentBuilder(getActivity())
+                            .setCustomizedId("2676923017@qq.com") // 相同的 id 会被识别为同一个顾客
+                            .build();
+                    startActivity(intent);
+                    break;
+                case R.id.fist_fragment_zjcj:
+                    startActivity(new Intent(getActivity(), TransactionRecordActivity.class));
                     break;
 
                 default:
@@ -265,46 +276,21 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
             }
         }
     }
-
-    private void showPop(TextView tvAddress,int width,int height) {
-
-        TextView view = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.popup_layout, null);
-        mPopupWindow = new PopupWindow(view,
-                width, height, true);
-        mPopupWindow.setTouchable(true);
-
-        // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
-        // 我觉得这里是API的一个bug
-        mPopupWindow.setBackgroundDrawable(getResources().getDrawable(
-                R.drawable.pop_bg));
-        // 设置好参数之后再show
-        mPopupWindow.showAsDropDown(tvAddress);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvAddress.setText(view.getText().toString().trim());
-                if (mPopupWindow!=null){
-                    mPopupWindow.dismiss();
-                }
-            }
-        });
-
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                tvAddress.setCompoundDrawablesWithIntrinsicBounds(null,null,
-                        getResources().getDrawable(R.mipmap.home_icon_more_normal),null);
-            }
-        });
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {
+            //相当于Fragment的onPause()
+            JCVideoPlayer.releaseAllVideos();
+        } else {
 
 
-        if (mPopupWindow!=null){
-            if (mPopupWindow.isShowing()){
-                tvAddress.setCompoundDrawablesWithIntrinsicBounds(null,null,
-                        getResources().getDrawable(R.mipmap.home_icon_more_pressed),null);
-            }
+
+
         }
     }
+
+
+
 
     @Override
     public void onPause() {
@@ -322,16 +308,25 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
                     @Override
                     public void onSuccess(String body) {
                         Log.e("000", "onSuccess: "+body );
-                        videoUrl = body;
-
-                        mJc.setUp(body,JCVideoPlayer.SCREEN_LAYOUT_NORMAL,"");
+                         videoVos = JSON.parseObject(body, VideoVo.class);
+                            if(videoVos.getUrl()!=null){
+                                mJc.setUp(videoVos.getUrl(),JCVideoPlayer.SCREEN_LAYOUT_NORMAL,"");
+                            }
+                        if(videoVos.getPic()!=null){
+                            Glide.with(getActivity())
+                                    .load(videoVos.getPic())
+                                    .into(mJc.thumbImageView);
+                        }else {
+                            Glide.with(getActivity())
+                                    .load(R.drawable.img_video)
+                                    .into(mJc.thumbImageView);
+                        }
 
                     }
-
                     @Override
                     public void onFail(int returnCode, String returnTip) {
                         ToastUtil.showShortToast(getActivity(),returnTip);
-                        mJc.setUp(videoUrl,JCVideoPlayer.SCREEN_LAYOUT_NORMAL,"");
+
                     }
 
                     @Override
@@ -385,8 +380,14 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(getActivity(),HouseDetailActivity.class);
-        intent.putExtra("id",datas.get(position).getId());
+        Intent intent = new Intent(getActivity(),WebViewActivity.class);
+        LoginVo userInfo = SharePreUtil.getUserInfo(getActivity());
+        intent.putExtra("istatle", "房屋详情");
+        if (!userInfo.getUuid().equals("")){
+            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(position).getId()+"&uuid="+userInfo.getUuid());
+        }else {
+            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(position).getId()+"&uuid="+"");
+        }
         startActivity(intent);
     }
 }

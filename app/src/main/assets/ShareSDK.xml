@@ -104,8 +104,8 @@
     <WechatMoments
         Id="5"
         SortId="5"
-        AppId="wx77fa35bb9adaed43"
-        AppSecret="31a74a452ca545e56945d9942f4fca48"
+        AppId="wx8c19cdf052d03742"
+        AppSecret="fe12efbabf170e1e5448ff200c21a5a4"
         BypassApproval="false"
         Enable="true" />
 
@@ -120,8 +120,8 @@
 	<QQ
         Id="7"
         SortId="7"
-        AppId="1106746323"
-        AppKey="5OvEBYBJxtbp3Jka"
+        AppId="1106801515"
+        AppKey="EkOVDpgQhLL5KT7M"
         ShareByAppClient="true"
         Enable="true" />
 

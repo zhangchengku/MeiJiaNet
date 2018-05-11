@@ -8,11 +8,13 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import meijia.com.meijianet.R;
+import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.util.PromptUtil;
 import meijia.com.meijianet.activity.RequestParams;
@@ -34,15 +36,19 @@ public class UpdatePswActivity extends BaseActivity implements TextView.OnEditor
     private EditText etNewPswSure;
     private ImageView ivNewPswSure;
     private TextView tvComplete;
+    private LinearLayout llParent;
 
     @Override
     protected void setContent() {
+        StatusBarUtils.setStatusBarFontDark(this,true);
+        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
         setContentView(R.layout.activity_update_psw);
-        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.statusColor));
+
     }
 
     @Override
     protected void initView() {
+        llParent = (LinearLayout) findViewById(R.id.activity_update_name);
         tvComplete = (TextView) findViewById(R.id.tv_ac_name_complete);
         etName = (EditText) findViewById(R.id.et_ac_name);
         ivDelete = (ImageView) findViewById(R.id.iv_ac_name_delete);
@@ -62,6 +68,12 @@ public class UpdatePswActivity extends BaseActivity implements TextView.OnEditor
 
     @Override
     protected void initData() {
+        llParent.post(new Runnable() {
+            @Override
+            public void run() {
+                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(UpdatePswActivity.this), 0, 0);
+            }
+        });
         ToolUtil.setInputListener(etName,ivDelete);
         ToolUtil.setInputListener(etNewPsw,ivNewPsw);
         ToolUtil.setInputListener(etNewPswSure,ivNewPswSure);

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content" />
     <TextView
         android:layout_marginTop="2dp"
-        android:text="刷新走起..."
+        android:text="加载中..."
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         android:textColor="#666666"

@@ -58,12 +58,15 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
             <TextView
+                android:background="@drawable/bg_bjzil"
                 android:id="@+id/iv_fm_my_set"
                 android:layout_marginRight="19dp"
-                android:layout_marginTop="9dp"
+                android:gravity="center"
+                android:textColor="#AABBC9"
                 android:text="编辑资料"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="12sp"
+                android:layout_width="67dp"
+                android:layout_height="21dp" />
         </LinearLayout>
         <View
             android:layout_marginTop="29dp"
@@ -247,8 +250,6 @@
                     android:layout_height="match_parent"
                     android:background="#F5F5F5"/>
                 <TextView
-                    android:id="@+id/fenxiang"
-                    android:text="分享"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

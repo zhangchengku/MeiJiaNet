@@ -46,7 +46,7 @@ import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseActivity;
 import meijia.com.meijianet.base.BaseURL;
 import meijia.com.meijianet.util.BubbleUtils;
-import meijia.com.meijianet.util.PromptUtil;
+
 import meijia.com.meijianet.util.SharePreUtil;
 import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.meijianet.util.ToolUtil;
@@ -85,7 +85,6 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
         setContentView(R.layout.activity_login);
         StatusBarUtils.setActivityTranslucent(this);
     }
-
     @Override
     protected void initView() {
         llContent = (LinearLayout) findViewById(R.id.activity_login);
@@ -150,6 +149,8 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
                     startActivityForResult(rigestIntent,100);
                     break;
                 case R.id.iv_ac_login_qq:
+                    //QQ登录配置
+
                     Platform qq = ShareSDK.getPlatform(QQ.NAME);
                     qq.setPlatformActionListener(this);
                     qq.SSOSetting(false);
@@ -211,7 +212,6 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
     }
     @Override
     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-        Log.d("asdfasdfasdfsd", "handleMessage:授权成功 ");
         Message msg = new Message();
         msg.what = MSG_ACTION_CCALLBACK;
         msg.arg1 = 1;
@@ -223,13 +223,11 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
 
     @Override
     public void onError(Platform platform, int i, Throwable throwable) {
-        Log.d("asdfasdfasdfsd", "handleMessage:失败 "+throwable.getMessage().toString());
         progressDialog.dismiss();
     }
 
     @Override
     public void onCancel(Platform platform, int i) {
-        Log.d("asdfasdfasdfsd", "handleMessage:取消 ");
         progressDialog.dismiss();
     }
     @Override
@@ -262,7 +260,7 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
             ToastUtil.showShortToast(this,"没网啦，请检查网络");
             return;
         }
-        PromptUtil.showTransparentProgress(this,false);
+
         RequestParams params = new RequestParams(this);
         params.add(three,UserId);
         OkHttpUtils.post()
@@ -271,19 +269,22 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
                 .params(params.getMap())
                 .build()
                 .execute(new Callback() {
-
                     @Override
                     public Object parseNetworkResponse(Response response, int id) throws Exception {
                         String result = response.body().string();
                        BaseVO baseVO = JSON.parseObject(result, BaseVO.class);
                         if (baseVO.getCode().equals("success") ) {
-                            Log.d("buggggggg", "parseNetworkResponse: 登陆成功");
+                            ToastUtil.showShortToast(LoginActivity.this,"登录成功");
+                            LoginVo vo = JSON.parseObject(baseVO.getData(), LoginVo.class);
+                            SharePreUtil.setUserInfo(LoginActivity.this,vo);
+                            EventBus.getDefault().post("login");
+                            finish();
                         }else {
-                            Log.d("buggggggg", "parseNetworkResponse: 跳转到三方登陆成功");
                             Intent intent=new Intent(LoginActivity.this,BindingWQActivity.class);
                             intent.putExtra("style",String.valueOf(style));
                             intent.putExtra("UserId",UserId);
                             startActivity(intent);
+                            finish();
                         }
                         return result;
                     }
@@ -301,14 +302,13 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
     }
 
     private void login(String phone, String psw) {
-        Log.e("asdfasdfa", "onSuccess: body =登陆成功 " );
         //检查网络
         if (!NetworkUtil.checkNet(this)){
             ToastUtil.showShortToast(this,"没网啦，请检查网络");
             return;
         }
 
-        PromptUtil.showTransparentProgress(this,false);
+
         RequestParams params = new RequestParams(this);
         params.add("phone",phone);
         params.add("password",psw);
@@ -320,7 +320,6 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
                 .execute(new ResultCallBack() {
                     @Override
                     public void onSuccess(String body) {
-                        Log.e("asdfasdfa", "onSuccess: body =登陆成功 " );
                         ToastUtil.showShortToast(LoginActivity.this,"登录成功");
                         LoginVo vo = JSON.parseObject(body, LoginVo.class);
                         SharePreUtil.setUserInfo(LoginActivity.this,vo);
@@ -330,15 +329,13 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
 
                     @Override
                     public void onFail(int returnCode, String returnTip) {
-                        Log.e("asdfasdfa", "onSuccess: body =登陆成 " );
                         ToastUtil.showShortToast(LoginActivity.this,returnTip);
-                        PromptUtil.closeTransparentDialog();
+
                     }
 
                     @Override
                     public void onAfter(int id) {
-                        Log.e("asdfasdfa", "onSuccess: body =登陆 "+id );
-                        PromptUtil.closeTransparentDialog();
+
                     }
                 });
     }
@@ -380,74 +377,5 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
         }
         return false;
     }
-
-    private void checkPhone(String phone, String code, String psw, String openid, String name, String imageUrl) {
-        //检查网络
-        if (!NetworkUtil.checkNet(this)){
-            ToastUtil.showShortToast(this,"没网啦，请检查网络");
-            return;
-        }
-        PromptUtil.showTransparentProgress(this,false);
-        RequestParams params = new RequestParams(this);
-        params.add("phone",phone);
-        params.add("smscode",code);
-        OkHttpUtils.post()
-                .tag(this)
-                .url(BaseURL.BASE_URL + CHECK_PHONE)
-                .params(params.getMap())
-                .build()
-                .execute(new ResultCallBack() {
-                    @Override
-                    public void onSuccess(String body) {//已注册
-                    }
-
-                    @Override
-                    public void onFail(int returnCode, String returnTip) {
-
-                    }
-
-                    @Override
-                    public void onAfter(int id) {
-
-                    }
-                });
-    }
-
-
-    private void getSmsCode(String phone) {
-        //检查网络
-        if (!NetworkUtil.checkNet(this)){
-            ToastUtil.showShortToast(this,"没网啦，请检查网络");
-            return;
-        }
-        PromptUtil.showTransparentProgress(this,false);
-        RequestParams params = new RequestParams(this);
-        params.add("phone",phone);
-        params.add("codetype","1");
-        OkHttpUtils.post()
-                .tag(this)
-                .url(BaseURL.BASE_URL + CODE)
-                .params(params.getMap())
-                .build()
-                .execute(new ResultCallBack() {
-                    @Override
-                    public void onSuccess(String body) {
-                        ToastUtil.showShortToast(LoginActivity.this,"验证码发送成功");
-                    }
-
-                    @Override
-                    public void onFail(int returnCode, String returnTip) {
-                        ToastUtil.showShortToast(LoginActivity.this,returnTip);
-                        PromptUtil.closeTransparentDialog();
-                    }
-
-                    @Override
-                    public void onAfter(int id) {
-                        PromptUtil.closeTransparentDialog();
-                    }
-                });
-    }
-
-
 
 }

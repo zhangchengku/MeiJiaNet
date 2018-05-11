@@ -28,6 +28,7 @@
     </RelativeLayout>
 
     <EditText
+        android:maxLength="11"
         android:id="@+id/et_ac_regist_phone"
         style="@style/et_style"
         android:inputType="number"
@@ -74,6 +75,7 @@
             android:layout_height="wrap_content"/>
     </RelativeLayout>
     <EditText
+        android:password="true"
         android:id="@+id/et_ac_regist_psw"
         style="@style/et_style"
         android:hint="请输入6-12位数字或字母"
@@ -87,6 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <EditText
+        android:password="true"
         android:id="@+id/et_ac_regist_psws"
         style="@style/et_style"
         android:hint="请确认密码"
@@ -127,6 +130,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/yonghuxiey"
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:text="《网络服务条款》"

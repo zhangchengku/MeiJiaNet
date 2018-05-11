@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"/>
 
     <EditText
+        android:maxLength="11"
         android:id="@+id/et_ac_login_phone"
         style="@style/et_style"
         android:imeOptions="actionNext"
@@ -57,6 +58,7 @@
         android:id="@+id/et_ac_login_psw"
         style="@style/et_style"
         android:hint="请输入密码"
+        android:password="true"
         android:imeOptions="actionDone"
         android:singleLine="true"
         android:textSize="12sp"

@@ -3,13 +3,28 @@ package meijia.com.meijianet.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.meiqia.core.MQManager;
+import com.meiqia.meiqiasdk.util.MQIntentBuilder;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 
 import meijia.com.meijianet.R;
 import meijia.com.meijianet.base.BaseFragment;
+import meijia.com.meijianet.ui.WebViewActivity;
+import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.ToolUtil;
 
 /**
@@ -17,17 +32,11 @@ import meijia.com.meijianet.util.ToolUtil;
  */
 
 public class HouserFragment extends BaseFragment {
-    private TextView tvOne;
-    private TextView tvTwo;
-    private TextView tvThree;
-    private TextView tvFour;
-    private TextView tvFive;
 
-    private String appStart = "mqqwpa://im/chat?chat_type=wpa&uin=";
-    private String appEnd = "&version=1&src_type=web&web_src=oicqzone.com";
-    private String webStart = "http://wpa.qq.com/msgrd?v=3&uin=";
-    private String webEnd = "&site=qq&menu=yes";
-    private String middle = "";
+
+    private LinearLayout kefu;
+    private LinearLayout llParent;
+    private TextView riq;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,62 +47,50 @@ public class HouserFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        tvOne = (TextView) view.findViewById(R.id.tv_ac_tack_one);
-        tvTwo = (TextView) view.findViewById(R.id.tv_ac_tack_two);
-        tvThree = (TextView) view.findViewById(R.id.tv_ac_tack_three);
-        tvFour = (TextView) view.findViewById(R.id.tv_ac_tack_four);
-        tvFive = (TextView) view.findViewById(R.id.tv_ac_tack_five);
+        llParent=(LinearLayout)view.findViewById(R.id.activity_talk_list);
+        kefu = (LinearLayout) view.findViewById(R.id.kefu);
+        riq = (TextView)view.findViewById(R.id.riq);
+        Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
+        t.setToNow(); // 取得系统时间。
+//        int year = t.year;
+//        int month = t.month;
+//        int date = t.monthDay;
+//        int hour = t.hour; // 0-23
+//        int minute = t.minute;
+//        int second = t.second;
+        riq.setText("今天 "+String.valueOf(t.hour)+"："+String.valueOf(t.minute));
+        kefu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new MQIntentBuilder(getActivity())
+                        .setCustomizedId("2676923017@qq.com") // 相同的 id 会被识别为同一个顾客
+                        .build();
+                startActivity(intent);
+
+            }
+        });
+
     }
 
     @Override
     protected void initData() {
-
+        llParent.post(new Runnable() {
+            @Override
+            public void run() {
+                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(getActivity()), 0, 0);
+            }
+        });
     }
 
     @Override
     protected void initClick() {
-        tvOne.setOnClickListener(this);
-        tvTwo.setOnClickListener(this);
-        tvThree.setOnClickListener(this);
-        tvFour.setOnClickListener(this);
-        tvFive.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View v) {
-        if (v != null) {
-            switch (v.getId()) {
-                case R.id.tv_ac_tack_one:
-                    appToQQ("2072462819");
-                    break;
-                case R.id.tv_ac_tack_two:
-                    appToQQ("2491135190");
-                    break;
-                case R.id.tv_ac_tack_three:
-                    appToQQ("2528992503");
-                    break;
-                case R.id.tv_ac_tack_four:
-                    appToQQ("3537305350");
-                    break;
-                case R.id.tv_ac_tack_five:
-                    appToQQ("3357717441");
-                    break;
-            }
-        }
+
     }
 
-    private void appToQQ(String middle){
-        String str = "";
-        //判断QQ是否安装
-        if (ToolUtil.isQQClientAvailable(getActivity())) {
-            //安装了QQ会直接调用QQ，打开手机QQ进行会话
-            str = appStart+middle+appEnd;
-        } else {
-            //没有安装QQ会展示网页
-            str = webStart+middle+webEnd;
-        }
-        Uri uri = Uri.parse(str);
-        Intent it = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(it);
-    }
+
 }

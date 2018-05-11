@@ -42,10 +42,13 @@ import meijia.com.meijianet.api.OnItemClickListener;
 import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseFragment;
 import meijia.com.meijianet.base.BaseURL;
+import meijia.com.meijianet.bean.LoginVo;
 import meijia.com.meijianet.ui.HouseDetailActivity;
 import meijia.com.meijianet.ui.SearchMoreActivity;
+import meijia.com.meijianet.ui.WebViewActivity;
 import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
+import meijia.com.meijianet.util.SharePreUtil;
 import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.meijianet.util.ToolUtil;
 import meijia.com.srdlibrary.liushibuju.BaseAdapter;
@@ -365,6 +368,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
         tvReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 mTag_paixu.setItemSelecte(100);
                 mTag_zhuangxiu.setItemSelecte(100);
                 mTag_chaoxiang.setItemSelecte(100);
@@ -700,7 +704,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
 
         }
         if(!xiaoquName.equals("")){
-            params.add("name", xiaoquName);
+            params.add("titleOrAddress", xiaoquName);
         }
         OkHttpUtils.post()
                 .tag(this)
@@ -895,7 +899,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
 
         }
         if(!xiaoquName.equals("")){
-            params.add("name", xiaoquName);
+            params.add("titleOrAddress", xiaoquName);
         }
         OkHttpUtils
                 .get()
@@ -932,8 +936,14 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
-        intent.putExtra("id", datas.get(position).getId());
+        Intent intent = new Intent(getActivity(),WebViewActivity.class);
+        LoginVo userInfo = SharePreUtil.getUserInfo(getActivity());
+        intent.putExtra("istatle", "房屋详情");
+        if (!userInfo.getUuid().equals("")){
+            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(position).getId()+"&uuid="+userInfo.getUuid());
+        }else {
+            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(position).getId()+"&uuid="+"");
+        }
         startActivity(intent);
     }
 

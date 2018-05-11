@@ -6,10 +6,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import meijia.com.meijianet.R;
 import meijia.com.meijianet.base.BaseActivity;
+import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.PromptUtil;
 import meijia.com.srdlibrary.myutil.StatusBarUtils;
 
@@ -19,6 +21,8 @@ import meijia.com.srdlibrary.myutil.StatusBarUtils;
 public class RefundActivity extends BaseActivity {
     private TextView tvTitle;
     private WebView mWebView;
+    private LinearLayout linear;
+
     @Override
     protected void setContent() {
         setContentView(R.layout.activity_refund);
@@ -27,6 +31,8 @@ public class RefundActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        linear = (LinearLayout) findViewById(R.id.activity_standard);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
@@ -41,6 +47,12 @@ public class RefundActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        linear.post(new Runnable() {
+            @Override
+            public void run() {
+                linear.setPadding(0, BubbleUtils.getStatusBarHeight(RefundActivity.this), 0, 0);
+            }
+        });
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true); // 不设置为true不显示图片
         webSettings.setBlockNetworkImage(false);

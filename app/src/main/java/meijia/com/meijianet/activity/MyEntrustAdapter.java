@@ -34,48 +34,39 @@ public class MyEntrustAdapter extends CommonRecyclerAdapter<MyEntrustVo> {
     public void convert(ViewHolder holder, List<MyEntrustVo> data, int position) {
         MyEntrustVo entrustVo = data.get(position);
         MyEntrustInfo employee = entrustVo.getEmployee();
-        if (entrustVo.getPiclogo()!=null && !entrustVo.getPiclogo().equals("")){
-            holder.setImageByUrl(R.id.iv_ac_myentrust_house, entrustVo.getPiclogo());
-        }
-        holder.setText(R.id.tv_ac_myentrust_housename,entrustVo.getName());
-        holder.setText(R.id.tv_ac_myentrust_price,"¥"+entrustVo.getPrice()+"万");
-        holder.setText(R.id.tv_ac_myentrust_quyu,entrustVo.getAcreage());
+        holder.setText(R.id.iv_ac_myentrust_price,"¥"+subZeroAndDot(entrustVo.getPrice())+"万");
+        holder.setText(R.id.iv_ac_myentrust_address,entrustVo.getAcreage());
+        holder.setText(R.id.iv_ac_myentrust_village,entrustVo.getName());
+        holder.setText(R.id.iv_ac_myentrust_name,entrustVo.getContactname());
+        holder.setText(R.id.iv_ac_myentrust_phone,entrustVo.getContactphone());
+        holder.setText(R.id.iv_ac_myentrust_twoname,employee.getNickname());
+        holder.setText(R.id.iv_ac_myentrust_twophone,employee.getPhone());
+
+
         int status = entrustVo.getConsignationStatus();
         if (status == 0){
-            holder.setText(R.id.tv_ac_myentrust_status, "待委托");
+            holder.setText(R.id.iv_ac_myentrust_status, "待委托");
+            holder.getView(R.id.iv_ac_myentrust_status).setBackgroundColor(Color.parseColor("#F4A361"));
         }else if (status == 1){
-            holder.setText(R.id.tv_ac_myentrust_status, "已委托");
+            holder.setText(R.id.iv_ac_myentrust_status, "已委托");
+            holder.getView(R.id.iv_ac_myentrust_status).setBackgroundColor(Color.parseColor("#44D18B"));
         }else {
-            holder.setText(R.id.tv_ac_myentrust_status, "拒委托");
+            holder.setText(R.id.iv_ac_myentrust_status, "拒委托");
+            holder.getView(R.id.iv_ac_myentrust_status).setBackgroundColor(Color.parseColor("#999999"));
         }
 
-        if (employee!=null){
-            holder.setText(R.id.tv_ac_myentrust_name,employee.getNickname());
-            holder.setText(R.id.tv_ac_myentrust_phone,employee.getPhone());
-        }else {
-            holder.setViewVisibility(R.id.ll_fangxiaoer,View.GONE);
-        }
 
-        holder.getView(R.id.iv_phone).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener!=null){
-                    mListener.onPicClick(position);
-                }
-            }
-        });
-        holder.setText(R.id.tv_ac_myentrust_address,"服务区域："+entrustVo.getName());
-        setTextBigSize(holder.getView(R.id.tv_ac_myentrust_price));
+
+
+
     }
 
-    private void setTextBigSize(TextView textView) {
-        String text = textView.getText().toString().trim();
-        SpannableStringBuilder builder = new SpannableStringBuilder(text);
-        AbsoluteSizeSpan sizeSpan = new AbsoluteSizeSpan(20, true);
-        builder.setSpan(sizeSpan, 0, text.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#ffa64e"));
-        builder.setSpan(colorSpan, 0, text.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        textView.setText(builder);
+    public static String subZeroAndDot(String s){
+        if(s.indexOf(".") > 0){
+            s = s.replaceAll("0+?$", "");//去掉多余的0
+            s = s.replaceAll("[.]$", "");//如最后一位是.则去掉
+        }
+        return s;
     }
     private onPicClickListener mListener;
 

@@ -3,8 +3,8 @@
     android:id="@+id/toolbar"
     android:background="@color/color_white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:navigationIcon="@mipmap/icon_back"
-    android:navigationIcon="@mipmap/icon_back"
+    app:navigationIcon="@mipmap/fanhui1"
+    android:navigationIcon="@mipmap/fanhui1"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize">
     <TextView

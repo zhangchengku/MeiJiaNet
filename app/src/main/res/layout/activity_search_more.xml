@@ -22,8 +22,9 @@
         android:layout_height="?attr/actionBarSize">
         <ImageView
             android:id="@+id/iv_back"
+            android:layout_marginLeft="14dp"
             android:layout_gravity="center_vertical"
-            android:src="@mipmap/nav_icon_return_default"
+            android:src="@mipmap/fanhui1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <LinearLayout
@@ -41,7 +42,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:background="#F5F5F5"
-                android:hint="请输入楼盘名或区域"
+                android:hint="请输入标题或小区名"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
                 android:textSize="12sp"
@@ -72,14 +73,18 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E6E6E6"
+        />
     <meijia.com.meijianet.adpter.menu.DropDownMenus
         android:id="@+id/dropDownMenu"
         app:ddmenuTextSize="13sp"
         app:ddtextUnselectedColor="@color/drop_down_unselected"
         app:ddtextSelectedColor="@color/drop_down_selected"
         app:dddividerColor="@color/colorTransparent"
-        app:ddunderlineColor="@color/gray"
+        app:ddunderlineColor="@color/white"
         app:ddmenuMenuHeightPercent="0.5"
         app:ddmenuSelectedIcon="@mipmap/drop_down_selected_icon"
         app:ddmaskColor="@color/mask_color"

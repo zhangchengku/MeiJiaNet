@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -36,6 +37,7 @@ import meijia.com.meijianet.R;
 import meijia.com.meijianet.dialog.BottomMenuDialog;
 import meijia.com.meijianet.bean.LoginVo;
 import meijia.com.meijianet.activity.MyApplication;
+import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseURL;
@@ -68,6 +70,7 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
     private LinearLayout tvacsetuploadpwd;
     private TextView tvacsetloginout;
     private TextView versionsText;
+    private RelativeLayout llParent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,17 +86,19 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
     }
 
     protected void setContent() {
-        setContentView(R.layout.activity_personer_center);
+        StatusBarUtils.setStatusBarFontDark(this,true);
         StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
+        setContentView(R.layout.activity_personer_center);
+
     }
 
     protected void initView() {
+        llParent=(RelativeLayout)findViewById(R.id.activity_center);
         ivFinish = (ImageView) findViewById(R.id.iv_finish);
         llIcon = (LinearLayout) findViewById(R.id.ll_ac_personercenter_icon);
         ivIcon = (RoundedImageView) findViewById(R.id.riv_ac_center_icon);
         llName = (LinearLayout) findViewById(R.id.ll_ac_center_name);
         tvName = (TextView) findViewById(R.id.tv_ac_center_name);
-
         llPhone = (LinearLayout) findViewById(R.id.ll_ac_center_phone);
         tvPhone = (TextView) findViewById(R.id.tv_ac_center_phone);
         llEmail = (LinearLayout) findViewById(R.id.ll_ac_center_youxinag);
@@ -120,6 +125,12 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
         return localVersion;
     }
     protected void initData() {
+        llParent.post(new Runnable() {
+            @Override
+            public void run() {
+                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(PersonCenterActivity.this), 0, 0);
+            }
+        });
         LoginVo info = SharePreUtil.getUserInfo(PersonCenterActivity.this);
         if (info != null && !info.getName().equals("")) {
             String header = info.getHeader();
@@ -409,7 +420,7 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
                         tvPhone.setText(ToolUtil.getMosaicPhone(data.getStringExtra("phone")));
                         break;
                     case 107:
-                        tvEmail.setText(ToolUtil.getMosaicPhone(data.getStringExtra("email")));
+                        tvEmail.setText(data.getStringExtra("email"));
                         break;
                     case 108:
                         tvNumber.setText(ToolUtil.getMosaicPhone(data.getStringExtra("number")));

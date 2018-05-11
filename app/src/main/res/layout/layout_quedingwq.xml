@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"/>
     </RelativeLayout>
     <EditText
+        android:password="true"
         android:id="@+id/et_ac_forget_psw"
         style="@style/et_style"
         android:hint="请输入6-12位数字或字母新密码"
@@ -42,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <EditText
+        android:password="true"
         android:id="@+id/et_ac_forget_psws"
         style="@style/et_style"
         android:hint="请确认密码"

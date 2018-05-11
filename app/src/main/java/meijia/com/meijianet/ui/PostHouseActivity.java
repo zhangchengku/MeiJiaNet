@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import meijia.com.meijianet.R;
+import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.activity.RequestParams;
 import meijia.com.meijianet.api.ResultCallBack;
@@ -42,17 +43,21 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
     private EditText etPhone;
     private PopupWindow mPopupWindow;
     private View viewLine;
-
     private RelativeLayout rlEmpty;
     private LinearLayout llContent;
+    private LinearLayout linear;
+
     @Override
     protected void setContent() {
         setContentView(R.layout.activity_post_house);
-        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.statusColor));
+        StatusBarUtils.setStatusBarFontDark(this,true);
+        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
     }
 
     @Override
     protected void initView() {
+
+                linear = (LinearLayout) findViewById(R.id.activity_post_house);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
@@ -75,7 +80,12 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
 
     @Override
     protected void initData() {
-
+        linear.post(new Runnable() {
+            @Override
+            public void run() {
+                linear.setPadding(0, BubbleUtils.getStatusBarHeight(PostHouseActivity.this), 0, 0);
+            }
+        });
     }
 
     @Override
@@ -107,10 +117,10 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
                     }
                     break;
                 case R.id.tv_liucheng:
-                    startActivity(new Intent(this, ProcessActivity.class));
-                    if (mPopupWindow!=null&&mPopupWindow.isShowing()){
-                        mPopupWindow.dismiss();
-                    }
+//                    startActivity(new Intent(this, ProcessActivity.class));
+//                    if (mPopupWindow!=null&&mPopupWindow.isShowing()){
+//                        mPopupWindow.dismiss();
+//                    }
                     break;
                 case R.id.tv_ac_post_complete:
                     String phone = etPhone.getText().toString().trim();
@@ -188,7 +198,7 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
         params.add("address",address);
         params.add("price",price);
         params.add("contactname",name);
-
+        params.add("employeeId",10);
         OkHttpUtils.post()
                 .tag(this)
                 .url(BaseURL.BASE_URL+PULL_HOUSE)
@@ -199,6 +209,7 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
                     public void onSuccess(String body) {
                         llContent.setVisibility(View.GONE);
                         rlEmpty.setVisibility(View.VISIBLE);
+                        startActivity(new Intent(PostHouseActivity.this,ExclusiveActivity.class));
                     }
 
                     @Override

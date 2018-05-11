@@ -1,15 +1,22 @@
 package meijia.com.meijianet.ui;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
 
 import com.alibaba.fastjson.JSON;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
+
+import org.greenrobot.eventbus.EventBus;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import meijia.com.meijianet.R;
+import meijia.com.meijianet.base.UpdateManager;
+import meijia.com.meijianet.bean.BaseVO;
 import meijia.com.meijianet.fragment.BuyHomeFragment;
 import meijia.com.meijianet.fragment.FirstFragment;
 import meijia.com.meijianet.fragment.HouserFragment;
@@ -21,7 +28,10 @@ import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseActivity;
 import meijia.com.meijianet.base.BaseURL;
 import meijia.com.meijianet.util.SharePreUtil;
+import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.srdlibrary.myutil.StatusBarUtils;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class ContentActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
@@ -46,45 +56,26 @@ public class ContentActivity extends BaseActivity implements RadioGroup.OnChecke
     protected void initView() {
         StatusBarUtils.setActivityTranslucent(ContentActivity.this);
         rgMenu = (RadioGroup) findViewById(R.id.rg_menu);
-    }
 
+    }
     @Override
     protected void initData() {
-        showFragment(FIRST);
-        LoginVo userInfo = SharePreUtil.getUserInfo(this);
-        if (!userInfo.getUuid().equals("")){
-            autoLogin(userInfo.getUuid());
+        Intent intert=getIntent();
+        int id = intert.getIntExtra("grxx",-1);
+        if(id>0){
+            System.out.println("aaa"+id);
+            if(id==1){
+                rgMenu.check(R.id.tv_personal);
+                showFragment(SECOND);
+            }
+        }else {
+            rgMenu.check(R.id.tv_home);
+            showFragment(FIRST);
         }
+        new UpdateManager(this, "main").checkUpdate();   //检查更新
     }
     //自动登录
-    private void autoLogin(String uuid) {
-        if (!NetworkUtil.checkNet(ContentActivity.this)){
-            return;
-        }
-        OkHttpUtils.post()
-                .tag(this)
-                .url(BaseURL.BASE_URL+AUTO_LOGIN)
-                .addParams("uuid",uuid)
-                .build()
-                .execute(new ResultCallBack() {
-                    @Override
-                    public void onSuccess(String body) {
-                        LoginVo vo = JSON.parseObject(body, LoginVo.class);
-                        vo.setUuid(uuid);
-                        SharePreUtil.setUserInfo(ContentActivity.this,vo);
-                    }
 
-                    @Override
-                    public void onFail(int returnCode, String returnTip) {
-
-                    }
-
-                    @Override
-                    public void onAfter(int id) {
-
-                    }
-                });
-    }
 
 
     @Override
@@ -134,7 +125,7 @@ public class ContentActivity extends BaseActivity implements RadioGroup.OnChecke
                 } else {
                     ft.show(mMeFragment);
                 }
-                StatusBarUtils.setStatusBarFontDark(ContentActivity.this,false);
+                StatusBarUtils.setStatusBarFontDark(ContentActivity.this,true);
                 break;
             case THIRD:
                 if (houserFragment == null) {

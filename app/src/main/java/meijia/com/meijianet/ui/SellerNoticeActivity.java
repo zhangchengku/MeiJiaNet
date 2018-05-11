@@ -20,16 +20,17 @@ public class SellerNoticeActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
-        tvTitle.setText("卖家须知");
 
-        setSupportActionBar(toolbar);
-        setNavigationFinish(toolbar);
-        setNavigationHomeAsUp(true);
-
-        tvNotice = (TextView) findViewById(R.id.tv_notice);
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        toolbar.setTitle("");
+//        tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
+//        tvTitle.setText("卖家须知");
+//
+//        setSupportActionBar(toolbar);
+//        setNavigationFinish(toolbar);
+//        setNavigationHomeAsUp(true);
+//
+//        tvNotice = (TextView) findViewById(R.id.tv_notice);
     }
 
     @Override
@@ -50,12 +51,12 @@ public class SellerNoticeActivity extends BaseActivity {
 
     @Override
     protected void initClick() {
-        tvNotice.setOnClickListener(this);
+//        tvNotice.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        startActivity(new Intent(this,PostHouseActivity.class));
-        finish();
+//        startActivity(new Intent(this,PostHouseActivity.class));
+//        finish();
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,27 +29,18 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.io.File;
 import java.util.ArrayList;
 
 import meijia.com.meijianet.R;
+import meijia.com.meijianet.base.BaseURL;
 import meijia.com.meijianet.bean.LoginVo;
-import meijia.com.meijianet.bean.ShareBO;
-import meijia.com.meijianet.dialog.BottomMenuDialog;
-import meijia.com.meijianet.dialog.ShareDialog;
-import meijia.com.meijianet.ui.LawyerActivity;
 import meijia.com.meijianet.ui.LoginActivity;
 import meijia.com.meijianet.ui.MyBrowseActivity;
 import meijia.com.meijianet.ui.MyCollectActivity;
 import meijia.com.meijianet.ui.MyEntrustActivity;
 import meijia.com.meijianet.ui.MyIntentionActivity;
 import meijia.com.meijianet.ui.PersonCenterActivity;
-import meijia.com.meijianet.ui.ProcessActivity;
-import meijia.com.meijianet.ui.ProveActivity;
-import meijia.com.meijianet.ui.RefundActivity;
-import meijia.com.meijianet.ui.SettingActivity;
-import meijia.com.meijianet.ui.StandardActivity;
+import meijia.com.meijianet.ui.WebViewActivity;
 import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.SharePreUtil;
 import meijia.com.meijianet.util.ToastUtil;
@@ -81,7 +73,6 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
     private TextView fmmynickname;
     private LinearLayout rlBanner;
     private TextView tvjyliucheng;
-    private TextView fenxiang;
     private ScrollView linear;
     private ImageView callphone;
 
@@ -97,10 +88,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
     }
 
     private void initView() {
-
-
         linear = (ScrollView)view.findViewById(R.id.linear);
-        fenxiang = (TextView) view.findViewById(R.id.fenxiang);
         tvBrowse = (TextView) view.findViewById(R.id.tv1);
         tvCollect = (TextView) view.findViewById(R.id.tv_fm_my_collect);
         rlBanner = (LinearLayout) view.findViewById(R.id.rl_banner);
@@ -135,7 +123,10 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
             fmmyphone.setText(userInfo.getPhone().equals("") ? "" : ToolUtil.getMosaicPhone(userInfo.getPhone()));
             fmmynickname.setText(userInfo.getName().equals("") ? "" : userInfo.getName());
             if (!userInfo.getHeader().equals("")) {
-                Glide.with(getActivity()).load(userInfo.getHeader()).into(ivIcon);
+                Glide.with(getActivity()).load(userInfo.getHeader())
+                        .into(ivIcon);
+            }else {
+                Glide.with(getActivity()).load(R.mipmap.icon_defoult).into(ivIcon);
             }
         } else {
             tvNameOrStatus.setVisibility(View.VISIBLE);
@@ -161,18 +152,8 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
 
 
     protected void initClick() {
+        tvNameOrStatus.setOnClickListener(this);
         callphone.setOnClickListener(this);
-        fenxiang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String content= "测试文章";
-                String logo= "";
-                String url= "http://192.168.1.54:8080/message/article/articles/read?id=5&flag=1";
-                String title= "阿斯顿发斯蒂芬";
-                ShareBO shareBO = new ShareBO(content,logo, url, title);
-                new ShareDialog(getActivity(), shareBO).showAtLocation(linear, Gravity.BOTTOM, 0, 0);
-            }
-        });
         ivSet.setOnClickListener(this);
         ivIcon.setOnClickListener(this);
         tvMyEntrust.setOnClickListener(this);
@@ -197,7 +178,12 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }
-
+                    break;
+                case R.id.tv_fm_my_nickname://设置头像
+                    if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        return;
+                    }
                     break;
                 case R.id.tv_fm_my_weituo://我的委托
                     if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
@@ -227,17 +213,30 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                     }
                     startActivity(new Intent(getActivity(), MyBrowseActivity.class));
                     break;
-                case R.id.tv_lvshi://专属律师
-                    startActivity(new Intent(getActivity(), LawyerActivity.class));
+                case R.id.tv_lvshi://专属律师/
+                    Intent intent5 = new Intent(getActivity(),WebViewActivity.class);
+                    intent5.putExtra("istatle", "专属律师");
+                    intent5.putExtra("url", BaseURL.BASE_URL+"/api/house/lawyer");
+                    Log.d("asdfasdfasdf", "onClick: "+BaseURL.BASE_URL+"/api/house/lawyer");
+                    startActivity(intent5);
                     break;
                 case R.id.tv_jyliucheng://交易流程
-                startActivity(new Intent(getActivity(), ProcessActivity.class));
+                    Intent intent1 = new Intent(getActivity(),WebViewActivity.class);
+                    intent1.putExtra("istatle", "交易流程");
+                    intent1.putExtra("url", BaseURL.BASE_URL+"/api/house/process");
+                    startActivity(intent1);
                     break;
                 case R.id.tv_biaozhun://收费标准
-                    startActivity(new Intent(getActivity(), StandardActivity.class));
+                    Intent intent2 = new Intent(getActivity(),WebViewActivity.class);
+                    intent2.putExtra("istatle", "收费标准");
+                    intent2.putExtra("url",BaseURL.BASE_URL+"/api/house/standard");
+                    startActivity(intent2);
                     break;
                 case R.id.tv_daikuan://贷款计算器
-                    startActivity(new Intent(getActivity(), RefundActivity.class));
+                    Intent intent3 = new Intent(getActivity(),WebViewActivity.class);
+                    intent3.putExtra("istatle", "贷款计算器");
+                    intent3.putExtra("url",BaseURL.BASE_URL+"/api/loanCalculator");
+                    startActivity(intent3);
                     break;
                 case R.id.call_phone://打电话
                     Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -251,16 +250,6 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
     @Override
     public void takeCancel() {
         super.takeCancel();
@@ -294,7 +283,10 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
             fmmyphone.setText(userInfo.getPhone().equals("") ? "" : ToolUtil.getMosaicPhone(userInfo.getPhone()));
             fmmynickname.setText(userInfo.getName().equals("") ? "" : userInfo.getName());
             if (!userInfo.getHeader().equals("")) {
-                Glide.with(getActivity()).load(userInfo.getHeader()).into(ivIcon);
+                Glide.with(getActivity()).load(userInfo.getHeader())
+                        .into(ivIcon);
+            }else {
+                Glide.with(getActivity()).load(R.mipmap.icon_defoult).into(ivIcon);
             }
         } else if (login.equals("logout")) {
             Glide.with(getActivity()).load(R.mipmap.icon_defoult).into(ivIcon);
