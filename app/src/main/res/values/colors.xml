@@ -44,4 +44,8 @@
     <color name="fuzhu_color">#dddddd</color>
     <color name="indcator_color">#e6e6e6</color>
     <color name="bg_color">#E6E6E6</color>
+    <color name="bg_item">#F0F0F0</color>
+    <color name="tatle_bar_right">#333333</color>
+    <color name="tatle_bar_center">#131313</color>
+
 </resources>

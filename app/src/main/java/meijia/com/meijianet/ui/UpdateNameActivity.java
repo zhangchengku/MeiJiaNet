@@ -1,6 +1,7 @@
 package meijia.com.meijianet.ui;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
@@ -57,12 +58,17 @@ public class UpdateNameActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        llParent.post(new Runnable() {
-            @Override
-            public void run() {
-                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(UpdateNameActivity.this), 0, 0);
-            }
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            llParent.post(new Runnable() {
+                @Override
+                public void run() {
+                    llParent.setPadding(0, BubbleUtils.getStatusBarHeight(UpdateNameActivity.this), 0, 0);
+                }
+            });
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+        }
+
         ToolUtil.setInputListener(etName,ivDelete);
     }
 

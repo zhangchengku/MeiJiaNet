@@ -6,21 +6,16 @@
     app:navigationIcon="@mipmap/fanhui1"
     android:navigationIcon="@mipmap/fanhui1"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize">
+    android:layout_height="@dimen/view_size_53"
+    android:minHeight="@dimen/view_size_53">
     <TextView
         android:id="@+id/tv_toolbar_title"
         android:text=""
-        android:textSize="19sp"
-        android:textColor="#181918"
+        android:textColor="@color/tatle_bar_center"
+        android:textSize="@dimen/text_size_19"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <ImageView
-        android:id="@+id/iv_toolbar_menu"
-        android:src="@mipmap/nav_icon_more_default"
-        android:padding="20dp"
-        android:layout_gravity="right|center_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
 
 </android.support.v7.widget.Toolbar>

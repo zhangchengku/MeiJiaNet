@@ -3,6 +3,7 @@ package meijia.com.meijianet.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -568,12 +569,17 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
 
     @Override
     protected void initData() {
-        llParent.post(new Runnable() {
-            @Override
-            public void run() {
-                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(SearchMoreActivity.this), 0, 0);
-            }
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            llParent.post(new Runnable() {
+                @Override
+                public void run() {
+                    llParent.setPadding(0, BubbleUtils.getStatusBarHeight(SearchMoreActivity.this), 0, 0);
+                }
+            });
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+        }
+
         autoRefresh();
     }
     @Override

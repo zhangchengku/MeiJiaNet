@@ -206,7 +206,11 @@
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind" />
+<activity android:name=".ui.ExclusiveActivity"/>
+        <activity android:name=".fragment.HouserActivity"/>
 
+        <activity android:name=".ui.textone"/>
+        <activity android:name=".ui.texttwo"/>
     </application>
 
 </manifest>

@@ -170,14 +170,11 @@ public class QuedingWQActivity extends BaseActivity {
                     @Override
                     public void onSuccess(String body) {
                         Log.e("", "onSuccess: body =登陆成功 " );
-                        Intent show=new Intent(QuedingWQActivity.this,ContentActivity.class);
                         ToastUtil.showShortToast(QuedingWQActivity.this,"登录成功");
                         LoginVo vo = JSON.parseObject(body, LoginVo.class);
                         SharePreUtil.setUserInfo(QuedingWQActivity.this,vo);
                         EventBus.getDefault().post("login");
-                        show.putExtra("grxx",1);
-                        startActivity(show);
-                        finish();
+                        goBackMain();
                     }
 
                     @Override

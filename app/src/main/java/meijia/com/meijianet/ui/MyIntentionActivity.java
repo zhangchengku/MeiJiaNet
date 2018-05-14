@@ -68,8 +68,7 @@ public class MyIntentionActivity extends BaseActivity implements CollectAdapter.
         toolbar.setTitle("");
         tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
         tvTitle.setText("意向房源");
-        ivMenu = (ImageView) findViewById(R.id.iv_toolbar_menu);
-        ivMenu.setVisibility(View.GONE);
+
         setSupportActionBar(toolbar);
         setNavigationFinish(toolbar);
         setNavigationHomeAsUp(true);
@@ -80,12 +79,17 @@ public class MyIntentionActivity extends BaseActivity implements CollectAdapter.
 
     @Override
     protected void initData() {
-        linear.post(new Runnable() {
-            @Override
-            public void run() {
-                linear.setPadding(0, BubbleUtils.getStatusBarHeight(MyIntentionActivity.this), 0, 0);
-            }
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            linear.post(new Runnable() {
+                @Override
+                public void run() {
+                    linear.setPadding(0, BubbleUtils.getStatusBarHeight(MyIntentionActivity.this), 0, 0);
+                }
+            });
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+        }
+
         rvList.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new CollectAdapter3(this, datas);
         rvList.setAdapter(mAdapter);

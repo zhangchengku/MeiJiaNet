@@ -60,18 +60,8 @@ public class ContentActivity extends BaseActivity implements RadioGroup.OnChecke
     }
     @Override
     protected void initData() {
-        Intent intert=getIntent();
-        int id = intert.getIntExtra("grxx",-1);
-        if(id>0){
-            System.out.println("aaa"+id);
-            if(id==1){
-                rgMenu.check(R.id.tv_personal);
-                showFragment(SECOND);
-            }
-        }else {
             rgMenu.check(R.id.tv_home);
             showFragment(FIRST);
-        }
         new UpdateManager(this, "main").checkUpdate();   //检查更新
     }
     //自动登录

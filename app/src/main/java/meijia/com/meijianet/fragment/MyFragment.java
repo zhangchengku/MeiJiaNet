@@ -41,6 +41,7 @@ import meijia.com.meijianet.ui.MyEntrustActivity;
 import meijia.com.meijianet.ui.MyIntentionActivity;
 import meijia.com.meijianet.ui.PersonCenterActivity;
 import meijia.com.meijianet.ui.WebViewActivity;
+import meijia.com.meijianet.ui.textone;
 import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.SharePreUtil;
 import meijia.com.meijianet.util.ToastUtil;
@@ -75,6 +76,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
     private TextView tvjyliucheng;
     private ScrollView linear;
     private ImageView callphone;
+    private TextView text;
 
 
     @Override
@@ -187,28 +189,28 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                     break;
                 case R.id.tv_fm_my_weituo://我的委托
                     if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
-                        ToastUtil.showShortToast(getActivity(),"您还没有登录");
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }
                     startActivity(new Intent(getActivity(), MyEntrustActivity.class));
                     break;
                 case R.id.tv_fm_my_yixiang://意向房源
                     if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
-                        ToastUtil.showShortToast(getActivity(),"您还没有登录");
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }
                     startActivity(new Intent(getActivity(), MyIntentionActivity.class));
                     break;
                 case R.id.tv_fm_my_collect://我的收藏
                     if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
-                        ToastUtil.showShortToast(getActivity(),"您还没有登录");
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }
                     startActivity(new Intent(getActivity(), MyCollectActivity.class));
                     break;
                 case R.id.tv1://浏览足迹
                     if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
-                        ToastUtil.showShortToast(getActivity(),"您还没有登录");
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }
                     startActivity(new Intent(getActivity(), MyBrowseActivity.class));

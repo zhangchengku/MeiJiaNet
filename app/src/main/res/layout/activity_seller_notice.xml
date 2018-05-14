@@ -11,9 +11,105 @@
     <include
         layout="@layout/comment_toolbar_sellinghome"/>
     <View
-        android:background="@color/bg_color"
-        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp"
+        android:background="@color/bg_color" />
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/color_white">
+
+        <RelativeLayout
+
+            android:id="@+id/rl_ac_chezhu_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_white"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_empty"
+                android:layout_width="@dimen/view_size_222"
+                android:layout_height="@dimen/view_size_222"
+                android:layout_marginBottom="@dimen/view_size_22"
+                android:layout_marginLeft="@dimen/view_size_111"
+                android:layout_marginTop="@dimen/view_size_42"
+                android:background="@mipmap/myentrust_queshangye" />
+
+            <LinearLayout
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_empty"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="暂无卖房信息，点击右上角"
+                        android:textColor="#C1C1C1"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="“发布”"
+                        android:textColor="#4DD391"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="按钮"
+                        android:textColor="#C1C1C1"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/view_size_22"
+                    android:text="来发布你的第一条卖房信息吧。"
+                    android:textColor="#C1C1C1"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+        <com.aspsine.swipetoloadlayout.SwipeToLoadLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <meijia.com.meijianet.activity.RefreshHeaderView
+                android:id="@+id/swipe_refresh_header"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/swipe_target"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                />
+
+            <meijia.com.meijianet.activity.LoadMoreFooterView
+                android:id="@+id/swipe_load_more_footer"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"/>
+        </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

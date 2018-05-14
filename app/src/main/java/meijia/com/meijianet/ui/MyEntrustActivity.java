@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -73,12 +74,17 @@ public class MyEntrustActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        linear.post(new Runnable() {
-            @Override
-            public void run() {
-                linear.setPadding(0, BubbleUtils.getStatusBarHeight(MyEntrustActivity.this), 0, 0);
-            }
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            linear.post(new Runnable() {
+                @Override
+                public void run() {
+                    linear.setPadding(0, BubbleUtils.getStatusBarHeight(MyEntrustActivity.this), 0, 0);
+                }
+            });
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+        }
+
         mAdapter = new MyEntrustAdapter(MyEntrustActivity.this,datas);
         mManager = new LinearLayoutManager(MyEntrustActivity.this);
         rvList.setLayoutManager(mManager);

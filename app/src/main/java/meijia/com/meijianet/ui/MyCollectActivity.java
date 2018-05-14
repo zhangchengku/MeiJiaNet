@@ -1,6 +1,7 @@
 package meijia.com.meijianet.ui;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -69,8 +70,7 @@ public class MyCollectActivity extends BaseActivity implements OnRefreshListener
         toolbar.setTitle("");
         tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
         tvTitle.setText("我的收藏");
-        ivMenu = (ImageView) findViewById(R.id.iv_toolbar_menu);
-        ivMenu.setVisibility(View.GONE);
+
         setSupportActionBar(toolbar);
         setNavigationFinish(toolbar);
         setNavigationHomeAsUp(true);
@@ -78,12 +78,17 @@ public class MyCollectActivity extends BaseActivity implements OnRefreshListener
 
     @Override
     protected void initData() {
-        llParent.post(new Runnable() {
-            @Override
-            public void run() {
-                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(MyCollectActivity.this), 0, 0);
-            }
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            llParent.post(new Runnable() {
+                @Override
+                public void run() {
+                    llParent.setPadding(0, BubbleUtils.getStatusBarHeight(MyCollectActivity.this), 0, 0);
+                }
+            });
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+        }
+
         swipeToLoadLayout = (SwipeToLoadLayout)findViewById(R.id.refresh_layout);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);

@@ -35,6 +35,8 @@ import meijia.com.meijianet.R;
 import meijia.com.meijianet.bean.BannerVo;
 import meijia.com.meijianet.bean.LoginVo;
 import meijia.com.meijianet.activity.MyScollerLinearlayoutManager;
+import meijia.com.meijianet.ui.LoginActivity;
+import meijia.com.meijianet.ui.MyEntrustActivity;
 import meijia.com.meijianet.ui.TransactionRecordActivity;
 import meijia.com.meijianet.ui.WebViewActivity;
 import meijia.com.meijianet.util.NetworkUtil;
@@ -246,7 +248,8 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
                     startActivity(intent1);
                     break;
                 case R.id.fist_fragment_sfbz:
-                    Intent intent2 = new Intent(getActivity(),WebViewActivity.class);
+
+                    Intent intent2 = new Intent(getActivity(),HouserActivity.class);
                     intent2.putExtra("istatle", "收费标准");
                     intent2.putExtra("url",BaseURL.BASE_URL+"/api/house/standard");
                     startActivity(intent2);
@@ -256,16 +259,13 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
                     break;
                 case R.id.fist_fragment_mf:
                     if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
-                        ToastUtil.showShortToast(getActivity(),"您还没有登录");
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }
-                    startActivity(new Intent(getActivity(),PostHouseActivity.class));
+                    startActivity(new Intent(getActivity(),MyEntrustActivity.class));
                     break;
                 case R.id.fist_fragment_kf:
-                    Intent intent = new MQIntentBuilder(getActivity())
-                            .setCustomizedId("2676923017@qq.com") // 相同的 id 会被识别为同一个顾客
-                            .build();
-                    startActivity(intent);
+                    startActivity(new Intent(getActivity(), HouserActivity.class));
                     break;
                 case R.id.fist_fragment_zjcj:
                     startActivity(new Intent(getActivity(), TransactionRecordActivity.class));

@@ -41,4 +41,6 @@ public interface URL {
     String TUI_KUAN = "/api/order/apprefund";
     String VERSION_CODE = "/version/version.json";
     String EXCLUSIVE_TWO = "/api/member/getEmployee";
+    String ADVERTISEMENT = "/api/advertisement";
+
 }

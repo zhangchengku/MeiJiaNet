@@ -2,6 +2,7 @@ package meijia.com.meijianet.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -17,9 +18,11 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import meijia.com.meijianet.R;
+import meijia.com.meijianet.bean.WechatPayVO;
 import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.activity.RequestParams;
@@ -32,6 +35,8 @@ import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.meijianet.util.ToolUtil;
 import meijia.com.srdlibrary.myutil.StatusBarUtils;
 
+import static android.R.attr.id;
+
 public class PostHouseActivity extends BaseActivity implements TextView.OnEditorActionListener {
     private TextView tvTitle;
     private ImageView ivMenu;
@@ -42,10 +47,11 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
     private EditText etName;
     private EditText etPhone;
     private PopupWindow mPopupWindow;
-    private View viewLine;
-    private RelativeLayout rlEmpty;
-    private LinearLayout llContent;
+
+
+
     private LinearLayout linear;
+
 
     @Override
     protected void setContent() {
@@ -62,7 +68,6 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
         toolbar.setTitle("");
         tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
         tvTitle.setText("发布房源");
-        ivMenu = (ImageView) findViewById(R.id.iv_toolbar_menu);
         setSupportActionBar(toolbar);
         setNavigationFinish(toolbar);
         setNavigationHomeAsUp(true);
@@ -72,56 +77,36 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
         etPrice = (EditText) findViewById(R.id.et_ac_post_price);
         etName = (EditText) findViewById(R.id.et_ac_post_name);
         etPhone = (EditText) findViewById(R.id.et_ac_post_phone);
-        viewLine = findViewById(R.id.view_line);
+
         tvComplite = (TextView) findViewById(R.id.tv_ac_post_complete);
-        rlEmpty = (RelativeLayout) findViewById(R.id.rl_empty);
-        llContent = (LinearLayout) findViewById(R.id.ll_content);
+
+
     }
 
     @Override
     protected void initData() {
-        linear.post(new Runnable() {
-            @Override
-            public void run() {
-                linear.setPadding(0, BubbleUtils.getStatusBarHeight(PostHouseActivity.this), 0, 0);
-            }
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            linear.post(new Runnable() {
+                @Override
+                public void run() {
+                    linear.setPadding(0, BubbleUtils.getStatusBarHeight(PostHouseActivity.this), 0, 0);
+                }
+            });
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+        }
+
     }
 
     @Override
     protected void initClick() {
         tvComplite.setOnClickListener(this);
-        ivMenu.setOnClickListener(this);
         etPhone.setOnEditorActionListener(this);
     }
-
     @Override
     public void onClick(View v) {
         if (v != null) {
             switch (v.getId()) {
-                case R.id.iv_toolbar_menu:
-                    showPop(viewLine);
-                    break;
-                case R.id.tv_xuzhi:
-                    Intent intent = new Intent(this, SellerNoticeActivity.class);
-                    intent.putExtra("isTrue",true);
-                    startActivity(intent);
-                    if (mPopupWindow!=null&&mPopupWindow.isShowing()){
-                        mPopupWindow.dismiss();
-                    }
-                    break;
-                case R.id.tv_chengjiao:
-                    startActivity(new Intent(this,KnockdownActivity.class));
-                    if (mPopupWindow!=null&&mPopupWindow.isShowing()){
-                        mPopupWindow.dismiss();
-                    }
-                    break;
-                case R.id.tv_liucheng:
-//                    startActivity(new Intent(this, ProcessActivity.class));
-//                    if (mPopupWindow!=null&&mPopupWindow.isShowing()){
-//                        mPopupWindow.dismiss();
-//                    }
-                    break;
                 case R.id.tv_ac_post_complete:
                     String phone = etPhone.getText().toString().trim();
                     String address = etAddress.getText().toString().trim();
@@ -133,24 +118,14 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
                         ToastUtil.showShortToast(PostHouseActivity.this,"请将信息填写完整");
                         return;
                     }
-                    pullHouse(phone,address,name,price,xiaoQu);
+                    getid(phone,address,name,price,xiaoQu);
                     break;
 
             }
         }
     }
 
-    private void showPop(View imageView) {
-        View view = LayoutInflater.from(PostHouseActivity.this)
-                .inflate(R.layout.pop_menu,null);
-        view.findViewById(R.id.tv_xuzhi).setOnClickListener(this);
-        view.findViewById(R.id.tv_chengjiao).setOnClickListener(this);
-        view.findViewById(R.id.tv_liucheng).setOnClickListener(this);
-        mPopupWindow = new PopupWindow(view,ViewGroup.LayoutParams.WRAP_CONTENT
-        ,ViewGroup.LayoutParams.WRAP_CONTENT,true);
-        mPopupWindow.setTouchable(true);
-        mPopupWindow.showAsDropDown(imageView, -DisplayUtil.dip2px(PostHouseActivity.this,50f),10);
-    }
+
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -178,13 +153,47 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
             if(imm.isActive()){
                 imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
             }
-            pullHouse(phone,address,name,price,xiaoQu);
+            getid(phone,address,name,price,xiaoQu);
             return true;
         }
         return false;
     }
 
-    private void pullHouse(String phone, String address, String name, String price, String xiaoQu) {
+    private void getid(String phone, String address, String name, String price, String xiaoQu) {
+        if (!NetworkUtil.checkNet(PostHouseActivity.this)){
+            ToastUtil.showShortToast(PostHouseActivity.this,"没网了，请检查网络");
+            return;
+        }
+
+        PromptUtil.showTransparentProgress(PostHouseActivity.this,false);
+
+        RequestParams params = new RequestParams();
+        OkHttpUtils.post()
+                .tag(this)
+                .url(BaseURL.BASE_URL+EXCLUSIVE_TWO)
+                .params(params.getMap())
+                .build()
+                .execute(new ResultCallBack() {
+                    @Override
+                    public void onSuccess(String body) {
+                        GetIdVO vo = JSON.parseObject(body, GetIdVO.class);
+                        pullHouse(phone,address,name,price,xiaoQu,String.valueOf(vo.getId()));
+                    }
+
+                    @Override
+                    public void onFail(int returnCode, String returnTip) {
+                        PromptUtil.closeTransparentDialog();
+                        ToastUtil.showShortToast(PostHouseActivity.this,returnTip);
+                    }
+
+                    @Override
+                    public void onAfter(int id) {
+                        PromptUtil.closeTransparentDialog();
+                    }
+                });
+    }
+
+    private void pullHouse(String phone, String address, String name, String price, String xiaoQu,String id) {
         if (!NetworkUtil.checkNet(PostHouseActivity.this)){
             ToastUtil.showShortToast(PostHouseActivity.this,"没网了，请检查网络");
             return;
@@ -194,11 +203,12 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
 
         RequestParams params = new RequestParams();
         params.add("name",xiaoQu);
-        params.add("contactphone",phone);
         params.add("address",address);
         params.add("price",price);
+        params.add("employeeId",id);
         params.add("contactname",name);
-        params.add("employeeId",10);
+        params.add("contactphone",phone);
+
         OkHttpUtils.post()
                 .tag(this)
                 .url(BaseURL.BASE_URL+PULL_HOUSE)
@@ -207,8 +217,6 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
                 .execute(new ResultCallBack() {
                     @Override
                     public void onSuccess(String body) {
-                        llContent.setVisibility(View.GONE);
-                        rlEmpty.setVisibility(View.VISIBLE);
                         startActivity(new Intent(PostHouseActivity.this,ExclusiveActivity.class));
                     }
 

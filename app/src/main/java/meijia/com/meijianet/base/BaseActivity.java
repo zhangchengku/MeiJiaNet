@@ -22,6 +22,7 @@ import java.util.List;
 import meijia.com.meijianet.api.Constant;
 import meijia.com.meijianet.bean.LoginVo;
 import meijia.com.meijianet.activity.MyApplication;
+import meijia.com.meijianet.ui.ContentActivity;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.api.PermissionListener;
 import meijia.com.meijianet.util.PromptUtil;
@@ -84,7 +85,16 @@ public abstract class BaseActivity extends AppCompatActivity implements OnClickL
                 ac.finish();
         }
     }
-
+    /**
+     * 退回首页，除了首页其余页面都关闭
+     */
+    public void goBackMain() {
+        for (int i = 0, size = app.activityList.size(); i < size; i++) {
+            if (null != app.activityList.get(i) && !(app.activityList.get(i) instanceof ContentActivity)) {
+                app.activityList.get(i).finish();
+            }
+        }
+    }
     /**
      * 快速获取当前activity的引用，用在匿名内部类
      *

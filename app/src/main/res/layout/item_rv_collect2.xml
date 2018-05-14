@@ -131,6 +131,6 @@
         android:layout_marginRight="5dp"
         android:layout_below="@id/iv_item_fangyuan"
         android:layout_marginTop="10dp"
-        android:background="@color/bg_color"/>
+        android:background="@color/bg_item"/>
 
 </RelativeLayout>

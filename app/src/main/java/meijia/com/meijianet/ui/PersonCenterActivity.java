@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -125,12 +126,17 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
         return localVersion;
     }
     protected void initData() {
-        llParent.post(new Runnable() {
-            @Override
-            public void run() {
-                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(PersonCenterActivity.this), 0, 0);
-            }
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            llParent.post(new Runnable() {
+                @Override
+                public void run() {
+                    llParent.setPadding(0, BubbleUtils.getStatusBarHeight(PersonCenterActivity.this), 0, 0);
+                }
+            });
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+        }
+
         LoginVo info = SharePreUtil.getUserInfo(PersonCenterActivity.this);
         if (info != null && !info.getName().equals("")) {
             String header = info.getHeader();

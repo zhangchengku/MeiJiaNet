@@ -1,6 +1,7 @@
 package meijia.com.meijianet.ui;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
@@ -68,12 +69,17 @@ public class UpdatePswActivity extends BaseActivity implements TextView.OnEditor
 
     @Override
     protected void initData() {
-        llParent.post(new Runnable() {
-            @Override
-            public void run() {
-                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(UpdatePswActivity.this), 0, 0);
-            }
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            llParent.post(new Runnable() {
+                @Override
+                public void run() {
+                    llParent.setPadding(0, BubbleUtils.getStatusBarHeight(UpdatePswActivity.this), 0, 0);
+                }
+            });
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+        }
+
         ToolUtil.setInputListener(etName,ivDelete);
         ToolUtil.setInputListener(etNewPsw,ivNewPsw);
         ToolUtil.setInputListener(etNewPswSure,ivNewPswSure);
