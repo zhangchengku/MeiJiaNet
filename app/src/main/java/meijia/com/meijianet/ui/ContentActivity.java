@@ -1,6 +1,8 @@
 package meijia.com.meijianet.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -23,6 +25,8 @@ import meijia.com.meijianet.fragment.HouserFragment;
 import meijia.com.meijianet.bean.LoginVo;
 import meijia.com.meijianet.fragment.MyFragment;
 import meijia.com.meijianet.fragment.SellingHomeFragment;
+import meijia.com.meijianet.fragment.TestFragment;
+import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseActivity;
@@ -40,7 +44,7 @@ public class ContentActivity extends BaseActivity implements RadioGroup.OnChecke
     private static final int THIRD = 2;//房小二
     private static final int FOUR = 3;//买房
     private static final int FIVE = 4;//卖房
-    private FirstFragment mHomeFragment;
+    private TestFragment mHomeFragment;
     private MyFragment mMeFragment;
     private HouserFragment houserFragment;
     private BuyHomeFragment buyHomeFragment;
@@ -98,13 +102,17 @@ public class ContentActivity extends BaseActivity implements RadioGroup.OnChecke
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         hideFragment(ft);
+
         switch (index) {
             case FIRST:
                 if (mHomeFragment == null) {
-                    mHomeFragment = new FirstFragment();
+                    mHomeFragment = new TestFragment();
                     ft.add(R.id.frame_layout, mHomeFragment, "homeFragment");
                 } else {
                     ft.show(mHomeFragment);
+                }
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP&&Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+                    StatusBarUtils.setStatusBarColor(ContentActivity.this, Color.TRANSPARENT);
                 }
                 StatusBarUtils.setStatusBarFontDark(ContentActivity.this,true);
                 break;
@@ -115,6 +123,9 @@ public class ContentActivity extends BaseActivity implements RadioGroup.OnChecke
                 } else {
                     ft.show(mMeFragment);
                 }
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP&&Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+                    StatusBarUtils.setStatusBarColor(ContentActivity.this, getResources().getColor(R.color.color_black60));
+                }
                 StatusBarUtils.setStatusBarFontDark(ContentActivity.this,true);
                 break;
             case THIRD:
@@ -123,6 +134,9 @@ public class ContentActivity extends BaseActivity implements RadioGroup.OnChecke
                     ft.add(R.id.frame_layout, houserFragment, "houserFragment");
                 } else {
                     ft.show(houserFragment);
+                }
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP&&Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+                    StatusBarUtils.setStatusBarColor(ContentActivity.this, getResources().getColor(R.color.color_black60));
                 }
                 StatusBarUtils.setStatusBarFontDark(ContentActivity.this,true);
                 break;
@@ -133,6 +147,9 @@ public class ContentActivity extends BaseActivity implements RadioGroup.OnChecke
                 } else {
                     ft.show(buyHomeFragment);
                 }
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP&&Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+                    StatusBarUtils.setStatusBarColor(ContentActivity.this, getResources().getColor(R.color.color_black60));
+                }
                 StatusBarUtils.setStatusBarFontDark(ContentActivity.this,true);
                 break;
             case FIVE:
@@ -141,6 +158,9 @@ public class ContentActivity extends BaseActivity implements RadioGroup.OnChecke
                     ft.add(R.id.frame_layout, sellingHomeFragment, "houserFragment");
                 } else {
                     ft.show(sellingHomeFragment);
+                }
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP&&Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+                    StatusBarUtils.setStatusBarColor(ContentActivity.this, getResources().getColor(R.color.color_black60));
                 }
                 StatusBarUtils.setStatusBarFontDark(ContentActivity.this,true);
                 break;

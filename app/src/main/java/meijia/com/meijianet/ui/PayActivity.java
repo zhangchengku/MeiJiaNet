@@ -1,19 +1,30 @@
 package meijia.com.meijianet.ui;
 
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alipay.sdk.app.PayTask;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 import meijia.com.meijianet.R;
+import meijia.com.meijianet.bean.AliPayVO;
+import meijia.com.meijianet.bean.WechatPayVO;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.activity.RequestParams;
 import meijia.com.meijianet.api.ResultCallBack;
@@ -22,6 +33,7 @@ import meijia.com.meijianet.base.BaseURL;
 import meijia.com.meijianet.util.PromptUtil;
 import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.meijianet.util.ToolUtil;
+import meijia.com.meijianet.wxapi.WXUtils;
 import meijia.com.srdlibrary.commondialog.CommonDialog;
 import meijia.com.srdlibrary.myutil.StatusBarUtils;
 
@@ -33,6 +45,8 @@ public class PayActivity extends BaseActivity {
 
     private long mId;
     public static boolean isPay = false;
+
+
 
     @Override
     protected void setContent() {
@@ -47,6 +61,7 @@ public class PayActivity extends BaseActivity {
         tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
         tvTitle.setText("缴纳意向金");
 
+
         setSupportActionBar(toolbar);
         setNavigationFinish(toolbar);
         setNavigationHomeAsUp(true);
@@ -54,17 +69,17 @@ public class PayActivity extends BaseActivity {
         tvSure = (TextView) findViewById(R.id.tv_ac_pay_sure);
         etName = (EditText) findViewById(R.id.et_ac_pay_name);
         etPhone = (EditText) findViewById(R.id.et_ac_pay_phone);
+
     }
 
     @Override
     protected void initData() {
-        mId = getIntent().getLongExtra("id",0);
-        Log.e(TAG, "initData: id = "+mId );
     }
 
     @Override
     protected void initClick() {
         tvSure.setOnClickListener(this);
+
     }
 
     @Override
@@ -86,17 +101,18 @@ public class PayActivity extends BaseActivity {
                         mDialog.dismiss();
                     }
                     break;
+
                 default:
                     break;
             }
         }
     }
-
     private void getOrderNum(int type) {
         if (!NetworkUtil.checkNet(PayActivity.this)){
             ToastUtil.showShortToast(PayActivity.this,"没有网了，请检查网络");
             return;
         }
+
         String name = etName.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
         if (name.equals("") || phone.equals("")){
@@ -109,7 +125,7 @@ public class PayActivity extends BaseActivity {
         }
         PromptUtil.showTransparentProgress(PayActivity.this,false);
         RequestParams params = new RequestParams();
-        params.add("houseId",mId+"");
+        params.add("houseId",getIntent().getStringExtra("houseId"));
         params.add("tel",phone);
         params.add("realName",name);
         OkHttpUtils.post()
@@ -125,8 +141,10 @@ public class PayActivity extends BaseActivity {
                             String ordernum = object.getString("ordernum");
                             if (ordernum!=null && !ordernum.equals("")){
                                 if (type == 0){
+                                    Log.d(TAG, "onSuccessaaaaaaa: 微信支付");
                                     wechatPay(ordernum);
                                 }else if (type == 1){
+                                    Log.d(TAG, "onSuccessaaaaaaa: zhif支付");
                                     aliPay(ordernum);
                                 }else {
 
@@ -169,6 +187,8 @@ public class PayActivity extends BaseActivity {
                 .execute(new ResultCallBack() {
                     @Override
                     public void onSuccess(String body) {
+                        WechatPayVO vo = JSON.parseObject(body, WechatPayVO.class);
+                        WXUtils.payWX(vo);
 
                     }
 
@@ -195,9 +215,9 @@ public class PayActivity extends BaseActivity {
                 .addParams("orderNum",orderNumber)
                 .build()
                 .execute(new ResultCallBack() {
-                    @Override
                     public void onSuccess(String body) {
-
+                        AliPayVO vo = JSON.parseObject(body, AliPayVO.class);
+                        payAliPay(vo.getAlipay());
                     }
 
                     @Override
@@ -212,5 +232,42 @@ public class PayActivity extends BaseActivity {
                     }
                 });
     }
+    private void payAliPay(final String orderInfo) {
+        Runnable payRunnable = new Runnable() {
+            @Override
+            public void run() {
+                PayTask alipay = new PayTask(PayActivity.this);
+                Map<String, String> result = alipay.payV2(orderInfo, true);
+                Message msg = new Message();
+                msg.what = 0x11;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
+            }
+        };
+        // 必须异步调用
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
+    }
+    /**
+     * 支付宝返回结果处理
+     * <p>
+     * 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+     */
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+           if(msg.what==0x11){
+                PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                String resultStatus = payResult.getResultStatus();
+                // 判断resultStatus 为9000则代表支付成功
+                if (TextUtils.equals(resultStatus, "9000")) {
+                    Toast.makeText(PayActivity.this, "支付成功！", Toast.LENGTH_SHORT).show();
+                    goBackMain();
+                } else {
+                    Toast.makeText(PayActivity.this, "支付失败！", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }
+    };
 
 }

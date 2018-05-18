@@ -65,10 +65,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/ll2"
             android:layout_marginTop="@dimen/view_size_6"
-            android:drawableLeft="@mipmap/icon_location"
             android:ellipsize="end"
             android:maxLines="1"
-            android:drawablePadding="@dimen/view_size_5"
             android:textSize="@dimen/text_size_11"
             android:textColor="#999999"
             android:text="北京市大兴区"/>

@@ -16,14 +16,11 @@
         android:background="@color/bg_color" />
 
     <RelativeLayout
-
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/color_white">
-
         <RelativeLayout
-
             android:id="@+id/rl_ac_chezhu_empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -32,8 +29,8 @@
 
             <ImageView
                 android:id="@+id/iv_empty"
-                android:layout_width="@dimen/view_size_222"
-                android:layout_height="@dimen/view_size_222"
+                android:layout_width="@dimen/view_size_229"
+                android:layout_height="@dimen/view_size_168"
                 android:layout_marginBottom="@dimen/view_size_22"
                 android:layout_marginLeft="@dimen/view_size_111"
                 android:layout_marginTop="@dimen/view_size_42"
@@ -98,6 +95,7 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/swipe_target"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="5dp"

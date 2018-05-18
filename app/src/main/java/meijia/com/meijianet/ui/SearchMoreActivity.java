@@ -59,7 +59,7 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
     private String headers[] = {"区域", "总价", "厅室", "更多"};
     private List<View> popupViews = new ArrayList<>();
 
-    private String citys[] = {"柯城", "衢江", "巨化", "其他地方"};
+    private String citys[] = {"柯城", "衢江", "巨化", "其它区域"};
     private String ages[] = { "50万以下", "50-80万", "80-100万", "100-120万", "120-150万",
             "150-200万", "200-300万", "300万以上"};
     private String sexs[] = { "一室", "二室", "三室", "四室", "五室", "六室及以上"};
@@ -119,8 +119,6 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
     @Override
     protected void setContent() {
         setContentView(R.layout.activity_search_more);
-        StatusBarUtils.setStatusBarFontDark(this,true);
-        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
     }
 
 
@@ -264,6 +262,8 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
                         ToastUtil.showShortToast(SearchMoreActivity.this, "最高的价格不能低于最低的价格");
                         return;
                     }
+                    tagLayout.setItemSelecte(8);
+                    tagPosition=8;
                 } else {
                     mDropDownMenu.setTabText(tagPosition == 8 ? headers[1] : ages[tagPosition]);
                 }
@@ -569,18 +569,22 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
 
     @Override
     protected void initData() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             llParent.post(new Runnable() {
                 @Override
                 public void run() {
+                    StatusBarUtils.setStatusBarFontDark(SearchMoreActivity.this,true);
+                    StatusBarUtils.setStatusBarColor(SearchMoreActivity.this, getResources().getColor(R.color.white));
                     llParent.setPadding(0, BubbleUtils.getStatusBarHeight(SearchMoreActivity.this), 0, 0);
                 }
             });
+        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP||Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            StatusBarUtils.setStatusBarFontDark(SearchMoreActivity.this,true);
+            StatusBarUtils.setStatusBarColor(SearchMoreActivity.this, getResources().getColor(R.color.color_black60));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
         }
 
-        autoRefresh();
     }
     @Override
     protected void initClick() {
@@ -626,7 +630,7 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
                 params.add("region", "巨化");
                 break;
             case 3:
-                params.add("region", "其他区域");
+                params.add("region", "其它区域");
                 break;
             case 4:
 
@@ -822,7 +826,7 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
                 params.add("region", "巨化");
                 break;
             case 3:
-                params.add("region", "其他区域");
+                params.add("region", "其它区域");
                 break;
             case 4:
 
@@ -950,17 +954,16 @@ public class SearchMoreActivity extends BaseActivity implements OnRefreshListene
                     }
                 });
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        autoRefresh();
+    }
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(SearchMoreActivity.this,WebViewActivity.class);
-        LoginVo userInfo = SharePreUtil.getUserInfo(SearchMoreActivity.this);
         intent.putExtra("istatle", "房屋详情");
-        if (!userInfo.getUuid().equals("")){
-            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(position).getId()+"&uuid="+userInfo.getUuid());
-        }else {
-            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(position).getId()+"&uuid="+"");
-        }
+        intent.putExtra("houseId",String.valueOf(datas.get(position).getId()) );
         startActivity(intent);
     }
 

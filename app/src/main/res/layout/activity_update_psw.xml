@@ -32,6 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:password="true"
                     android:id="@+id/et_ac_name"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -72,6 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:password="true"
                     android:id="@+id/et_ac_psw_new"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -112,6 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:password="true"
                     android:id="@+id/et_ac_psw_new_sure"
                     android:layout_width="0dp"
                     android:layout_weight="1"

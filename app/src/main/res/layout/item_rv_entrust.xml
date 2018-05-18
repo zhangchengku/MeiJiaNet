@@ -133,55 +133,6 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout
-                android:layout_marginRight="@dimen/view_size_21"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-                <LinearLayout
-                    android:layout_width="1dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:text="委托人小二："
-                        android:textColor="#131313"
-                        android:textSize="@dimen/view_size_15"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:id="@+id/iv_ac_myentrust_twoname"
-                        android:layout_gravity="center_vertical"
-                        android:text="李雷"
-                        android:textColor="#131313"
-                        android:textSize="@dimen/view_size_15"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="1dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:text="服务号码"
-                        android:textColor="#131313"
-                        android:textSize="@dimen/view_size_15"
-                        android:layout_gravity="center_vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:id="@+id/iv_ac_myentrust_twophone"
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center_vertical"
-                        android:text="13552008150"
-                        android:textColor="#131313"
-                        android:textSize="@dimen/view_size_15"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-            </LinearLayout>
-
 
         </LinearLayout>
 
@@ -200,6 +151,8 @@
         android:textColor="@color/white"
         android:gravity="center"
         android:layout_width="match_parent"
+        android:layout_marginRight="@dimen/view_size_56"
+        android:layout_marginLeft="@dimen/view_size_56"
         android:layout_height="@dimen/view_size_40" />
     <View
         android:layout_width="match_parent"

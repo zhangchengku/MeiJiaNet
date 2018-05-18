@@ -45,6 +45,8 @@ public class QuedingWQActivity extends BaseActivity {
     private String userId;
     private String phone;
     private String three;
+    private String userName;
+    private String userIcon;
 
     @Override
     protected void setContent() {
@@ -65,8 +67,11 @@ public class QuedingWQActivity extends BaseActivity {
     protected void initData() {
         Intent intent = getIntent();
         style = intent.getStringExtra("style");
-        userId = intent.getStringExtra("UserId");
+        userId = intent.getStringExtra("userId");
+        userIcon = intent.getStringExtra("wxHeader");
+        userName = intent.getStringExtra("wxNickName");
         phone = intent.getStringExtra("phone");
+
         llContent.post(new Runnable() {
             @Override
             public void run() {
@@ -93,6 +98,10 @@ public class QuedingWQActivity extends BaseActivity {
                     String passwords = onepasswords.getText().toString().trim();
                     if (password.equals("") || passwords.equals("")){
                         ToastUtil.showShortToast(QuedingWQActivity.this,"密码不能为空");
+                        return;
+                    }
+                    if(password.length()<6){
+                        ToastUtil.showShortToast(QuedingWQActivity.this,"请输入6-12位密码");
                         return;
                     }
                     if (!password.equals(passwords) ){
@@ -147,12 +156,6 @@ public class QuedingWQActivity extends BaseActivity {
                 });
     }
     private void getlogding() {
-        if (style .equals("1") ) {//微信
-            three = "wxUserId";
-        }
-        if (style .equals("2")) {//QQ
-            three = "qqUserId";
-        }
         //检查网络
         if (!NetworkUtil.checkNet(this)){
             ToastUtil.showShortToast(this,"没网啦，请检查网络");
@@ -160,7 +163,16 @@ public class QuedingWQActivity extends BaseActivity {
         }
         PromptUtil.showTransparentProgress(this,false);
         RequestParams params = new RequestParams(this);
-        params.add(three,userId);
+        if (style.equals("1")) {//微信
+            params.add("wxUserId",userId);
+            params.add("wxHeader",userIcon);
+            params.add("wxNickName",userName);
+        }
+        if (style.equals("2")) {//QQ
+            params.add("qqUserId",userId);
+            params.add("qqHeader",userIcon);
+            params.add("qqNickName",userName);
+        }
         OkHttpUtils.post()
                 .tag(this)
                 .url(BaseURL.BASE_URL + LOGIN_QW)

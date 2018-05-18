@@ -41,8 +41,7 @@ public class UpdatePswActivity extends BaseActivity implements TextView.OnEditor
 
     @Override
     protected void setContent() {
-        StatusBarUtils.setStatusBarFontDark(this,true);
-        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
+
         setContentView(R.layout.activity_update_psw);
 
     }
@@ -69,13 +68,21 @@ public class UpdatePswActivity extends BaseActivity implements TextView.OnEditor
 
     @Override
     protected void initData() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            llParent.post(new Runnable() {
-                @Override
-                public void run() {
-                    llParent.setPadding(0, BubbleUtils.getStatusBarHeight(UpdatePswActivity.this), 0, 0);
-                }
-            });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            StatusBarUtils.setStatusBarFontDark(UpdatePswActivity.this,true);
+            StatusBarUtils.setStatusBarColor(UpdatePswActivity.this, getResources().getColor(R.color.white));
+            llParent.setPadding(0, BubbleUtils.getStatusBarHeight(UpdatePswActivity.this), 0, 0);
+//            llParent.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    StatusBarUtils.setStatusBarFontDark(UpdatePswActivity.this,true);
+//                    StatusBarUtils.setStatusBarColor(UpdatePswActivity.this, getResources().getColor(R.color.white));
+//                    llParent.setPadding(0, BubbleUtils.getStatusBarHeight(UpdatePswActivity.this), 0, 0);
+//                }
+//            });
+        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP&&Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            StatusBarUtils.setStatusBarFontDark(UpdatePswActivity.this,true);
+            StatusBarUtils.setStatusBarColor(UpdatePswActivity.this, getResources().getColor(R.color.color_black60));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
         }
@@ -106,6 +113,10 @@ public class UpdatePswActivity extends BaseActivity implements TextView.OnEditor
         String newPswSure = etNewPswSure.getText().toString().trim();
         if (oldPsw.equals("") || newPsw.equals("") || newPswSure.equals("")){
             ToastUtil.showShortToast(UpdatePswActivity.this,"请将信息填写完整");
+            return;
+        }
+        if(oldPsw.length()<6){
+            ToastUtil.showShortToast(UpdatePswActivity.this,"请输入6-12位密码");
             return;
         }
         if (!newPsw.equals(newPswSure)){

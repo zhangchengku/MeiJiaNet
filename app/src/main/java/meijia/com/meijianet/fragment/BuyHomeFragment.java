@@ -65,7 +65,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
     private String headers[] = {"区域", "总价", "厅室", "更多"};
     private List<View> popupViews = new ArrayList<>();
 
-    private String citys[] = {"柯城", "衢江", "巨化", "其他地方"};
+    private String citys[] = {"柯城", "衢江", "巨化", "其它区域"};
     private String ages[] = { "50万以下", "50-80万", "80-100万", "100-120万", "120-150万",
             "150-200万", "200-300万", "300万以上"};
     private String sexs[] = { "一室", "二室", "三室", "四室", "五室", "六室及以上"};
@@ -264,6 +264,8 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                         ToastUtil.showShortToast(getActivity(), "最高的价格不能低于最低的价格");
                         return;
                     }
+                    tagLayout.setItemSelecte(8);
+                    tagPosition=8;
                 } else {
                     mDropDownMenu.setTabText(tagPosition == 8 ? headers[1] : ages[tagPosition]);
                 }
@@ -576,7 +578,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                 llParent.setPadding(0, BubbleUtils.getStatusBarHeight(getActivity()), 0, 0);
             }
         });
-        autoRefresh();
+
     }
     @Override
     protected void initClick() {
@@ -611,7 +613,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                 params.add("region", "巨化");
                 break;
             case 3:
-                params.add("region", "其他区域");
+                params.add("region", "其它区域");
                 break;
             case 4:
 
@@ -805,7 +807,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                 params.add("region", "巨化");
                 break;
             case 3:
-                params.add("region", "其他区域");
+                params.add("region", "其它区域");
                 break;
             case 4:
 
@@ -936,18 +938,18 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
 
     @Override
     public void onItemClick(int position) {
+        Log.d("sadfasdf", "onItemClick: "+String.valueOf(datas.get(position).getId()));
         Intent intent = new Intent(getActivity(),WebViewActivity.class);
-        LoginVo userInfo = SharePreUtil.getUserInfo(getActivity());
         intent.putExtra("istatle", "房屋详情");
-        if (!userInfo.getUuid().equals("")){
-            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(position).getId()+"&uuid="+userInfo.getUuid());
-        }else {
-            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(position).getId()+"&uuid="+"");
-        }
+        intent.putExtra("houseId",String.valueOf(datas.get(position).getId()) );
         startActivity(intent);
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        autoRefresh();
+    }
     @Override
     public void onClick(View v) {
 

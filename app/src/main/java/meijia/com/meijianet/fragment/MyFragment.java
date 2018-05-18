@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoFragment;
@@ -25,13 +26,17 @@ import com.jph.takephoto.model.TImage;
 import com.jph.takephoto.model.TResult;
 import com.jph.takephoto.model.TakePhotoOptions;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
+import java.util.List;
 
 import meijia.com.meijianet.R;
+import meijia.com.meijianet.activity.NewHouseInfo;
+import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseURL;
 import meijia.com.meijianet.bean.LoginVo;
 import meijia.com.meijianet.ui.LoginActivity;
@@ -41,11 +46,16 @@ import meijia.com.meijianet.ui.MyEntrustActivity;
 import meijia.com.meijianet.ui.MyIntentionActivity;
 import meijia.com.meijianet.ui.PersonCenterActivity;
 import meijia.com.meijianet.ui.WebViewActivity;
+import meijia.com.meijianet.ui.WebViewActivity2;
 import meijia.com.meijianet.ui.textone;
 import meijia.com.meijianet.util.BubbleUtils;
+import meijia.com.meijianet.util.NetworkUtil;
+import meijia.com.meijianet.util.PromptUtil;
 import meijia.com.meijianet.util.SharePreUtil;
 import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.meijianet.util.ToolUtil;
+
+import static meijia.com.meijianet.api.URL.PHONE_CODE;
 
 /**
  * ----------------------------------------------------------
@@ -77,6 +87,8 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
     private ScrollView linear;
     private ImageView callphone;
     private TextView text;
+    private TextView phonecode;
+    private String phone;
 
 
     @Override
@@ -110,12 +122,15 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
         fmmynickname = (TextView) view.findViewById(R.id.fm_my_nickname);
         fmmynickname.setVisibility(View.GONE);
         callphone = (ImageView) view.findViewById(R.id.call_phone);
+        text = (TextView) view.findViewById(R.id.text);
+        phonecode = (TextView) view.findViewById(R.id.phone_code);
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        getphone();
         LoginVo userInfo = SharePreUtil.getUserInfo(getActivity());
         if (!userInfo.getUuid().equals("")) {
             ivSet.setVisibility(View.VISIBLE);
@@ -138,6 +153,37 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
             tvNameOrStatus.setText("登录/注册");
 
         }
+    }
+
+    private void getphone() {
+
+        //检查网络
+        if (!NetworkUtil.checkNet(getActivity())){
+            ToastUtil.showShortToast(getActivity(),"没网啦，请检查网络");
+            return;
+        }
+        OkHttpUtils.post()
+                .tag(this)
+                .url(BaseURL.BASE_URL + PHONE_CODE)
+                .build()
+                .execute(new ResultCallBack() {
+                    @Override
+                    public void onSuccess(String body) {
+                        Log.d("bodybodybodybodybody", "onSuccess: "+body);
+                        phone =body;
+                        phonecode.setText("客服热线："+phone);
+                    }
+
+                    @Override
+                    public void onFail(int returnCode, String returnTip) {
+                        ToastUtil.showShortToast(getActivity(),returnTip);
+
+                    }
+
+                    @Override
+                    public void onAfter(int id) {
+                    }
+                });
     }
 
     protected void initData() {
@@ -166,6 +212,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
         tvLvshi.setOnClickListener(this);
         tvjyliucheng.setOnClickListener(this);
         tvDaikuan.setOnClickListener(this);
+        text.setOnClickListener(this);
     }
 
     @Override
@@ -175,11 +222,15 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                 case R.id.iv_fm_my_set://编辑资料设置
                     startActivity(new Intent(getActivity(), PersonCenterActivity.class));
                     break;
+                case R.id.text://编辑资料设置
+                    startActivity(new Intent(getActivity(), textone.class));
+                    break;
                 case R.id.riv_fm_my_icon://设置头像
                     if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }
+                    startActivity(new Intent(getActivity(), PersonCenterActivity.class));
                     break;
                 case R.id.tv_fm_my_nickname://设置头像
                     if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
@@ -216,33 +267,34 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                     startActivity(new Intent(getActivity(), MyBrowseActivity.class));
                     break;
                 case R.id.tv_lvshi://专属律师/
-                    Intent intent5 = new Intent(getActivity(),WebViewActivity.class);
+                    Intent intent5 = new Intent(getActivity(),WebViewActivity2.class);
                     intent5.putExtra("istatle", "专属律师");
                     intent5.putExtra("url", BaseURL.BASE_URL+"/api/house/lawyer");
                     Log.d("asdfasdfasdf", "onClick: "+BaseURL.BASE_URL+"/api/house/lawyer");
                     startActivity(intent5);
                     break;
                 case R.id.tv_jyliucheng://交易流程
-                    Intent intent1 = new Intent(getActivity(),WebViewActivity.class);
+                    Intent intent1 = new Intent(getActivity(),WebViewActivity2.class);
                     intent1.putExtra("istatle", "交易流程");
                     intent1.putExtra("url", BaseURL.BASE_URL+"/api/house/process");
                     startActivity(intent1);
                     break;
                 case R.id.tv_biaozhun://收费标准
-                    Intent intent2 = new Intent(getActivity(),WebViewActivity.class);
+                    Intent intent2 = new Intent(getActivity(),WebViewActivity2.class);
                     intent2.putExtra("istatle", "收费标准");
                     intent2.putExtra("url",BaseURL.BASE_URL+"/api/house/standard");
                     startActivity(intent2);
                     break;
                 case R.id.tv_daikuan://贷款计算器
-                    Intent intent3 = new Intent(getActivity(),WebViewActivity.class);
+                    Intent intent3 = new Intent(getActivity(),WebViewActivity2.class);
                     intent3.putExtra("istatle", "贷款计算器");
                     intent3.putExtra("url",BaseURL.BASE_URL+"/api/loanCalculator");
                     startActivity(intent3);
                     break;
                 case R.id.call_phone://打电话
+                    Log.d("bodybodybodybodybody", "onSuccessadf: "+phone);
                     Intent intent = new Intent(Intent.ACTION_DIAL);
-                    Uri data = Uri.parse("tel:" + 400123888);
+                    Uri data = Uri.parse("tel:" + phone);
                     intent.setData(data);
                     startActivity(intent);
                     break;

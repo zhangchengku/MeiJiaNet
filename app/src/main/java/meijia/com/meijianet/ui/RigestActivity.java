@@ -88,7 +88,7 @@ public class RigestActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.yonghuxiey:
-                Intent intent5 = new Intent(RigestActivity.this,WebViewActivity.class);
+                Intent intent5 = new Intent(RigestActivity.this,WebViewActivity2.class);
                 intent5.putExtra("istatle", "隐私声明");
                 intent5.putExtra("url", BaseURL.BASE_URL+"/business/notice");
                 Log.d("asdfasdfasdf", "onClick: "+BaseURL.BASE_URL+"/business/notice");

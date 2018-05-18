@@ -2,6 +2,7 @@ package meijia.com.meijianet.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
@@ -26,6 +27,7 @@ import meijia.com.meijianet.base.BaseFragment;
 import meijia.com.meijianet.ui.WebViewActivity;
 import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.ToolUtil;
+import meijia.com.srdlibrary.myutil.StatusBarUtils;
 
 /**
  * Created by dell on 2018/4/11.
@@ -80,6 +82,7 @@ public class HouserFragment extends BaseFragment {
                 llParent.setPadding(0, BubbleUtils.getStatusBarHeight(getActivity()), 0, 0);
             }
         });
+
     }
 
     @Override

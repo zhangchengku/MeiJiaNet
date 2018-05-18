@@ -6,6 +6,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -35,23 +36,19 @@ public class MyEntrustAdapter extends CommonRecyclerAdapter<MyEntrustVo> {
         MyEntrustVo entrustVo = data.get(position);
         MyEntrustInfo employee = entrustVo.getEmployee();
         holder.setText(R.id.iv_ac_myentrust_price,"¥"+subZeroAndDot(entrustVo.getPrice())+"万");
-        holder.setText(R.id.iv_ac_myentrust_address,entrustVo.getAcreage());
+        holder.setText(R.id.iv_ac_myentrust_address,entrustVo.getAddress());
         holder.setText(R.id.iv_ac_myentrust_village,entrustVo.getName());
         holder.setText(R.id.iv_ac_myentrust_name,entrustVo.getContactname());
         holder.setText(R.id.iv_ac_myentrust_phone,entrustVo.getContactphone());
-        holder.setText(R.id.iv_ac_myentrust_twoname,employee.getNickname());
-        holder.setText(R.id.iv_ac_myentrust_twophone,employee.getPhone());
-
-
         int status = entrustVo.getConsignationStatus();
         if (status == 0){
-            holder.setText(R.id.iv_ac_myentrust_status, "待委托");
+            holder.setText(R.id.iv_ac_myentrust_status, "审核中");
             holder.getView(R.id.iv_ac_myentrust_status).setBackgroundColor(Color.parseColor("#F4A361"));
         }else if (status == 1){
-            holder.setText(R.id.iv_ac_myentrust_status, "已委托");
+            holder.setText(R.id.iv_ac_myentrust_status, "已审核");
             holder.getView(R.id.iv_ac_myentrust_status).setBackgroundColor(Color.parseColor("#44D18B"));
         }else {
-            holder.setText(R.id.iv_ac_myentrust_status, "拒委托");
+            holder.setText(R.id.iv_ac_myentrust_status, "已被拒");
             holder.getView(R.id.iv_ac_myentrust_status).setBackgroundColor(Color.parseColor("#999999"));
         }
 

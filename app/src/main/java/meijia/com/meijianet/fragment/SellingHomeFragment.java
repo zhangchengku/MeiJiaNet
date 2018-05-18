@@ -1,6 +1,7 @@
 package meijia.com.meijianet.fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,12 +38,14 @@ import meijia.com.meijianet.ui.PostHouseActivity;
 import meijia.com.meijianet.ui.SearchMoreActivity;
 import meijia.com.meijianet.ui.TransactionRecordActivity;
 import meijia.com.meijianet.ui.WebViewActivity;
+import meijia.com.meijianet.ui.WebViewActivity2;
 import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.util.PromptUtil;
 import meijia.com.meijianet.util.SharePreUtil;
 import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.meijianet.vo.myentrust.MyEntrustVo;
+import meijia.com.srdlibrary.myutil.StatusBarUtils;
 
 /**
  * Created by Administrator on 2018/4/20.
@@ -79,17 +82,27 @@ public class SellingHomeFragment extends BaseFragment implements OnRefreshListen
         rlEmpty = (RelativeLayout)view.findViewById(R.id.rl_ac_chezhu_empty);
         swipeToLoadLayout = (SwipeToLoadLayout)view.findViewById(R.id.refresh_layout);
         swipeToLoadLayout.setOnRefreshListener(this);
-        autoRefresh();
+
     }
 
     @Override
     protected void initData() {
-        llParent.post(new Runnable() {
-            @Override
-            public void run() {
-                llParent.setPadding(0, BubbleUtils.getStatusBarHeight(getActivity()), 0, 0);
-            }
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            llParent.post(new Runnable() {
+                @Override
+                public void run() {
+                    llParent.setPadding(0, BubbleUtils.getStatusBarHeight(getActivity()), 0, 0);
+                }
+            });
+        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP||Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            llParent.post(new Runnable() {
+                @Override
+                public void run() {
+                    llParent.setPadding(0, BubbleUtils.getStatusBarHeight(getActivity()), 0, 0);
+                }
+            });
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        }
         mAdapter = new MyEntrustAdapter(getActivity(),datas);
         mManager = new LinearLayoutManager(getActivity());
         rvList.setLayoutManager(mManager);
@@ -107,7 +120,11 @@ public class SellingHomeFragment extends BaseFragment implements OnRefreshListen
         if (v != null) {
             switch (v.getId()) {
                 case R.id.add:
-                    Intent intent = new Intent(getActivity(),WebViewActivity.class);
+                    if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        return;
+                    }
+                    Intent intent = new Intent(getActivity(),WebViewActivity2.class);
                     intent.putExtra("istatle", "卖家须知");
                     intent.putExtra("url", BaseURL.BASE_URL+"/api/salerNotice");
                     startActivity(intent);
@@ -140,17 +157,15 @@ public class SellingHomeFragment extends BaseFragment implements OnRefreshListen
                             datas.clear();
                             datas.addAll(myEntrustVos);
                             mAdapter.notifyDataSetChanged();
+                            rvList.setVisibility(View.VISIBLE);
                             rlEmpty.setVisibility(View.GONE);
                         }else {
+                            rvList.setVisibility(View.GONE);
                             rlEmpty.setVisibility(View.VISIBLE);
                         }
                     }
-
                     @Override
                     public void onFail(int returnCode, String returnTip) {
-                        if(returnTip.equals("未登录")){
-                            startActivity(new Intent(getActivity(), LoginActivity.class));
-                        }
                         PromptUtil.closeTransparentDialog();
                     }
 
@@ -183,5 +198,17 @@ public class SellingHomeFragment extends BaseFragment implements OnRefreshListen
 
             }
         }, 200);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
+            rvList.setVisibility(View.GONE);
+            rlEmpty.setVisibility(View.VISIBLE);
+        }else {
+            autoRefresh();
+        }
+
     }
 }

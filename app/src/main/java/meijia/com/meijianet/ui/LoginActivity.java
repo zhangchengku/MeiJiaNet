@@ -78,7 +78,7 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
     private String userGender;
     private String wxUserId;
     private String qqUserId;
-    private String three;
+
 
     @Override
     protected void setContent() {
@@ -121,6 +121,7 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
     }
 
     @Override
+
     public void onClick(View v) {
         if (v != null) {
             switch (v.getId()) {
@@ -132,6 +133,10 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
                     String psw = etPsw.getText().toString().trim();
                     if (phone.equals("") || psw.equals("")){
                         ToastUtil.showShortToast(LoginActivity.this,"手机号或密码不能为空");
+                        return;
+                    }
+                    if(psw.length()<6){
+                        ToastUtil.showShortToast(LoginActivity.this,"请输入6-12位密码");
                         return;
                     }
                     if (!ToolUtil.isPhoneNumber(phone)){
@@ -241,20 +246,16 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
                 userName = platform.getDb().getUserName();//获取用户名字
                 userIcon = platform.getDb().getUserIcon();//获取用户头像
                 userGender = platform.getDb().getUserGender();
-                checkWXQQ(userId);
+                Log.d(TAG, "handleMessadfasdfasdage: "+userIcon);
+                checkWXQQ();
             }
             break;
 
         }
         return false;
     }
-    private void checkWXQQ(String UserId) {
-        if (style == 1) {//微信
-            three = "wxUserId";
-        }
-        if (style == 2) {//QQ
-            three = "qqUserId";
-        }
+    private void checkWXQQ() {
+
         //检查网络
         if (!NetworkUtil.checkNet(this)){
             ToastUtil.showShortToast(this,"没网啦，请检查网络");
@@ -262,7 +263,16 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
         }
 
         RequestParams params = new RequestParams(this);
-        params.add(three,UserId);
+        if (style == 1) {//微信
+            params.add("wxUserId",userId);
+            params.add("wxHeader",userIcon);
+            params.add("wxNickName",userName);
+        }
+        if (style == 2) {//QQ
+            params.add("qqUserId",userId);
+            params.add("qqHeader",userIcon);
+            params.add("qqNickName",userName);
+        }
         OkHttpUtils.post()
                 .tag(this)
                 .url(BaseURL.BASE_URL + LOGIN_QW)
@@ -282,7 +292,9 @@ public class LoginActivity extends BaseActivity implements TextView.OnEditorActi
                         }else {
                             Intent intent=new Intent(LoginActivity.this,BindingWQActivity.class);
                             intent.putExtra("style",String.valueOf(style));
-                            intent.putExtra("UserId",UserId);
+                            intent.putExtra("userId",userId);
+                            intent.putExtra("wxHeader",userIcon);
+                            intent.putExtra("wxNickName",userName);
                             startActivity(intent);
                             finish();
                         }

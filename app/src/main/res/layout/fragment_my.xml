@@ -269,6 +269,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
             <TextView
+                android:id="@+id/phone_code"
                 android:text="客服热线：400-123-888"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -276,8 +277,8 @@
                 android:id="@+id/call_phone"
                 android:layout_marginLeft="10dp"
                 android:src="@mipmap/logding_dh"
-                android:layout_width="14dp"
-                android:layout_height="14dp" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

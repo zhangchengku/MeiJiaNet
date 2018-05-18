@@ -72,6 +72,23 @@ public class MyCollectInfo {
     private int intentionCount;//
     private String uptime;//
     private int status;
+    private String mstorey;//
+    private String memAddress;
+
+    public String getMemAddress() {
+        return memAddress;
+    }
+
+    public void setMemAddress(String memAddress) {
+        this.memAddress = memAddress;
+    }
+    public String getMstorey() {
+        return mstorey;
+    }
+
+    public void setMstorey(String mstorey) {
+        this.mstorey = mstorey;
+    }
 
     public int getStatus() {
         return status;

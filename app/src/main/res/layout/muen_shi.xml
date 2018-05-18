@@ -16,50 +16,51 @@
     <LinearLayout
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:focusableInTouchMode="true"
         android:focusable="true"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="30dp">
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_marginRight="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp">
             <EditText
                 android:id="@+id/et_shi"
                 android:textColorHint="@color/hint_color"
                 android:inputType="number"
                 android:textSize="12sp"
                 android:background="@drawable/bg_item_city_normal"
-                android:layout_width="95dp"
-                android:layout_height="30dp"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
             <TextView
-               android:layout_alignParentTop="true"
-                android:layout_marginLeft="74dp"
-                android:layout_marginTop="9dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:textSize="12sp"
                 android:textColor="#333333"
                 android:text="室"
-                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp">
             <EditText
                 android:id="@+id/et_ting"
-                android:layout_marginLeft="18dp"
                 android:textColorHint="@color/hint_color"
                 android:inputType="number"
-                android:gravity="center"
                 android:textSize="12sp"
                 android:background="@drawable/bg_item_city_normal"
-                android:layout_width="95dp"
-                android:layout_height="29dp"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
             <TextView
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="74dp"
-                android:layout_marginTop="9dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:textSize="12sp"
                 android:textColor="#333333"
                 android:text="厅"
@@ -68,26 +69,24 @@
                 android:layout_height="wrap_content" />
         </RelativeLayout>
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_marginLeft="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp">
             <EditText
-                android:layout_marginLeft="18dp"
                 android:id="@+id/et_wei"
                 android:textColorHint="@color/hint_color"
                 android:inputType="number"
-                android:gravity="center"
                 android:textSize="12sp"
                 android:background="@drawable/bg_item_city_normal"
-                android:layout_width="95dp"
-                android:layout_height="29dp"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
             <TextView
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="74dp"
-                android:layout_marginTop="9dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:textSize="12sp"
                 android:textColor="#333333"
                 android:text="卫"
-                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>

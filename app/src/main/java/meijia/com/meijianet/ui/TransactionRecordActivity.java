@@ -38,8 +38,10 @@ import meijia.com.meijianet.api.OnItemClickListener;
 import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseActivity;
 import meijia.com.meijianet.base.BaseURL;
+import meijia.com.meijianet.bean.LoginVo;
 import meijia.com.meijianet.util.BubbleUtils;
 import meijia.com.meijianet.util.NetworkUtil;
+import meijia.com.meijianet.util.SharePreUtil;
 import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.meijianet.util.ToolUtil;
 import meijia.com.srdlibrary.liushibuju.BaseAdapter;
@@ -948,8 +950,9 @@ public class TransactionRecordActivity extends BaseActivity implements OnRefresh
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(TransactionRecordActivity.this, HouseDetailActivity.class);
-        intent.putExtra("id", datas.get(position).getId());
+        Intent intent = new Intent(TransactionRecordActivity.this,WebViewActivity.class);
+        intent.putExtra("istatle", "房屋详情");
+        intent.putExtra("houseId",String.valueOf(datas.get(position).getId()) );
         startActivity(intent);
     }
 

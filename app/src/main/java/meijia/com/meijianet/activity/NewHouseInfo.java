@@ -1,5 +1,7 @@
 package meijia.com.meijianet.activity;
 
+import java.util.Date;
+
 /**
  * ----------------------------------------------------------
  * Copyright ©
@@ -63,7 +65,60 @@ public class NewHouseInfo {
     private int collect_count;
     private int intentionCount;
     private String uptime;
+    private String tradetime;
+    private String mstorey;
+    private int browseCount;
+    private String memAddress;
+    private String mem_address;
 
+    public String getMem_address() {
+        return mem_address;
+    }
+
+    public void setMem_address(String mem_address) {
+        this.mem_address = mem_address;
+    }
+
+    public String getMemAddress() {
+        return memAddress;
+    }
+
+    public void setMemAddress(String memAddress) {
+        this.memAddress = memAddress;
+    }
+
+    public int getBrowseCount() {
+        return browseCount;
+    }
+
+    public void setBrowseCount(int browseCount) {
+        this.browseCount = browseCount;
+    }
+
+    public int getCollectCount() {
+        return collectCount;
+    }
+
+    public void setCollectCount(int collectCount) {
+        this.collectCount = collectCount;
+    }
+
+    private int  collectCount;
+    public String getMstorey() {
+        return mstorey;
+    }
+
+    public void setMstorey(String mstorey) {
+        this.mstorey = mstorey;
+    }
+
+    public String getTradetime() {
+        return tradetime;
+    }
+
+    public void setTradetime(String tradetime) {
+        this.tradetime = tradetime;
+    }
 
     public long getId() {
         return id;
@@ -138,7 +193,7 @@ public class NewHouseInfo {
     }
 
     public String getTotalprice() {
-        return totalprice == null ? "" : totalprice;
+        return totalprice;
     }
 
     public void setTotalprice(String totalprice) {

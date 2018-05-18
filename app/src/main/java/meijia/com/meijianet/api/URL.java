@@ -42,5 +42,5 @@ public interface URL {
     String VERSION_CODE = "/version/version.json";
     String EXCLUSIVE_TWO = "/api/member/getEmployee";
     String ADVERTISEMENT = "/api/advertisement";
-
+    String PHONE_CODE = "/api/servicePhone";
 }

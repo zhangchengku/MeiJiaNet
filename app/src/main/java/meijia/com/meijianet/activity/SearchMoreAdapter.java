@@ -38,10 +38,10 @@ public class SearchMoreAdapter extends CommonRecyclerAdapter<NewHouseInfo> {
         holder.setText(R.id.tv_item_fangyuan_title, houseInfo.getTitle());
         holder.setText(R.id.tv_item_fangyuan_price, subZeroAndDot(houseInfo.getTotalprice()));
         holder.setText(R.id.tv_item_fangyuan_msg,houseInfo.getRoom()+"室"+houseInfo.getHall()+
-                "厅"+houseInfo.getToilet()+"卫 | "+subZeroAndDot(houseInfo.getAcreage())+"㎡|第"+houseInfo.getStorey()+"层/共"+houseInfo.getSumfloor()+"层");
-        holder.setText(R.id.tv_item_fangyuan_address,houseInfo.getAddress());
-        holder.setText(R.id.tv2,houseInfo.getBrowse_count()+"");
-        holder.setText(R.id.tv1,houseInfo.getIntentionCount()+"");
+                "厅"+houseInfo.getToilet()+"卫 | "+subZeroAndDot(houseInfo.getAcreage())+"㎡|第"+houseInfo.getMstorey()+"层/共"+houseInfo.getSumfloor()+"层");
+        holder.setText(R.id.tv_item_fangyuan_address,houseInfo.getMemAddress());
+        holder.setText(R.id.tv2,houseInfo.getBrowseCount()+"");
+        holder.setText(R.id.tv1,houseInfo.getCollectCount()+"");
         Glide.with(mContext)
                 .load(houseInfo.getPiclogo())
                 .placeholder(R.mipmap.icon_fang_defout)
@@ -53,25 +53,25 @@ public class SearchMoreAdapter extends CommonRecyclerAdapter<NewHouseInfo> {
         String application = houseInfo.getApplication();
         String type = "";
         switch (application) {
-            case "2":
+            case "1":
                 type = "单体别墅";
                 break;
-            case "5":
+            case "2":
                 type = "排屋";
                 break;
-            case "7":
+            case "3":
                 type = "多层";
                 break;
-            case "1":
+            case "4":
                 type = "复式";
                 break;
-            case "4":
+            case "5":
                 type = "小高楼";
                 break;
-            case "3":
+            case "6":
                 type = "写字楼";
                 break;
-            case "6":
+            case "7":
                 type = "店面";
                 break;
         }

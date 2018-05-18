@@ -63,6 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <EditText
+            android:maxLength="11"
             android:id="@+id/et_ac_post_phone"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
@@ -165,7 +166,7 @@
             android:imeOptions="actionNext"
             android:singleLine="true"
             android:layout_toRightOf="@id/tv_price"
-            android:hint="请输入您售出的最低价格"
+            android:hint="请输入您售出的最低价格(万元)"
             android:textColorHint="@color/hint_color"
             android:textSize="12sp"
             android:layout_width="match_parent"

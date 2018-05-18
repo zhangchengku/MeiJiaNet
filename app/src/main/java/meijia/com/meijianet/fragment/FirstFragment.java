@@ -355,7 +355,7 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
                         List<NewHouseInfo> newHouseInfos = JSON.parseArray(body, NewHouseInfo.class);
                         if (newHouseInfos!=null && newHouseInfos.size()>0){
                             for (int i = 0; i < newHouseInfos.size(); i++) {
-                                if (i <3){
+                                if (i <=10){
                                     datas.add(newHouseInfos.get(i));
                                     mAdapter.notifyDataSetChanged();
                                 }
@@ -383,6 +383,7 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
         Intent intent = new Intent(getActivity(),WebViewActivity.class);
         LoginVo userInfo = SharePreUtil.getUserInfo(getActivity());
         intent.putExtra("istatle", "房屋详情");
+        intent.putExtra("houseId",String.valueOf(datas.get(position).getId()) );
         if (!userInfo.getUuid().equals("")){
             intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(position).getId()+"&uuid="+userInfo.getUuid());
         }else {

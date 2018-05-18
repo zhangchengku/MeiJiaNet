@@ -87,8 +87,6 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
     }
 
     protected void setContent() {
-        StatusBarUtils.setStatusBarFontDark(this,true);
-        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
         setContentView(R.layout.activity_personer_center);
 
     }
@@ -126,16 +124,25 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
         return localVersion;
     }
     protected void initData() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            llParent.post(new Runnable() {
-                @Override
-                public void run() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            StatusBarUtils.setStatusBarFontDark(PersonCenterActivity.this,true);
+                    StatusBarUtils.setStatusBarColor(PersonCenterActivity.this, getResources().getColor(R.color.white));
                     llParent.setPadding(0, BubbleUtils.getStatusBarHeight(PersonCenterActivity.this), 0, 0);
-                }
-            });
+//            llParent.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    StatusBarUtils.setStatusBarFontDark(PersonCenterActivity.this,true);
+//                    StatusBarUtils.setStatusBarColor(PersonCenterActivity.this, getResources().getColor(R.color.white));
+//                    llParent.setPadding(0, BubbleUtils.getStatusBarHeight(PersonCenterActivity.this), 0, 0);
+//                }
+//            });
+        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP&&Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            StatusBarUtils.setStatusBarFontDark(PersonCenterActivity.this,true);
+            StatusBarUtils.setStatusBarColor(PersonCenterActivity.this, getResources().getColor(R.color.color_black60));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
         }
+
 
         LoginVo info = SharePreUtil.getUserInfo(PersonCenterActivity.this);
         if (info != null && !info.getName().equals("")) {

@@ -76,10 +76,10 @@ public class CollectAdapter extends CommonRecyclerAdapter<MyCollectInfo> {
         holder.setText(R.id.tv_item_fangyuan_title, houseInfo.getTitle());
         holder.setText(R.id.tv_item_fangyuan_price, subZeroAndDot(houseInfo.getTotalprice()));
         holder.setText(R.id.tv_item_fangyuan_msg,houseInfo.getRoom()+"室"+houseInfo.getHall()+
-                "厅"+houseInfo.getToilet()+"卫 | "+subZeroAndDot(houseInfo.getAcreage())+"㎡|第"+houseInfo.getStorey()+"层/共"+houseInfo.getSumfloor()+"层");
-        holder.setText(R.id.tv_item_fangyuan_address,houseInfo.getAddress());
+                "厅"+houseInfo.getToilet()+"卫 | "+subZeroAndDot(houseInfo.getAcreage())+"㎡|第"+houseInfo.getMstorey()+"层/共"+houseInfo.getSumfloor()+"层");
+        holder.setText(R.id.tv_item_fangyuan_address,houseInfo.getMemAddress());
         holder.setText(R.id.tv2,houseInfo.getBrowseCount()+"");
-        holder.setText(R.id.tv1,houseInfo.getIntentionCount()+"");
+        holder.setText(R.id.tv1,houseInfo.getCollectCount()+"");
         Glide.with(mContext)
                 .load(houseInfo.getPiclogo())
                 .placeholder(R.mipmap.icon_fang_defout)

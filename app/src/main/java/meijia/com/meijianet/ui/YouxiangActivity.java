@@ -37,8 +37,7 @@ public class YouxiangActivity extends BaseActivity {
 
     @Override
     protected void setContent() {
-        StatusBarUtils.setStatusBarFontDark(this,true);
-        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
+
         setContentView(R.layout.activity_update_youxiang);
 
     }
@@ -61,17 +60,24 @@ public class YouxiangActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            llParent.post(new Runnable() {
-                @Override
-                public void run() {
-                    llParent.setPadding(0, BubbleUtils.getStatusBarHeight(YouxiangActivity.this), 0, 0);
-                }
-            });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            StatusBarUtils.setStatusBarFontDark(YouxiangActivity.this,true);
+            StatusBarUtils.setStatusBarColor(YouxiangActivity.this, getResources().getColor(R.color.white));
+            llParent.setPadding(0, BubbleUtils.getStatusBarHeight(YouxiangActivity.this), 0, 0);
+//            llParent.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    StatusBarUtils.setStatusBarFontDark(YouxiangActivity.this,true);
+//                    StatusBarUtils.setStatusBarColor(YouxiangActivity.this, getResources().getColor(R.color.white));
+//                    llParent.setPadding(0, BubbleUtils.getStatusBarHeight(YouxiangActivity.this), 0, 0);
+//                }
+//            });
+        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP&&Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            StatusBarUtils.setStatusBarFontDark(YouxiangActivity.this,true);
+            StatusBarUtils.setStatusBarColor(YouxiangActivity.this, getResources().getColor(R.color.color_black60));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
         }
-
         ToolUtil.setInputListener(etName,ivDelete);
     }
 

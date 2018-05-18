@@ -79,17 +79,21 @@ public class MyIntentionActivity extends BaseActivity implements CollectAdapter.
 
     @Override
     protected void initData() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             linear.post(new Runnable() {
                 @Override
                 public void run() {
+                    StatusBarUtils.setStatusBarFontDark(MyIntentionActivity.this,true);
+                    StatusBarUtils.setStatusBarColor(MyIntentionActivity.this, getResources().getColor(R.color.white));
                     linear.setPadding(0, BubbleUtils.getStatusBarHeight(MyIntentionActivity.this), 0, 0);
                 }
             });
+        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP||Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            StatusBarUtils.setStatusBarFontDark(MyIntentionActivity.this,true);
+            StatusBarUtils.setStatusBarColor(MyIntentionActivity.this, getResources().getColor(R.color.color_black60));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
         }
-
         rvList.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new CollectAdapter3(this, datas);
         rvList.setAdapter(mAdapter);
@@ -150,13 +154,8 @@ public class MyIntentionActivity extends BaseActivity implements CollectAdapter.
     @Override
     public void onItemClick(int positon) {
         Intent intent = new Intent(MyIntentionActivity.this,WebViewActivity.class);
-        LoginVo userInfo = SharePreUtil.getUserInfo(MyIntentionActivity.this);
         intent.putExtra("istatle", "房屋详情");
-        if (!userInfo.getUuid().equals("")){
-            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(positon).getHouse().getId()+"&uuid="+userInfo.getUuid());
-        }else {
-            intent.putExtra("url",BaseURL.BASE_URL+"/api/house/houseDetail?id="+datas.get(positon).getHouse().getId()+"&uuid="+"");
-        }
+        intent.putExtra("houseId",String.valueOf(datas.get(positon).getHouse().getId()) );
         startActivity(intent);
 
     }

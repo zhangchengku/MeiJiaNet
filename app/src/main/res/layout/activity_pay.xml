@@ -19,13 +19,6 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-
-            android:textColor="@color/import_color"
-            android:text="姓名"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
         <EditText
             android:id="@+id/et_ac_pay_name"
             android:layout_marginLeft="20dp"
@@ -49,16 +42,10 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:textColor="@color/import_color"
-            android:text="电话"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
         <EditText
             android:id="@+id/et_ac_pay_phone"
             android:layout_marginLeft="20dp"
-            android:hint="请输入您的真实电话"
+            android:hint="请输入您的手机号"
             android:inputType="number"
             android:textColorHint="@color/hint_color"
             android:textSize="14sp"
@@ -77,82 +64,35 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:textColor="@color/import_color"
-            android:text="意向金"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+
         <TextView
             android:layout_marginLeft="20dp"
-            android:hint="¥ 1000"
+            android:hint="意向金¥ 1000"
             android:textSize="14sp"
-            android:textColor="@color/hint_color"
+            android:textColor="#1c1c1c"
             android:background="@null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+
+
     <View
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:background="@color/hint_color"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
-    <!--<LinearLayout-->
-        <!--android:paddingRight="15dp"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--<LinearLayout-->
-            <!--android:focusableInTouchMode="false"-->
-            <!--android:focusable="false"-->
-            <!--android:padding="15dp"-->
-            <!--android:background="@color/white"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_height="wrap_content">-->
-            <!--<TextView-->
-                <!--android:textColor="@color/import_color"-->
-                <!--android:text="验证码"-->
-                <!--android:textSize="16sp"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"/>-->
-            <!--<EditText-->
-                <!--android:layout_marginLeft="20dp"-->
-                <!--android:hint="请输入验证码"-->
-                <!--android:textColorHint="@color/hint_color"-->
-                <!--android:textSize="14sp"-->
-                <!--android:background="@null"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"/>-->
-        <!--</LinearLayout>-->
-        <!--<ImageView-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:background="@color/hint_color"-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="match_parent"/>-->
-    <!--</LinearLayout>-->
-
-    <!--<View-->
-        <!--android:layout_marginLeft="15dp"-->
-        <!--android:layout_marginRight="15dp"-->
-        <!--android:background="@color/hint_color"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dp"/>-->
 
     <TextView
         android:id="@+id/tv_ac_pay_sure"
         android:textColor="@color/white"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:background="@mipmap/icon_comment_btn"
+        android:background="#048F4B"
         android:layout_marginTop="50dp"
         android:text="提交意向"
         android:textSize="16sp"
         android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"/>
 </LinearLayout>

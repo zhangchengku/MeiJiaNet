@@ -55,6 +55,8 @@ public class BindingWQActivity extends BaseActivity  {
     private String wxUserId;
     private String qqUserId;
     private String three;
+    private String userIcon;
+    private String userName;
 
     @Override
     protected void setContent() {
@@ -76,7 +78,9 @@ public class BindingWQActivity extends BaseActivity  {
     protected void initData() {
         Intent intent = getIntent();
         style = intent.getStringExtra("style");
-        userId = intent.getStringExtra("UserId");
+        userId = intent.getStringExtra("userId");
+        userIcon = intent.getStringExtra("wxHeader");
+        userName = intent.getStringExtra("wxNickName");
         llContent.post(new Runnable() {
             @Override
             public void run() {
@@ -154,7 +158,7 @@ public class BindingWQActivity extends BaseActivity  {
         PromptUtil.showTransparentProgress(this,false);
         RequestParams params = new RequestParams(this);
         params.add("phone",phone);
-        params.add("codetype","1");
+        params.add("codetype","3");
         OkHttpUtils.post()
                 .tag(this)
                 .url(BaseURL.BASE_URL + CODE)
@@ -207,8 +211,10 @@ public class BindingWQActivity extends BaseActivity  {
                          getlongininformtion(phone);
                         }else {//未注册
                             Intent intent=new Intent(BindingWQActivity.this,QuedingWQActivity.class);
+                            intent.putExtra("wxHeader",userIcon);
+                            intent.putExtra("wxNickName",userName);
                             intent.putExtra("style",style);
-                            intent.putExtra("UserId",userId);
+                            intent.putExtra("userId",userId);
                             intent.putExtra("phone",phone);
                             startActivity(intent);
                             finish();
@@ -266,13 +272,7 @@ public class BindingWQActivity extends BaseActivity  {
     }
 
     private void getlogding() {
-        if (style .equals("1") ) {//微信
-            three = "wxUserId";
-        }
-        if (style .equals("2")) {//QQ
-            three = "qqUserId";
 
-        }
         //检查网络
         if (!NetworkUtil.checkNet(this)){
             ToastUtil.showShortToast(this,"没网啦，请检查网络");
@@ -280,7 +280,16 @@ public class BindingWQActivity extends BaseActivity  {
         }
         PromptUtil.showTransparentProgress(this,false);
         RequestParams params = new RequestParams(this);
-        params.add(three,userId);
+        if (style.equals("1")) {//微信
+            params.add("wxUserId",userId);
+            params.add("wxHeader",userIcon);
+            params.add("wxNickName",userName);
+        }
+        if (style.equals("2")) {//QQ
+            params.add("qqUserId",userId);
+            params.add("qqHeader",userIcon);
+            params.add("qqNickName",userName);
+        }
         OkHttpUtils.post()
                 .tag(this)
                 .url(BaseURL.BASE_URL + LOGIN_QW)

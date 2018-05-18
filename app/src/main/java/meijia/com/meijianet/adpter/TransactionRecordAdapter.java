@@ -9,6 +9,7 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.SuperscriptSpan;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,8 +36,8 @@ public class TransactionRecordAdapter extends CommonRecyclerAdapter<NewHouseInfo
         holder.setText(R.id.tv_item_fangyuan_title, houseInfo.getTitle());
         holder.setText(R.id.tv_item_fangyuan_price, subZeroAndDot(houseInfo.getTotalprice()));
         holder.setText(R.id.tv_item_fangyuan_msg, houseInfo.getRoom() + "室" + houseInfo.getHall() +
-                "厅" + houseInfo.getToilet() + "卫 | " + subZeroAndDot(houseInfo.getAcreage()) + "㎡|第" + houseInfo.getStorey() + "层/共" + houseInfo.getSumfloor() + "层");
-        holder.setText(R.id.tv_item_fangyuan_address, houseInfo.getAddress());
+                "厅" + houseInfo.getToilet() + "卫 | " + subZeroAndDot(houseInfo.getAcreage()) + "㎡|第" + houseInfo.getMstorey() + "层/共" + houseInfo.getSumfloor() + "层");
+        holder.setText(R.id.tv_item_fangyuan_address, "签约日期："+String.valueOf(houseInfo.getTradetime()));
         Glide.with(mContext)
                 .load(houseInfo.getPiclogo())
                 .placeholder(R.mipmap.icon_fang_defout)

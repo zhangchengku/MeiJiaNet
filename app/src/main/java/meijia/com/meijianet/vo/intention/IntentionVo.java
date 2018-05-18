@@ -88,6 +88,24 @@ public class IntentionVo {
             private String title;
             private int toilet;
             private double totalprice;
+            private String mstorey;
+            private String memAddress;
+
+            public String getMemAddress() {
+                return memAddress;
+            }
+
+            public void setMemAddress(String memAddress) {
+                this.memAddress = memAddress;
+            }
+
+            public String getMstorey() {
+                return mstorey;
+            }
+
+            public void setMstorey(String mstorey) {
+                this.mstorey = mstorey;
+            }
 
             public double getAcreage() {
                 return acreage;

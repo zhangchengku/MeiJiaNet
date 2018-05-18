@@ -51,8 +51,6 @@ public class MyEntrustActivity extends BaseActivity {
 
     @Override
     protected void setContent() {
-        StatusBarUtils.setStatusBarFontDark(this,true);
-        StatusBarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
         setContentView(R.layout.activity_my_entrust);
     }
 
@@ -74,17 +72,21 @@ public class MyEntrustActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             linear.post(new Runnable() {
                 @Override
                 public void run() {
+                    StatusBarUtils.setStatusBarFontDark(MyEntrustActivity.this,true);
+                    StatusBarUtils.setStatusBarColor(MyEntrustActivity.this, getResources().getColor(R.color.white));
                     linear.setPadding(0, BubbleUtils.getStatusBarHeight(MyEntrustActivity.this), 0, 0);
                 }
             });
+        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP||Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            StatusBarUtils.setStatusBarFontDark(MyEntrustActivity.this,true);
+            StatusBarUtils.setStatusBarColor(MyEntrustActivity.this, getResources().getColor(R.color.color_black60));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
         }
-
         mAdapter = new MyEntrustAdapter(MyEntrustActivity.this,datas);
         mManager = new LinearLayoutManager(MyEntrustActivity.this);
         rvList.setLayoutManager(mManager);
@@ -102,7 +104,7 @@ public class MyEntrustActivity extends BaseActivity {
         if (v != null) {
         switch (v.getId()) {
             case R.id.add:
-                Intent intent = new Intent(MyEntrustActivity.this,WebViewActivity.class);
+                Intent intent = new Intent(MyEntrustActivity.this,WebViewActivity2.class);
                 intent.putExtra("istatle", "卖家须知");
                 intent.putExtra("url", BaseURL.BASE_URL+"/api/salerNotice");
                 startActivity(intent);
