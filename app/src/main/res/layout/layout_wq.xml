@@ -55,6 +55,7 @@
             style="@style/et_style"
             android:hint="请输入验证码"
             android:imeOptions="actionNext"
+            android:inputType="number|numberDecimal"
             android:singleLine="true"
             android:textSize="14sp"
             android:textColor="#C0FDE7"

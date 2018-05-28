@@ -120,7 +120,7 @@ public class SellingHomeFragment extends BaseFragment implements OnRefreshListen
         if (v != null) {
             switch (v.getId()) {
                 case R.id.add:
-                    if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
+                    if (SharePreUtil.getUserInfo(getActivity()).getUuid().equals("")){
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }
@@ -203,7 +203,7 @@ public class SellingHomeFragment extends BaseFragment implements OnRefreshListen
     @Override
     public void onResume() {
         super.onResume();
-        if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
+        if (SharePreUtil.getUserInfo(getActivity()).getUuid().equals("")){
             rvList.setVisibility(View.GONE);
             rlEmpty.setVisibility(View.VISIBLE);
         }else {

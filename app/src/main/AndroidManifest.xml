@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name=".activity.MyApplication"
@@ -212,6 +212,11 @@
 
         <activity android:name=".ui.textone"/>
         <activity android:name=".ui.texttwo"/>
+        <activity android:name=".ui.PromotionsPopActivity"
+            android:theme="@style/DialogStyleAct"/>
+        <activity android:name=".ui.WebViewActivity3"/>
+        <activity android:name=".ui.WebViewActivity4"/>
+
     </application>
 
 </manifest>

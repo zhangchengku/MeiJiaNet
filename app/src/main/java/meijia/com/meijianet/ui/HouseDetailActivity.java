@@ -410,7 +410,7 @@ public class HouseDetailActivity extends BaseActivity implements MyScrollView.on
                     showBroadView();
                     break;
                 case R.id.tv_ac_housedetail_pay:
-                    if (SharePreUtil.getUserInfo(HouseDetailActivity.this).getName().equals("")){
+                    if (SharePreUtil.getUserInfo(HouseDetailActivity.this).getUuid().equals("")){
                         ToastUtil.showShortToast(HouseDetailActivity.this,"您还没有登录");
                         return;
                     }

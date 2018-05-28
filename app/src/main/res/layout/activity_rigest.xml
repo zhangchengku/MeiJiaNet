@@ -52,6 +52,7 @@
             android:layout_toLeftOf="@+id/tv_ac_rigest_send"
             style="@style/et_style"
             android:hint="请输入验证码"
+            android:inputType="number|numberDecimal"
             android:textSize="14sp"
             android:textColor="#C0FDE7"
             android:textColorHint="#C0FDE7"

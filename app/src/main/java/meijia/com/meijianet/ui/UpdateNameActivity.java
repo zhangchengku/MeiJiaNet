@@ -1,8 +1,10 @@
 package meijia.com.meijianet.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -10,6 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhy.http.okhttp.OkHttpUtils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import meijia.com.meijianet.R;
 import meijia.com.meijianet.bean.LoginVo;
@@ -54,7 +59,13 @@ public class UpdateNameActivity extends BaseActivity {
         setNavigationFinish(toolbar);
         setNavigationHomeAsUp(true);
     }
-
+    public boolean isEmoji(String string) {
+        @SuppressLint("WrongConstant")
+        Pattern p = Pattern.compile("[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
+                Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(string);
+        return m.find();
+    }
     @Override
     protected void initData() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -88,6 +99,10 @@ public class UpdateNameActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         String trim = etName.getText().toString().trim();
+        if(isEmoji(trim)==true){
+            ToastUtil.showShortToast(UpdateNameActivity.this,"请不要输入表情");
+            return;
+        }
         if (trim.equals("")){
             ToastUtil.showShortToast(UpdateNameActivity.this,"修改的名称不能为空");
             return;

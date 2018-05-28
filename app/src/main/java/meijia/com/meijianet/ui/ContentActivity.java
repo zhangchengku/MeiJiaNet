@@ -1,5 +1,6 @@
 package meijia.com.meijianet.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -10,13 +11,17 @@ import android.view.View;
 import android.widget.RadioGroup;
 
 import com.alibaba.fastjson.JSON;
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import meijia.com.meijianet.R;
+import meijia.com.meijianet.api.PermissionListener;
 import meijia.com.meijianet.base.UpdateManager;
 import meijia.com.meijianet.bean.BaseVO;
 import meijia.com.meijianet.fragment.BuyHomeFragment;
@@ -31,6 +36,7 @@ import meijia.com.meijianet.util.NetworkUtil;
 import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseActivity;
 import meijia.com.meijianet.base.BaseURL;
+import meijia.com.meijianet.util.PromptUtil;
 import meijia.com.meijianet.util.SharePreUtil;
 import meijia.com.meijianet.util.ToastUtil;
 import meijia.com.srdlibrary.myutil.StatusBarUtils;
@@ -66,7 +72,26 @@ public class ContentActivity extends BaseActivity implements RadioGroup.OnChecke
     protected void initData() {
             rgMenu.check(R.id.tv_home);
             showFragment(FIRST);
-        new UpdateManager(this, "main").checkUpdate();   //检查更新
+        requestRuntimePermission(new String[]{Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionListener() {
+            @Override
+            public void onGranted() {
+                Log.d(TAG, "agreesdfads: ");
+
+                    new UpdateManager(ContentActivity.this, "main").checkUpdate();   //检查更新
+
+            }
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                PromptUtil.showCommonDialog(ContentActivity.this, "请在设置中打开内存卡读写权限", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }
+        });
+
     }
     //自动登录
 

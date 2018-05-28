@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.meiqia.core.callback.OnInitCallback;
 import com.meiqia.meiqiasdk.util.MQConfig;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.cookie.CookieJarImpl;
 import com.zhy.http.okhttp.cookie.store.PersistentCookieStore;
@@ -48,6 +49,7 @@ public class MyApplication extends Application {
         ShareSDK.initSDK(this);
         //初始化美恰客服
         initMQ();
+        ZXingLibrary.initDisplayOpinion(this);
         //初始化微信支付
         WXUtils.registerWX(this);
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);

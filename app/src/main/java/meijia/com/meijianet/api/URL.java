@@ -43,4 +43,5 @@ public interface URL {
     String EXCLUSIVE_TWO = "/api/member/getEmployee";
     String ADVERTISEMENT = "/api/advertisement";
     String PHONE_CODE = "/api/servicePhone";
+    String MJDS = "/api/touchGold/popupImage ";
 }

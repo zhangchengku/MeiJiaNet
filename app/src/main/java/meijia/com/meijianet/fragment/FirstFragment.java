@@ -258,7 +258,7 @@ public class FirstFragment extends BaseFragment implements OnItemClickListener {
                     startActivity(new Intent(getActivity(), SearchMoreActivity.class));
                     break;
                 case R.id.fist_fragment_mf:
-                    if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
+                    if (SharePreUtil.getUserInfo(getActivity()).getUuid().equals("")){
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }

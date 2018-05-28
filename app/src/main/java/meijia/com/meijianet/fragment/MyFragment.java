@@ -226,41 +226,41 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                     startActivity(new Intent(getActivity(), textone.class));
                     break;
                 case R.id.riv_fm_my_icon://设置头像
-                    if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
+                    if (SharePreUtil.getUserInfo(getActivity()).getUuid().equals("")){
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }
                     startActivity(new Intent(getActivity(), PersonCenterActivity.class));
                     break;
                 case R.id.tv_fm_my_nickname://设置头像
-                    if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
+                    if (SharePreUtil.getUserInfo(getActivity()).getUuid().equals("")){
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }
                     break;
                 case R.id.tv_fm_my_weituo://我的委托
-                    if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
+                    if (SharePreUtil.getUserInfo(getActivity()).getUuid().equals("")){
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }
                     startActivity(new Intent(getActivity(), MyEntrustActivity.class));
                     break;
                 case R.id.tv_fm_my_yixiang://意向房源
-                    if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
+                    if (SharePreUtil.getUserInfo(getActivity()).getUuid().equals("")){
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }
                     startActivity(new Intent(getActivity(), MyIntentionActivity.class));
                     break;
                 case R.id.tv_fm_my_collect://我的收藏
-                    if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
+                    if (SharePreUtil.getUserInfo(getActivity()).getUuid().equals("")){
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }
                     startActivity(new Intent(getActivity(), MyCollectActivity.class));
                     break;
                 case R.id.tv1://浏览足迹
-                    if (SharePreUtil.getUserInfo(getActivity()).getName().equals("")){
+                    if (SharePreUtil.getUserInfo(getActivity()).getUuid().equals("")){
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         return;
                     }

@@ -33,15 +33,33 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="70dp">
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/riv_ac_center_icon"
-            android:layout_marginLeft="19dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:layout_gravity="center_vertical"
-            android:src="@mipmap/logo"
-            app:riv_corner_radius="100dp" />
+        <RelativeLayout
+            android:layout_width="59dp"
+            android:layout_height="match_parent">
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/riv_ac_center_icon"
+                android:layout_alignParentRight="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/logo"
+                app:riv_corner_radius="100dp" />
+            <TextView
+                android:id="@+id/massage"
+                android:text=""
+                android:visibility="gone"
+                android:textSize="10dp"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/hongdian"
+                android:layout_width="16dp"
+                android:layout_height="16dp" />
+        </RelativeLayout>
+
+
         <LinearLayout
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
@@ -74,8 +92,8 @@
                <TextView
                    android:background="@drawable/bg_button"
                    android:paddingLeft="10dp"
-                  android:paddingRight="10dp"
-                android:layout_marginLeft="10dp"
+                   android:paddingRight="10dp"
+                   android:layout_marginLeft="10dp"
                    android:text="官方人工客服"
                    android:textColor="#999999"
                    android:textSize="10dp"

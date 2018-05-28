@@ -122,7 +122,11 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
     private String sumfloorMin ="";
     private String sumfloorMax = "";
     private ImageView ivback;
-
+    private int storey=0;
+    private String moremim="";
+    private String moremam="";
+    private String moremixl="";
+    private String moremaxl="";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_search_more,container,false);
@@ -157,7 +161,22 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
         etSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                xiaoquName = "";
+                mTag_paixu.setItemSelecte(100);
+                mTag_zhuangxiu.setItemSelecte(100);
+                mTag_chaoxiang.setItemSelecte(100);
+                mTag_leixing.setItemSelecte(100);
+                mTag_louceng.setItemSelecte(100);
+                acreageMax="";
+                chaooo="";
+                zhangggg=0;
+                leiii=0;
+                acreageMin="";
+                storey=0;
+                acreageMax="";
+                moremim = "";
+                moremam = "";
+                moremixl = "";
+                moremaxl = "";
             }
         });
         ivDelete = (ImageView) view.findViewById(R.id.iv_ac_search_delete);
@@ -370,23 +389,32 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
         tvReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 mTag_paixu.setItemSelecte(100);
                 mTag_zhuangxiu.setItemSelecte(100);
                 mTag_chaoxiang.setItemSelecte(100);
                 mTag_leixing.setItemSelecte(100);
                 mTag_louceng.setItemSelecte(100);
                 acreageMax="";
+                chaooo="";
+                zhangggg=0;
+                leiii=0;
+                acreageMin="";
+                storey=0;
+                acreageMax="";
+                moremim = "";
+                moremam = "";
+                moremixl = "";
+                moremaxl = "";
             }
         });
 
         tvConnmitMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String moremim = moremixm.getText().toString().trim();
-                String moremam = moremaxm.getText().toString().trim();
-                String moremixl = moremixlc.getText().toString().trim();
-                String moremaxl = moremaxlc.getText().toString().trim();
+                moremim = moremixm.getText().toString().trim();
+                moremam = moremaxm.getText().toString().trim();
+                moremixl = moremixlc.getText().toString().trim();
+                moremaxl = moremaxlc.getText().toString().trim();
                 if (!moremim.equals("") && !moremam.equals("")) {
                     if(!moremixl.equals("") && !moremaxl.equals("")){
                         if (Float.parseFloat(moremaxl) > Float.parseFloat(moremixl)) {
@@ -515,36 +543,31 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                 } else if (type == 4) {
                     switch (postion) {
                         case 0:
-                            sumfloorMin = "1";
-                            sumfloorMax = "1";
+                            storey = 1;
                             break;
                         case 1:
-                            sumfloorMin = "2";
-                            sumfloorMax = "2";
+                            storey = 2;
                             break;
                         case 2:
-                            sumfloorMin = "3";
-                            sumfloorMax = "3";
+                            storey = 3;
                             break;
                         case 3:
-                            sumfloorMin = "4";
-                            sumfloorMax = "4";
+                            storey = 4;
                             break;
                         case 4:
-                            sumfloorMin = "5";
-                            sumfloorMax = "5";
+                            storey =5;
                             break;
                         case 5:
-                            sumfloorMin = "6";
-                            sumfloorMax = "6";
+                            storey = 6;
                             break;
                         case 6:
+                            storey=10;
                             sumfloorMin = "7";
                             sumfloorMax = "12";
                             break;
                         case 7:
-                            sumfloorMin = "12";
-                            sumfloorMax = "";
+                            storey=100;
+                            sumfloorMin = "13";
                             break;
                     }
 
@@ -578,7 +601,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                 llParent.setPadding(0, BubbleUtils.getStatusBarHeight(getActivity()), 0, 0);
             }
         });
-
+        autoRefresh();
     }
     @Override
     protected void initClick() {
@@ -620,6 +643,7 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                 break;
 
         }
+        Log.d("测试的", "区域: "+quYu);
         switch (tagPosition) {
             case 0:
                 minPrice = "0";
@@ -663,50 +687,80 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
                 break;
 
         }
+        Log.d("测试的", "价格: "+tagPosition);
         if (maxPrice.equals("0")) {
 
         } else {
             params.add("totalpriceMin", minPrice);
             params.add("totalpriceMax", maxPrice);
+            Log.d("测试的", "价格: "+minPrice);
+            Log.d("测试的", "价格: "+maxPrice);
         }
+
         if (room > 0) {
             params.add("room", room + "");
+            Log.d("测试的", "室: "+room);
         }
+
         if (hall > 0) {
             params.add("hall", hall + "");
+            Log.d("测试的", "厅: "+hall);
         }
+
         if (toilet > 0) {
             params.add("toilet", toilet + "");
+            Log.d("测试的", "卫: "+toilet);
         }
+
         if(acreageMax.equals("")){
 
         }else {
             params.add("acreageMin", acreageMin);
             params.add("acreageMax", acreageMax);
+            Log.d("测试的", "最大面积: "+acreageMax);
+            Log.d("测试的", "最小面积: "+acreageMin);
         }
         if(!chaooo.equals("")){
             params.add("orientation", chaooo);
+            Log.d("测试的", "最小面积: "+chaooo);
         }
         if(leiii!=0){
             params.add("application", leiii);
+            Log.d("测试的", "类型: "+leiii);
         }
         if(zhangggg!=0){
             params.add("decoration", zhangggg);
+            Log.d("测试的", "装修: "+leiii);
         }
         if(acreageMax.equals("")){
 
         }else {
             params.add("acreageMin", acreageMin);
             params.add("acreageMax", acreageMax);
+            Log.d("测试的", "面积: "+acreageMin);
+            Log.d("测试的", "面积: "+acreageMax);
         }
-        if(!sumfloorMin.equals("")&&!sumfloorMax.equals("")){
-            params.add("sumfloorMin",sumfloorMin);
-            params.add("sumfloorMax", sumfloorMax);
-        }else {
+        if(storey==0){
 
+        }else if(storey==10){
+            if(!sumfloorMin.equals("")&&!sumfloorMax.equals("")){
+                params.add("storeyMin",Integer.valueOf(sumfloorMin));
+                params.add("storeyMax", Integer.valueOf(sumfloorMax));
+                Log.d("测试的", "层数: "+sumfloorMin);
+                Log.d("测试的", "层数: "+sumfloorMax);
+            }else {
+
+            }
+        }else if(storey==100){
+            params.add("storeyMin",Integer.valueOf(sumfloorMin));
+        }else {
+            params.add("storey",storey);
+            Log.d("测试的", "层数: "+storey);
         }
+
         if(!xiaoquName.equals("")){
             params.add("titleOrAddress", xiaoquName);
+            Log.d("测试的", "条件: "+acreageMax);
         }
         OkHttpUtils.post()
                 .tag(this)
@@ -894,17 +948,29 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
             params.add("acreageMin", acreageMin);
             params.add("acreageMax", acreageMax);
         }
-        if(!sumfloorMin.equals("")&&!sumfloorMax.equals("")){
-            params.add("sumfloorMin",sumfloorMin);
-            params.add("sumfloorMax", sumfloorMax);
-        }else {
+        if(storey==0){
 
+        }else if(storey==10){
+            if(!sumfloorMin.equals("")&&!sumfloorMax.equals("")){
+                params.add("storeyMin",Integer.valueOf(sumfloorMin));
+                params.add("storeyMax", Integer.valueOf(sumfloorMax));
+                Log.d("测试的", "层数: "+sumfloorMin);
+                Log.d("测试的", "层数: "+sumfloorMax);
+            }else {
+
+            }
+        }else if(storey==100){
+            params.add("storeyMin",Integer.valueOf(sumfloorMin));
+        }else {
+            params.add("storey",storey);
+            Log.d("测试的", "层数: "+storey);
         }
         if(!xiaoquName.equals("")){
             params.add("titleOrAddress", xiaoquName);
+
         }
         OkHttpUtils
-                .get()
+                .post()
                 .tag(this)
                 .url(BaseURL.BASE_URL + SEARCH_HOUSE)
                 .params(params.getMap())
@@ -945,11 +1011,6 @@ public class BuyHomeFragment extends BaseFragment implements OnRefreshListener, 
         startActivity(intent);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        autoRefresh();
-    }
     @Override
     public void onClick(View v) {
 

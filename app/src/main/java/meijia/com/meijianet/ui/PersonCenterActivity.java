@@ -145,7 +145,7 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
 
 
         LoginVo info = SharePreUtil.getUserInfo(PersonCenterActivity.this);
-        if (info != null && !info.getName().equals("")) {
+        if (info != null && !info.getUuid().equals("")) {
             String header = info.getHeader();
             String address = info.getLocation();
             String email = info.getEmail();
@@ -194,14 +194,14 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
                     finish();
                     break;
                 case R.id.ll_ac_personercenter_icon:
-                    if (SharePreUtil.getUserInfo(PersonCenterActivity.this).getName().equals("")){
+                    if (SharePreUtil.getUserInfo(PersonCenterActivity.this).getUuid().equals("")){
                         ToastUtil.showShortToast(PersonCenterActivity.this,"您还没有登录");
                         return;
                     }
                     showPhotoDialog(PersonCenterActivity.this);
                     break;
                 case R.id.ll_ac_center_name:
-                    if (SharePreUtil.getUserInfo(PersonCenterActivity.this).getName().equals("")){
+                    if (SharePreUtil.getUserInfo(PersonCenterActivity.this).getUuid().equals("")){
                         ToastUtil.showShortToast(PersonCenterActivity.this,"您还没有登录");
                         return;
                     }
@@ -225,7 +225,7 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
 //                    startActivityForResult(phoneIntent, 103);
 //                    break;
                 case R.id.ll_ac_center_youxinag:
-                    if (SharePreUtil.getUserInfo(PersonCenterActivity.this).getName().equals("")){
+                    if (SharePreUtil.getUserInfo(PersonCenterActivity.this).getUuid().equals("")){
                         ToastUtil.showShortToast(PersonCenterActivity.this,"您还没有登录");
                         return;
                     }
@@ -233,7 +233,7 @@ public class PersonCenterActivity extends TakePhotoActivity implements View.OnCl
                     startActivityForResult(emailIntent, 103);
                     break;
                 case R.id.ll_ac_center_idnumber:
-                    if (SharePreUtil.getUserInfo(PersonCenterActivity.this).getName().equals("")){
+                    if (SharePreUtil.getUserInfo(PersonCenterActivity.this).getUuid().equals("")){
                         ToastUtil.showShortToast(PersonCenterActivity.this,"您还没有登录");
                         return;
                     }
