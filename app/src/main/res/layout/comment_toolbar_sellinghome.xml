@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar"
+    android:background="@color/color_white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_size_53"
+    android:minHeight="@dimen/view_size_53">
+    <TextView
+        android:id="@+id/tv_toolbar_title"
+        android:text=""
+        android:textColor="@color/tatle_bar_center"
+        android:textSize="@dimen/text_size_19"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/add"
+        android:orientation="horizontal"
+        android:layout_gravity="right"
+        android:layout_marginRight="19dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_marginRight="@dimen/view_size_8"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/iv_toolbar_menu"
+            android:src="@mipmap/sellinghome_add"
+            android:layout_width="@dimen/view_size_28"
+            android:layout_height="@dimen/view_size_28" />
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:text="发布"
+            android:textColor="@color/tatle_bar_right"
+            android:textSize="@dimen/text_size_19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+</android.support.v7.widget.Toolbar>

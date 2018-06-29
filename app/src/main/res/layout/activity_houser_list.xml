@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_my_entrust"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="meijia.com.meijianet.ui.MyEntrustActivity">
+
+    <include
+        layout="@layout/comment_toolbar_menu"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/bg_color" />
+    <LinearLayout
+        android:id="@+id/kefu"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp">
+        <RelativeLayout
+            android:layout_width="59dp"
+            android:layout_height="match_parent">
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/riv_ac_center_icon"
+                android:layout_marginLeft="19dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+               android:layout_centerVertical="true"
+                android:src="@mipmap/logo"
+                app:riv_corner_radius="100dp" />
+            <TextView
+                android:id="@+id/massage"
+                android:text=""
+                android:visibility="gone"
+                android:textSize="10dp"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/hongdian"
+                android:layout_width="16dp"
+                android:layout_height="16dp" />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp">
+                <TextView
+                    android:layout_alignParentBottom="true"
+                    android:text="房小二"
+                    android:textColor="#000000"
+                    android:textSize="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView" />
+
+                <TextView
+                    android:id="@+id/riq"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="今天 17：13"
+                    android:layout_marginRight="19dp"
+                    android:textColor="#999999"
+                    android:textSize="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:background="@drawable/bg_button"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="官方人工客服"
+                    android:textColor="#999999"
+                    android:textSize="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="2dp"
+                    android:layout_toRightOf="@+id/textView"
+                    android:layout_toEndOf="@+id/textView"
+
+                    android:id="@+id/textView2" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:textColor="#999999"
+                android:textSize="12dp"
+                android:text="欢迎使用美家客服"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_marginLeft="70dp"
+        android:background="@color/bg_item"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+
+</LinearLayout>
