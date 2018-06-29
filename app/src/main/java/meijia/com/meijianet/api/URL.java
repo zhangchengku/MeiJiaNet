@@ -19,6 +19,7 @@ public interface URL {
     String HOUSE_DETAIL = "/api/house/getHouseDetails";
     String VIDEO = "/api/homePage/video";
     String SHOUYELUNBOTU = "/api/carousel/getcarousels";
+    String TUBIAO = "/api/icon/getIconList";
     String COLLECT_HOUSE = "/api/collect/collectHouse";
     String DELETE_COLLECT = "/api/collect/deleteCollect";
     String MY_COLLECT = "/api/collect/myCollect";//我的收藏

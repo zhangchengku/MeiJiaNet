@@ -26,8 +26,8 @@ android {
         applicationId "meijia.com.meijianet"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 3
-        versionName "1.2.1"
+        versionCode 5
+        versionName "1.2.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -79,4 +79,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     compile 'cn.yipianfengye.android:zxing-library:2.2'
+    compile 'com.zhy:base-rvadapter:3.0.3'
+    compile 'com.zhy:base-rvadapter:3.0.3'
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
 }

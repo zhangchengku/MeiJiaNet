@@ -28,8 +28,17 @@ public class BannerVo {
         private String remarks;
         private int showplat;
         private int status;
+    private Integer needLogin;
 
-        public String getAddress() {
+    public Integer getNeedLogin() {
+        return needLogin;
+    }
+
+    public void setNeedLogin(Integer needLogin) {
+        this.needLogin = needLogin;
+    }
+
+    public String getAddress() {
             return address;
         }
 

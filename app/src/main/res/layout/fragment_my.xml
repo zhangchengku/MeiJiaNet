@@ -102,7 +102,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_toRightOf="@id/tv_fm_my_weituo"
                 android:drawableTop="@mipmap/logding_yxfy"
-                android:text="意向房源"
+                android:text="预约房源"
                 android:drawablePadding="10dp"
                 android:textColor="@color/import_color"
                 android:textSize="12sp"/>

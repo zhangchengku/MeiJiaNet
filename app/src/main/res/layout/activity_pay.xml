@@ -35,6 +35,7 @@
         android:background="@color/hint_color"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
+
     <LinearLayout
         android:focusableInTouchMode="false"
         android:focusable="false"
@@ -53,28 +54,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-    <View
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@color/hint_color"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-    <LinearLayout
-        android:padding="15dp"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_marginLeft="20dp"
-            android:hint="意向金¥ 1000"
-            android:textSize="14sp"
-            android:textColor="#1c1c1c"
-            android:background="@null"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
 
     <View
         android:layout_marginLeft="15dp"
@@ -82,13 +61,17 @@
         android:background="@color/hint_color"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
+
+
+
+
 
     <TextView
         android:id="@+id/tv_ac_pay_sure"
         android:textColor="@color/white"
         android:background="#048F4B"
         android:layout_marginTop="50dp"
-        android:text="提交意向"
+        android:text="预约看房"
         android:textSize="16sp"
         android:gravity="center"
         android:layout_marginLeft="50dp"

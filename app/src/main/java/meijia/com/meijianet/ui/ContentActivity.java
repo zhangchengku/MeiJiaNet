@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -19,6 +20,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import meijia.com.meijianet.R;
 import meijia.com.meijianet.api.PermissionListener;
@@ -66,7 +68,7 @@ public class ContentActivity extends BaseActivity implements RadioGroup.OnChecke
     protected void initView() {
         StatusBarUtils.setActivityTranslucent(ContentActivity.this);
         rgMenu = (RadioGroup) findViewById(R.id.rg_menu);
-
+//        JPushInterface.resumePush(getApplicationContext());
     }
     @Override
     protected void initData() {
@@ -95,7 +97,10 @@ public class ContentActivity extends BaseActivity implements RadioGroup.OnChecke
     }
     //自动登录
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
 
+    }
 
     @Override
     protected void initClick() {

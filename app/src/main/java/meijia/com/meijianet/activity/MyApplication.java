@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import cn.jpush.android.api.JPushInterface;
 import cn.sharesdk.framework.ShareSDK;
 import meijia.com.meijianet.wxapi.WXUtils;
 import okhttp3.OkHttpClient;
@@ -62,6 +63,9 @@ public class MyApplication extends Application {
                 .addInterceptor(new LoggerInterceptor("OkHttpUtils",true))
                 .build();
         OkHttpUtils.initClient(okHttpClient);
+        //初始化极光推送
+//        JPushInterface.setDebugMode(true);//设置调试模式，避免出现日志无打印情况
+//        JPushInterface.init(this);
     }
     /***
      * 注册美恰客服

@@ -59,7 +59,7 @@ public class PayActivity extends BaseActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
-        tvTitle.setText("缴纳意向金");
+        tvTitle.setText("预约看房");
 
 
         setSupportActionBar(toolbar);
@@ -87,7 +87,7 @@ public class PayActivity extends BaseActivity {
         if (v != null) {
             switch (v.getId()) {
                 case R.id.tv_ac_pay_sure:
-                    showMyDialog();
+                    getOrderNum(0);
                     break;
                 case R.id.tv_wx:
                     getOrderNum(0);
@@ -136,23 +136,8 @@ public class PayActivity extends BaseActivity {
                 .execute(new ResultCallBack() {
                     @Override
                     public void onSuccess(String body) {
-                        try {
-                            JSONObject object = new JSONObject(body);
-                            String ordernum = object.getString("ordernum");
-                            if (ordernum!=null && !ordernum.equals("")){
-                                if (type == 0){
-                                    Log.d(TAG, "onSuccessaaaaaaa: 微信支付");
-                                    wechatPay(ordernum);
-                                }else if (type == 1){
-                                    Log.d(TAG, "onSuccessaaaaaaa: zhif支付");
-                                    aliPay(ordernum);
-                                }else {
-
-                                }
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        WebViewActivity2.test_a.finish();//关闭上个界面
+                        finish();//关闭本界面
                     }
 
                     @Override

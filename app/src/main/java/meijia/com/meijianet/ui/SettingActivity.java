@@ -2,6 +2,7 @@ package meijia.com.meijianet.ui;
 
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -48,6 +49,7 @@ public class SettingActivity extends BaseActivity {
         tvMyStatus = (TextView) findViewById(R.id.tv_ac_set_mystatus);
         tvLiucheng = (TextView) findViewById(R.id.tv_ac_set_liucheng);
         tvLoginOut = (TextView) findViewById(R.id.tv_ac_set_loginout);
+        Log.d(TAG, "[MyReceiver] 进来dsfasdf了");
     }
 
     @Override

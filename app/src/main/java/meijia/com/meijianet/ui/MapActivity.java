@@ -1,5 +1,6 @@
 package meijia.com.meijianet.ui;
 
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +37,11 @@ public class MapActivity extends BaseActivity {
         setNavigationFinish(toolbar);
         setNavigationHomeAsUp(true);
     }
+
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//
+//    }
 
     @Override
     protected void initData() {
