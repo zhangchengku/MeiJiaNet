@@ -1,6 +1,7 @@
 package meijia.com.meijianet.base;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -114,6 +115,8 @@ public abstract class BaseActivity extends AppCompatActivity implements OnClickL
             toolbar.setNavigationOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent i=new Intent();
+                    setResult(4,i);
                     finish();
                 }
             });

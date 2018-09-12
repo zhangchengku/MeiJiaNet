@@ -26,7 +26,25 @@ public class IntentionVo {
         private String createTime;
         private HouseBo house;
         private String ordernum;
-        private int pay;
+    private int preStatus;
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public int getPreStatus() {
+        return preStatus;
+    }
+
+    public void setPreStatus(int preStatus) {
+        this.preStatus = preStatus;
+    }
+
+    private int pay;
 
         public String getCreateTime() {
             return createTime;
@@ -79,7 +97,8 @@ public class IntentionVo {
             private double acreage;
             private String address;
             private int hall;
-            private int id;
+
+
             private String name;
             private String piclogo;
             private int room;
@@ -90,7 +109,15 @@ public class IntentionVo {
             private double totalprice;
             private String mstorey;
             private String memAddress;
+            private Long id;
 
+            public Long getId() {
+                return id;
+            }
+
+            public void setId(Long id) {
+                this.id = id;
+            }
             public String getMemAddress() {
                 return memAddress;
             }
@@ -131,13 +158,7 @@ public class IntentionVo {
                 this.hall = hall;
             }
 
-            public int getId() {
-                return id;
-            }
 
-            public void setId(int id) {
-                this.id = id;
-            }
 
             public String getName() {
                 return name;

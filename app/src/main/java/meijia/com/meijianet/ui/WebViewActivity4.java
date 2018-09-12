@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -115,6 +116,7 @@ public class WebViewActivity4  extends BaseActivity {
             }
         });
         PromptUtil.showTransparentProgress(this, true);
+        Log.d("H5", "initData: "+url);
         mWebView.loadUrl(url);
         mWebView.addJavascriptInterface(new WebViewActivity4.JsInterface(),"Android");
 
@@ -189,7 +191,24 @@ public class WebViewActivity4  extends BaseActivity {
     public void onClick(View v) {
 
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK) ) {
+            if (mWebView.canGoBack())
+            {
+                mWebView.goBack(); //goBack()表示返回WebView的上一页面
+                return true;
+            }else
+            {
+                Intent i=new Intent();
+                setResult(4,i);
+                finish();
+                return true;
+            }
 
+        }
+        return false;
+    }
     @Override
     protected void onDestroy() {
         mWebView.destroy();

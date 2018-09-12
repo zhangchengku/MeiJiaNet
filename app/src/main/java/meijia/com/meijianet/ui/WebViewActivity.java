@@ -1,10 +1,19 @@
 package meijia.com.meijianet.ui;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,6 +37,14 @@ import com.alipay.sdk.app.PayTask;
 import com.meiqia.meiqiasdk.util.MQIntentBuilder;
 import com.zhy.http.okhttp.OkHttpUtils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +52,7 @@ import java.util.Map;
 import meijia.com.meijianet.R;
 import meijia.com.meijianet.activity.NewHouseInfo;
 import meijia.com.meijianet.api.ResultCallBack;
+
 import meijia.com.meijianet.base.BaseActivity;
 import meijia.com.meijianet.base.BaseURL;
 import meijia.com.meijianet.bean.AliPayVO;
@@ -65,6 +83,8 @@ public class WebViewActivity extends BaseActivity {
     private LinearLayout linear;
     private String url_more;
     private ImageView ivfinish;
+    private Thread thread;
+    private File file;
 //    private Button startselling;
 
     @Override
@@ -128,17 +148,17 @@ public class WebViewActivity extends BaseActivity {
                 return true;
             }
         });
-        mWebView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                // 网页加载完成关闭进度条
-                if (newProgress == 100) {
-                    PromptUtil.closeTransparentDialog();
-                }
-                super.onProgressChanged(view, newProgress);
-            }
-        });
-        PromptUtil.showTransparentProgress(this, true);
+//        mWebView.setWebChromeClient(new WebChromeClient() {
+//            @Override
+//            public void onProgressChanged(WebView view, int newProgress) {
+//                // 网页加载完成关闭进度条
+//                if (newProgress == 100) {
+//                    PromptUtil.closeTransparentDialog();
+//                }
+//                super.onProgressChanged(view, newProgress);
+//            }
+//        });
+//        PromptUtil.showTransparentProgress(this, true);
         LoginVo userInfo = SharePreUtil.getUserInfo(this);
         if (!userInfo.getUuid().equals("")){
             url_more =BaseURL.BASE_URL+"/api/house/houseDetail?id="+getIntent().getStringExtra("houseId")+"&uuid="+userInfo.getUuid();
@@ -172,31 +192,43 @@ public class WebViewActivity extends BaseActivity {
         }
         @JavascriptInterface
         public void ask(String  zixun) {
-            Log.d(TAG, "zixun: 咨询点击了");
-            if (SharePreUtil.getUserInfo(WebViewActivity.this).getUuid().equals("")){
-                startActivity(new Intent(WebViewActivity.this, LoginActivity.class));
-                return;
-            }
-            LoginVo userInfo = SharePreUtil.getUserInfo(WebViewActivity.this);
-            Intent intent = new MQIntentBuilder(WebViewActivity.this)
-                    .setCustomizedId("de"+userInfo.getPhone()+"@dev.com") // 相同的 id 会被识别为同一个顾客
-                    .build();
-            startActivity(intent);
+            thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Bitmap bitmap = ToImg3.returnBitMap("http://mjkf.oss-cn-beijing.aliyuncs.com/mjw-images/upload/201806/40ymxwGd.png");
+                        String imageName = System.currentTimeMillis()+".png";
+                         file = ToImg4.saveFile(bitmap, imageName);Log.e("download",file+"");
+                        Log.d(TAG, "zixun: 咨询点击了");
+                        if (SharePreUtil.getUserInfo(WebViewActivity.this).getUuid().equals("")){
+                            startActivity(new Intent(WebViewActivity.this, LoginActivity.class));
+                            return;
+                        }
+                        LoginVo userInfo = SharePreUtil.getUserInfo(WebViewActivity.this);
+                        Intent intent = new MQIntentBuilder(WebViewActivity.this)
+                                .setPreSendTextMessage("我是预发送文字消息")
+                                .setPreSendImageMessage(new File(String.valueOf(file)))
+                                .setCustomizedId("de"+userInfo.getPhone()+"@dev.com") // 相同的 id 会被识别为同一个顾客
+                                .build();
+                        startActivity(intent);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.start();
+
         }
         @JavascriptInterface
         public void tip(String msf) {
-            Log.d(TAG, "zixsdfasdfasdfun: 咨询点击了"+msf);
             if(msf==null){
-                Log.d(TAG, "zixsdfasdfa询点击了为空");
             }else if(Integer.valueOf(msf)==1){
-                Log.d(TAG, "zixsdfasdfa询点击了1");
                 Intent intent = new Intent(WebViewActivity.this,WebViewActivity2.class);
                 intent.putExtra("istatle", "买家须知");
                 intent.putExtra("houseId", getIntent().getStringExtra("houseId"));
                 intent.putExtra("url", BaseURL.BASE_URL+"/api/buyerNotice");
                 startActivity(intent);
             }else if(Integer.valueOf(msf)==0){
-                Log.d(TAG, "zixsdfasdfa询点击了0");
                 startActivity(new Intent(WebViewActivity.this, LoginActivity.class));
             }
 
@@ -205,6 +237,65 @@ public class WebViewActivity extends BaseActivity {
         }
 
     }
+
+
+    public static class ToImg3 {
+        public static final  Bitmap returnBitMap(String url) {
+            URL myFileUrl = null;
+            Bitmap bitmap = null;
+            try {
+                myFileUrl = new URL(url);
+                HttpURLConnection conn;
+                conn = (HttpURLConnection) myFileUrl.openConnection();
+                conn.setDoInput(true);
+                int length = conn.getContentLength();
+                conn.connect();
+                InputStream is = conn.getInputStream();
+                BufferedInputStream bis = new BufferedInputStream(is, length);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize =2;// 设置缩放比例
+                Rect rect = new Rect(0, 0,0,0);
+                bitmap = BitmapFactory.decodeStream(bis,rect,options);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+    }
+    public static class ToImg4 {
+        /**
+         * 将Bitmap转换成文件
+         * 保存文件
+         * @param bm
+         * @param fileName
+         * @throws IOException
+         */
+        public static File saveFile(Bitmap bm, String fileName) throws IOException {
+            String path = getSDPath() +"/wuliu/";
+            File dirFile = new File(path);
+            if(!dirFile.exists()){
+                dirFile.mkdir();
+            }
+            File myCaptureFile = new File(path + fileName);
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+            bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+            bos.flush();
+            bos.close();
+            return myCaptureFile;
+        }
+        //获取sd卡路径
+        public static String getSDPath(){
+            File sdDir = null;
+            boolean sdCardExist = Environment.getExternalStorageState()
+                    .equals(Environment.MEDIA_MOUNTED);//判断sd卡是否存在
+            if(sdCardExist)
+            {
+                sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+            }
+            return sdDir.toString();
+        }
+    }
+
 
     private void wechatPay(String orderNumber) {
         OkHttpUtils
@@ -315,6 +406,8 @@ public class WebViewActivity extends BaseActivity {
 
                 }else
                 {
+                    Intent i=new Intent();
+                    setResult(4,i);
                     finish();
                 }
             }
@@ -338,6 +431,8 @@ public class WebViewActivity extends BaseActivity {
                 return true;
             }else
             {
+                Intent i=new Intent();
+                setResult(4,i);
                 finish();
                 return true;
             }

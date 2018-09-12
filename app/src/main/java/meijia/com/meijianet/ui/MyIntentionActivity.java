@@ -67,7 +67,7 @@ public class MyIntentionActivity extends BaseActivity implements CollectAdapter.
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
-        tvTitle.setText("意向房源");
+        tvTitle.setText("预约房源");
 
         setSupportActionBar(toolbar);
         setNavigationFinish(toolbar);
@@ -118,7 +118,7 @@ public class MyIntentionActivity extends BaseActivity implements CollectAdapter.
         PromptUtil.showTransparentProgress(this,false);
         OkHttpUtils.post()
                 .tag(this)
-                .url(BaseURL.BASE_URL + MY_ITENTION)
+                .url(BaseURL.BASE_URL + PREDETERMINE_PRELIST)
                 .addParams("type","-1")
                 .build()
                 .execute(new ResultCallBack() {

@@ -2,18 +2,18 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 android {
     signingConfigs {
-        release {
-            keyAlias 'mjkf'
-            keyPassword 'meijiakanfang'
-            storeFile file('E:/Project/MeiJiaNet/app/meijiakanfang.jks')
-            storePassword 'meijiakanfang'
-        }
-        debug {
-            keyAlias 'mjkf'
-            keyPassword 'meijiakanfang'
-            storeFile file('E:/Project/MeiJiaNet/app/meijiakanfang.jks')
-            storePassword 'meijiakanfang'
-        }
+//        release {
+//            keyAlias 'mjkf'
+//            keyPassword 'meijiakanfang'
+//            storeFile file('E:/Project/MeiJiaNet/app/meijiakanfang.jks')
+//            storePassword 'meijiakanfang'
+//        }
+//        debug {
+//            keyAlias 'mjkf'
+//            keyPassword 'meijiakanfang'
+//            storeFile file('E:/Project/MeiJiaNet/app/meijiakanfang.jks')
+//            storePassword 'meijiakanfang'
+//        }
         sourceSets {
             main {
                 jniLibs.srcDirs = ['libs']
@@ -21,21 +21,26 @@ android {
         }
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "meijia.com.meijianet"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 5
-        versionName "1.2.3"
+        versionCode 11
+        versionName "1.4.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
     }
     buildTypes {
         release {
             debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
         }
         debug {
             signingConfig signingConfigs.debug

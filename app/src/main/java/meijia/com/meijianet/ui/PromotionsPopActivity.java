@@ -50,6 +50,17 @@ public class PromotionsPopActivity extends Activity {
         im_load.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(getIntent().getStringExtra("rediredt").equals("")){
+                    return;
+                }
+                if(getIntent().getStringExtra("rediredt").substring(0,7).equals("houseid")){
+                    Intent intent = new Intent(PromotionsPopActivity.this, WebViewActivity.class);
+                    intent.putExtra("istatle", "房屋详情");
+                    intent.putExtra("houseId", getIntent().getStringExtra("rediredt").substring(8,getIntent().getStringExtra("rediredt").length()));
+                    startActivity(intent);
+                }else {
+
+                }
                 if( getIntent().getStringExtra("newlogin").equals("0")){
                     Intent intent5 = new Intent(PromotionsPopActivity.this,WebViewActivity4.class);
                     intent5.putExtra("url", getIntent().getStringExtra("rediredt"));
@@ -62,7 +73,6 @@ public class PromotionsPopActivity extends Activity {
                     LoginVo userInfo = SharePreUtil.getUserInfo(PromotionsPopActivity.this);
                     Intent intent5 = new Intent(PromotionsPopActivity.this,WebViewActivity4.class);
                     intent5.putExtra("url", getIntent().getStringExtra("rediredt")+"?uuid="+userInfo.getUuid());
-                    Log.d("摸金大赛", "onClick: "+getIntent().getStringExtra("rediredt")+"?uuid="+userInfo.getUuid());
                     startActivity(intent5);
                 }
 

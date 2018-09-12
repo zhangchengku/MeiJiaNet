@@ -2,7 +2,9 @@ package meijia.com.meijianet.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -47,7 +49,8 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
     private EditText etName;
     private EditText etPhone;
     private PopupWindow mPopupWindow;
-
+    private TextView sendss;
+    private EditText cade;
 
 
     private LinearLayout linear;
@@ -79,7 +82,8 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
         etPhone = (EditText) findViewById(R.id.et_ac_post_phone);
 
         tvComplite = (TextView) findViewById(R.id.tv_ac_post_complete);
-
+        sendss = (TextView) findViewById(R.id.send_ss);
+        cade = (EditText) findViewById(R.id.cade);
 
     }
 
@@ -102,6 +106,7 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
     protected void initClick() {
         tvComplite.setOnClickListener(this);
         etPhone.setOnEditorActionListener(this);
+        sendss.setOnClickListener(this);
     }
     @Override
     public void onClick(View v) {
@@ -113,20 +118,82 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
                     String name = etName.getText().toString().trim();
                     String price = etPrice.getText().toString().trim();
                     String xiaoQu = etXiaoqu.getText().toString().trim();
+                    String yzm = cade.getText().toString().trim();
+
                     if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(address) || TextUtils.isEmpty(name) ||
                             TextUtils.isEmpty(price) ||TextUtils.isEmpty(xiaoQu)){
                         ToastUtil.showShortToast(PostHouseActivity.this,"请将信息填写完整");
                         return;
                     }
-                    getid(phone,address,name,price,xiaoQu);
+                    getid(phone,address,name,price,xiaoQu,yzm);
                     break;
+                case R.id.send_ss:
+                    String phone1 = etPhone.getText().toString().trim();
+                    if (phone1.equals("")){
+                        ToastUtil.showShortToast(PostHouseActivity.this,"手机号不能为空");
+                        return;
+                    }
+                    if (!ToolUtil.isPhoneNumber(phone1)){
+                        ToastUtil.showShortToast(PostHouseActivity.this,"请输入正确的手机格式");
+                        return;
+                    }
+                    getcode(phone1);
+                    sendss.setEnabled(false);
+                    sendss.setBackgroundColor(Color.parseColor("#999999"));
+                    timer.start();
 
+                    break;
             }
         }
     }
 
+    CountDownTimer timer = new CountDownTimer(60 * 1000, 1000) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+            //每隔countDownInterval秒会回调一次onTick()方法
+            sendss.setText(millisUntilFinished / 1000 + " s");
+        }
 
+        @Override
+        public void onFinish() {
+            sendss.setText("重新获取");
+            sendss.setEnabled(true);
+        }
+    };
+    private void getcode(String phone) {
 
+        //检查网络
+        if (!NetworkUtil.checkNet(this)){
+            ToastUtil.showShortToast(this,"没网啦，请检查网络");
+            return;
+        }
+        PromptUtil.showTransparentProgress(this,false);
+        RequestParams params = new RequestParams(this);
+        params.add("phone",phone);
+        params.add("codetype","5");
+        OkHttpUtils.post()
+                .tag(this)
+                .url(BaseURL.BASE_URL + CODE)
+                .params(params.getMap())
+                .build()
+                .execute(new ResultCallBack() {
+                    @Override
+                    public void onSuccess(String body) {
+                        ToastUtil.showShortToast(PostHouseActivity.this,"验证码发送成功");
+                    }
+
+                    @Override
+                    public void onFail(int returnCode, String returnTip) {
+                        ToastUtil.showShortToast(PostHouseActivity.this,returnTip);
+                        PromptUtil.closeTransparentDialog();
+                    }
+
+                    @Override
+                    public void onAfter(int id) {
+                        PromptUtil.closeTransparentDialog();
+                    }
+                });
+    }
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         //判断是否是“DOWN”键
@@ -137,6 +204,7 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
             String name = etName.getText().toString().trim();
             String price = etPrice.getText().toString().trim();
             String xiaoQu = etXiaoqu.getText().toString().trim();
+            String yzm = cade.getText().toString().trim();
             if (!phone.equals("") ){
                 if (!ToolUtil.isPhoneNumber(phone)){
                     ToastUtil.showShortToast(PostHouseActivity.this,"请输入正确的手机号码");
@@ -153,13 +221,13 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
             if(imm.isActive()){
                 imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
             }
-            getid(phone,address,name,price,xiaoQu);
+            getid(phone,address,name,price,xiaoQu,yzm);
             return true;
         }
         return false;
     }
 
-    private void getid(String phone, String address, String name, String price, String xiaoQu) {
+    private void getid(String phone, String address, String name, String price, String xiaoQu,String yzm) {
         if (!NetworkUtil.checkNet(PostHouseActivity.this)){
             ToastUtil.showShortToast(PostHouseActivity.this,"没网了，请检查网络");
             return;
@@ -177,7 +245,7 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
                     @Override
                     public void onSuccess(String body) {
                         GetIdVO vo = JSON.parseObject(body, GetIdVO.class);
-                        pullHouse(phone,address,name,price,xiaoQu,String.valueOf(vo.getId()));
+                        pullHouse(phone,address,name,price,xiaoQu,String.valueOf(vo.getId()),yzm);
                     }
 
                     @Override
@@ -193,7 +261,7 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
                 });
     }
 
-    private void pullHouse(String phone, String address, String name, String price, String xiaoQu,String id) {
+    private void pullHouse(String phone, String address, String name, String price, String xiaoQu,String id,String yzm) {
         if (!NetworkUtil.checkNet(PostHouseActivity.this)){
             ToastUtil.showShortToast(PostHouseActivity.this,"没网了，请检查网络");
             return;
@@ -208,6 +276,7 @@ public class PostHouseActivity extends BaseActivity implements TextView.OnEditor
         params.add("employeeId",id);
         params.add("contactname",name);
         params.add("contactphone",phone);
+        params.add("smscode",yzm);
 
         OkHttpUtils.post()
                 .tag(this)

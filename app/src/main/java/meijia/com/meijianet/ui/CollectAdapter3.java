@@ -29,16 +29,18 @@ import meijia.com.meijianet.R;
 import meijia.com.meijianet.activity.CollectAdapter;
 import meijia.com.meijianet.activity.CommonRecyclerAdapter;
 import meijia.com.meijianet.activity.MyCollectInfo;
+import meijia.com.meijianet.activity.RequestParams;
 import meijia.com.meijianet.adpter.ViewHolder;
 import meijia.com.meijianet.api.ResultCallBack;
 import meijia.com.meijianet.base.BaseURL;
 import meijia.com.meijianet.vo.intention.IntentionVo;
 import static meijia.com.meijianet.api.URL.TUI_KUAN;
-import static meijia.com.meijianet.api.URL.CANCLE_ORDER;
+import static meijia.com.meijianet.api.URL.CANCELAPPLY;
 /**
  * Created by Administrator on 2018/4/28.
  */
 public class CollectAdapter3 extends CommonRecyclerAdapter<IntentionVo> {
+    private  Context cc;
     private boolean isCheck ;
     private Map<Integer,Boolean> map = new HashMap<>();
     private CollectAdapter.onMyItemClickListener mListener;
@@ -56,6 +58,7 @@ public class CollectAdapter3 extends CommonRecyclerAdapter<IntentionVo> {
     public CollectAdapter3(Context context, List<IntentionVo> data) {
         super(context, data, R.layout.item_rv_collect3);
         isCheck = false;
+        cc = context;
         initMap();
     }
 
@@ -90,47 +93,60 @@ public class CollectAdapter3 extends CommonRecyclerAdapter<IntentionVo> {
         holder.setText(R.id.tv_item_fangyuan_msg,houseInfo.getHouse().getRoom()+"室"+houseInfo.getHouse().getHall()+
                 "厅"+houseInfo.getHouse().getToilet()+"卫 | "+subZeroAndDot(String.valueOf(houseInfo.getHouse().getAcreage()))+"㎡|第"+houseInfo.getHouse().getMstorey()+"层/共"+houseInfo.getHouse().getSumfloor()+"层");
         holder.setText(R.id.tv_item_fangyuan_address,houseInfo.getHouse().getMemAddress());
-        String pay = String.valueOf(houseInfo.getPay());
+        String pay = String.valueOf(houseInfo.getPreStatus());
         switch (pay) {
             case "0":
-//                holder.setImageResource(R.id.tv_type,R.mipmap.yixiang_wj);
+                holder.setImageResource(R.id.tv_type,R.mipmap.button_yyshz);
+                holder.setViewVisibility(R.id.quxiaoshouc,View.GONE);
+                break;
+            case "1":
+                holder.setImageResource(R.id.tv_type,R.mipmap.button_yycg);
                 holder.setViewVisibility(R.id.quxiaoshouc,View.VISIBLE);
                 holder.setText(R.id.quxiaoshouc,"取消预约");
                 holder.getView(R.id.quxiaoshouc).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        removeData(position);
-                    }
-                });
-                break;
-            case "1":
-//                holder.setImageResource(R.id.tv_type,R.mipmap.yixiang_yj);
-                holder.setViewVisibility(R.id.quxiaoshouc,View.VISIBLE);
-                holder.setText(R.id.quxiaoshouc,"申请退款");
-                holder.getView(R.id.quxiaoshouc).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        show(position,holder);
+                        removeData2(position,-1,holder);
                     }
                 });
                 break;
             case "2":
-//                holder.setImageResource(R.id.tv_type,R.mipmap.yixiang_tkcg);
+                holder.setImageResource(R.id.tv_type,R.mipmap.button_ykf);
                 holder.setViewVisibility(R.id.quxiaoshouc,View.VISIBLE);
-                holder.setText(R.id.quxiaoshouc,"取消预约");
+                holder.setText(R.id.quxiaoshouc,"删除预约");
                 holder.getView(R.id.quxiaoshouc).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        removeData(position);
+                        removeData(position,-11);
                     }
                 });
                 break;
             case "-1":
-                holder.setViewVisibility(R.id.tv_type,View.VISIBLE);
-                holder.setImageResource(R.id.tv_type,R.mipmap.yixiang_sqz);
+                holder.setImageResource(R.id.tv_type,R.mipmap.button_qxyy);
                 holder.setViewVisibility(R.id.quxiaoshouc,View.GONE);
                 break;
-
+            case "-3":
+                holder.setImageResource(R.id.tv_type,R.mipmap.button_wcg);
+                holder.setViewVisibility(R.id.quxiaoshouc,View.VISIBLE);
+                holder.setText(R.id.quxiaoshouc,"删除预约");
+                holder.getView(R.id.quxiaoshouc).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        removeData(position,-11);
+                    }
+                });
+                break;
+            case "-2":
+                holder.setImageResource(R.id.tv_type,R.mipmap.button_qxyycg);
+                holder.setViewVisibility(R.id.quxiaoshouc,View.VISIBLE);
+                holder.setText(R.id.quxiaoshouc,"删除预约");
+                holder.getView(R.id.quxiaoshouc).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        removeData(position,-11);
+                    }
+                });
+                break;
 
         }
 
@@ -142,12 +158,14 @@ public class CollectAdapter3 extends CommonRecyclerAdapter<IntentionVo> {
         }
         return s;
     }
-    private void removeData(int position) {
-
+    private void removeData(int position,int preStatus) {
+        final RequestParams params = new RequestParams(cc);
+        params.add("preStatus", preStatus);
+        params.add("id", mData.get(position).getId());
         OkHttpUtils.post()
                 .tag(this)
-                .url(BaseURL.BASE_URL + CANCLE_ORDER)
-                .addParams("ordernum", String.valueOf(mData.get(position).getOrdernum()))
+                .url(BaseURL.BASE_URL + CANCELAPPLY)
+                .params(params.getMap())
                 .build()
                 .execute(new ResultCallBack() {
                     @Override
@@ -158,6 +176,32 @@ public class CollectAdapter3 extends CommonRecyclerAdapter<IntentionVo> {
                         notifyDataSetChanged();
                     }
 
+                    @Override
+                    public void onFail(int returnCode, String returnTip) {
+
+                    }
+
+                    @Override
+                    public void onAfter(int id) {
+
+                    }
+                });
+    }
+    private void removeData2(int position,int preStatus,ViewHolder holder) {
+        final RequestParams params = new RequestParams(cc);
+        params.add("preStatus", preStatus);
+        params.add("id", mData.get(position).getId());
+        OkHttpUtils.post()
+                .tag(this)
+                .url(BaseURL.BASE_URL + CANCELAPPLY)
+                .params(params.getMap())
+                .build()
+                .execute(new ResultCallBack() {
+                    @Override
+                    public void onSuccess(String body) {
+                        holder.setImageResource(R.id.tv_type,R.mipmap.button_qxyy);
+                        holder.setViewVisibility(R.id.quxiaoshouc,View.GONE);
+                    }
                     @Override
                     public void onFail(int returnCode, String returnTip) {
 

@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#f4ecec</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorTransparent">#00000000</color>
-
+    <color name="colorTransparentasdf">#50000000</color>
     <color name="tab_gb">#F3F5F4</color>
     <color name="tab_normal_color">#515051</color>
     <color name="tab_selected_color">#D33D3C</color>
@@ -34,7 +34,7 @@
     <color name="color_white30">#4bffffff</color>
     <color name="color_white60">#9BFFFFFF</color>
     <color name="color_black60">#AA000000</color>
-
+    <color name="color_black0">#80000000</color>
 
     <color name="zhu_color">#408c56</color>
     <color name="tab_color_normal">#aaaaaa</color>

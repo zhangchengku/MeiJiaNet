@@ -78,10 +78,7 @@ public class ContentActivity extends BaseActivity implements RadioGroup.OnChecke
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionListener() {
             @Override
             public void onGranted() {
-                Log.d(TAG, "agreesdfads: ");
-
                     new UpdateManager(ContentActivity.this, "main").checkUpdate();   //检查更新
-
             }
             @Override
             public void onDenied(List<String> deniedPermission) {

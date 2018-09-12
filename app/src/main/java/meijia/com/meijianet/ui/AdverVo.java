@@ -14,6 +14,15 @@ public class AdverVo {
     private String advertisement;
     private String redirectUrl;
     private int startStatus;
+    private int advSeconds;
+
+    public int getAdvSeconds() {
+        return advSeconds;
+    }
+
+    public void setAdvSeconds(int advSeconds) {
+        this.advSeconds = advSeconds;
+    }
 
     public String getAdvertisement() {
         return advertisement;

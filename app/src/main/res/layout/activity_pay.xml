@@ -1,81 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/activity_pay"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_pay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="meijia.com.meijianet.ui.PayActivity">
-    <include layout="@layout/comment_defout_toolbar"/>
+
+    <include layout="@layout/comment_defout_toolbar" />
+
     <View
-        android:background="@color/hint_color"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp"
+        android:background="@color/hint_color" />
+
     <LinearLayout
-        android:focusableInTouchMode="false"
-        android:focusable="false"
-        android:padding="15dp"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:padding="15dp">
+
         <EditText
             android:id="@+id/et_ac_pay_name"
-            android:layout_marginLeft="20dp"
-            android:hint="请输入您的真实姓名"
-            android:textColorHint="@color/hint_color"
-            android:textSize="14sp"
-            android:background="@null"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:background="@null"
+            android:hint="请输入您的真实姓名"
+            android:maxLength="10"
+            android:textColorHint="@color/hint_color"
+            android:textSize="14sp" />
     </LinearLayout>
+
     <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="@color/hint_color"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:background="@color/hint_color" />
 
     <LinearLayout
-        android:focusableInTouchMode="false"
-        android:focusable="false"
-        android:padding="15dp"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:padding="15dp">
+
         <EditText
             android:id="@+id/et_ac_pay_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:background="@null"
             android:hint="请输入您的手机号"
             android:inputType="number"
+            android:maxLength="11"
             android:textColorHint="@color/hint_color"
-            android:textSize="14sp"
-            android:background="@null"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:textSize="14sp" />
     </LinearLayout>
 
     <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="@color/hint_color"
+        android:background="@color/hint_color" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingRight="15dp">
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:padding="15dp">
 
+            <EditText
+                android:id="@+id/cade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:background="@null"
+                android:hint="验证码"
+                android:textColorHint="@color/hint_color"
+                android:textSize="14sp" />
+        </LinearLayout>
 
+        <TextView
+            android:id="@+id/send_ss"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:background="#048F4B"
+            android:gravity="center"
+            android:text="发送"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/hint_color" />
 
 
     <TextView
         android:id="@+id/tv_ac_pay_sure"
-        android:textColor="@color/white"
-        android:background="#048F4B"
-        android:layout_marginTop="50dp"
-        android:text="预约看房"
-        android:textSize="16sp"
-        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"/>
+        android:layout_marginTop="50dp"
+        android:background="#048F4B"
+        android:gravity="center"
+        android:text="预约看房"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 </LinearLayout>

@@ -10,6 +10,7 @@ public interface URL {
     String TRANSACTIONRECORD = "/api/house/searchRecentlySell";//最近成交的房源
     String MY_ENTRUST ="/api/member/myConsignation";//我的委托
     String MY_ITENTION = "/api/member/myItention";//意向房源
+    String PREDETERMINE_PRELIST = "/api/predetermine/preList";//预约房源
     String LOGIN = "/api/member/memberLogin";
     String CODE = "/api/member/sendMessage";
     String REGIST = "/api/member/registMember";
@@ -29,6 +30,8 @@ public interface URL {
     String WX_PAY = "/api/order/wxpay";
     String ALI_PAY = "/api/order/alipay";
     String ORDER_PAY = "/api/submit/order";
+    String PREDE_TERMINE = "/api/predetermine/predetermine";
+
     String UPDATA_PSW = "/api/member/modifyByPassword";
     String MY_STATUS = "/api/member/myState";
     String PULL_HOUSE = "/api/member/publicHouse";
@@ -39,6 +42,7 @@ public interface URL {
     String BING_NOT_REGIST = "/api/member/registMemberByPhoneNoRegister";
     String AUTO_LOGIN = "/api/member/autoLoginByUuid";
     String CANCLE_ORDER = "/api/cancel/order";
+    String CANCELAPPLY = "/api/predetermine/modifyApplyByApp";
     String TUI_KUAN = "/api/order/apprefund";
     String VERSION_CODE = "/version/version.json";
     String EXCLUSIVE_TWO = "/api/member/getEmployee";

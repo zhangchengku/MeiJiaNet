@@ -1,5 +1,6 @@
 package meijia.com.meijianet.ui;
 
+import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
@@ -45,7 +46,8 @@ public class PayActivity extends BaseActivity {
 
     private long mId;
     public static boolean isPay = false;
-
+    private TextView sendss;
+    private EditText cade;
 
 
     @Override
@@ -70,6 +72,9 @@ public class PayActivity extends BaseActivity {
         etName = (EditText) findViewById(R.id.et_ac_pay_name);
         etPhone = (EditText) findViewById(R.id.et_ac_pay_phone);
 
+        sendss = (TextView) findViewById(R.id.send_ss);
+        cade = (EditText) findViewById(R.id.cade);
+
     }
 
     @Override
@@ -79,7 +84,7 @@ public class PayActivity extends BaseActivity {
     @Override
     protected void initClick() {
         tvSure.setOnClickListener(this);
-
+        sendss.setOnClickListener(this);
     }
 
     @Override
@@ -88,6 +93,22 @@ public class PayActivity extends BaseActivity {
             switch (v.getId()) {
                 case R.id.tv_ac_pay_sure:
                     getOrderNum(0);
+                    break;
+                case R.id.send_ss:
+                    String phone1 = etPhone.getText().toString().trim();
+                    if (phone1.equals("")){
+                        ToastUtil.showShortToast(PayActivity.this,"手机号不能为空");
+                        return;
+                    }
+                    if (!ToolUtil.isPhoneNumber(phone1)){
+                        ToastUtil.showShortToast(PayActivity.this,"请输入正确的手机格式");
+                        return;
+                    }
+                    getcode(phone1);
+                    sendss.setEnabled(false);
+                    sendss.setBackgroundColor(Color.parseColor("#999999"));
+                    timer.start();
+
                     break;
                 case R.id.tv_wx:
                     getOrderNum(0);
@@ -107,6 +128,54 @@ public class PayActivity extends BaseActivity {
             }
         }
     }
+    CountDownTimer timer = new CountDownTimer(60 * 1000, 1000) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+            //每隔countDownInterval秒会回调一次onTick()方法
+            sendss.setText(millisUntilFinished / 1000 + " s");
+        }
+
+        @Override
+        public void onFinish() {
+            sendss.setText("重新获取");
+            sendss.setEnabled(true);
+        }
+    };
+    private void getcode(String phone) {
+
+        //检查网络
+        if (!NetworkUtil.checkNet(this)){
+            ToastUtil.showShortToast(this,"没网啦，请检查网络");
+            return;
+        }
+        PromptUtil.showTransparentProgress(this,false);
+        RequestParams params = new RequestParams(this);
+        params.add("phone",phone);
+        params.add("codetype","4");
+        OkHttpUtils.post()
+                .tag(this)
+                .url(BaseURL.BASE_URL + CODE)
+                .params(params.getMap())
+                .build()
+                .execute(new ResultCallBack() {
+                    @Override
+                    public void onSuccess(String body) {
+                        ToastUtil.showShortToast(PayActivity.this,"验证码发送成功");
+                    }
+
+                    @Override
+                    public void onFail(int returnCode, String returnTip) {
+                        ToastUtil.showShortToast(PayActivity.this,returnTip);
+                        PromptUtil.closeTransparentDialog();
+                    }
+
+                    @Override
+                    public void onAfter(int id) {
+                        PromptUtil.closeTransparentDialog();
+                    }
+                });
+    }
+
     private void getOrderNum(int type) {
         if (!NetworkUtil.checkNet(PayActivity.this)){
             ToastUtil.showShortToast(PayActivity.this,"没有网了，请检查网络");
@@ -115,6 +184,8 @@ public class PayActivity extends BaseActivity {
 
         String name = etName.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
+        String cades = cade.getText().toString().trim();
+
         if (name.equals("") || phone.equals("")){
             ToastUtil.showShortToast(PayActivity.this,"请将信息填写完整");
             return;
@@ -125,12 +196,13 @@ public class PayActivity extends BaseActivity {
         }
         PromptUtil.showTransparentProgress(PayActivity.this,false);
         RequestParams params = new RequestParams();
+        params.add("smscode",cades);
         params.add("houseId",getIntent().getStringExtra("houseId"));
         params.add("tel",phone);
         params.add("realName",name);
         OkHttpUtils.post()
                 .tag(this)
-                .url(BaseURL.BASE_URL+ORDER_PAY)
+                .url(BaseURL.BASE_URL+PREDE_TERMINE)
                 .params(params.getMap())
                 .build()
                 .execute(new ResultCallBack() {
@@ -153,106 +225,10 @@ public class PayActivity extends BaseActivity {
                 });
     }
 
-    private void showMyDialog() {
-        View view = LayoutInflater.from(PayActivity.this).inflate(R.layout.pay_layout, null);
-        view.findViewById(R.id.tv_wx).setOnClickListener(this);
-        view.findViewById(R.id.tv_ali).setOnClickListener(this);
-        mDialog = new CommonDialog(PayActivity.this,view,0, Gravity.BOTTOM);
-        mDialog.show();
-    }
-
-//    //微信支付
-    private void wechatPay(String orderNumber) {
-        OkHttpUtils
-                .post()
-                .tag(this)
-                .url(BaseURL.BASE_URL + WX_PAY)
-                .addParams("orderNum", orderNumber)
-                .build()
-                .execute(new ResultCallBack() {
-                    @Override
-                    public void onSuccess(String body) {
-                        WechatPayVO vo = JSON.parseObject(body, WechatPayVO.class);
-                        WXUtils.payWX(vo);
-
-                    }
-
-                    @Override
-                    public void onFail(int returnCode, String returnTip) {
-                        ToastUtil.showShortToast(PayActivity.this, returnTip);
-                        PromptUtil.closeTransparentDialog();
-                    }
-
-                    @Override
-                    public void onAfter(int id) {
-                        PromptUtil.closeTransparentDialog();
-                    }
-                });
-    }
 
 
-    //支付宝支付
-    private void aliPay(String orderNumber) {
-        OkHttpUtils
-                .post()
-                .tag(this)
-                .url(BaseURL.BASE_URL + ALI_PAY)
-                .addParams("orderNum",orderNumber)
-                .build()
-                .execute(new ResultCallBack() {
-                    public void onSuccess(String body) {
-                        AliPayVO vo = JSON.parseObject(body, AliPayVO.class);
-                        payAliPay(vo.getAlipay());
-                    }
 
-                    @Override
-                    public void onFail(int returnCode, String returnTip) {
-                        ToastUtil.showShortToast(PayActivity.this, returnTip);
-                        PromptUtil.closeTransparentDialog();
-                    }
 
-                    @Override
-                    public void onAfter(int id) {
-                        PromptUtil.closeTransparentDialog();
-                    }
-                });
-    }
-    private void payAliPay(final String orderInfo) {
-        Runnable payRunnable = new Runnable() {
-            @Override
-            public void run() {
-                PayTask alipay = new PayTask(PayActivity.this);
-                Map<String, String> result = alipay.payV2(orderInfo, true);
-                Message msg = new Message();
-                msg.what = 0x11;
-                msg.obj = result;
-                mHandler.sendMessage(msg);
-            }
-        };
-        // 必须异步调用
-        Thread payThread = new Thread(payRunnable);
-        payThread.start();
-    }
-    /**
-     * 支付宝返回结果处理
-     * <p>
-     * 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
-     */
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-           if(msg.what==0x11){
-                PayResult payResult = new PayResult((Map<String, String>) msg.obj);
-                String resultStatus = payResult.getResultStatus();
-                // 判断resultStatus 为9000则代表支付成功
-                if (TextUtils.equals(resultStatus, "9000")) {
-                    Toast.makeText(PayActivity.this, "支付成功！", Toast.LENGTH_SHORT).show();
-                    goBackMain();
-                } else {
-                    Toast.makeText(PayActivity.this, "支付失败！", Toast.LENGTH_SHORT).show();
-                }
-            }
 
-        }
-    };
 
 }

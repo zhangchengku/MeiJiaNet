@@ -165,7 +165,6 @@ public class TestFragment extends BaseFragment {
                 .execute(new ResultCallBack() {
                     @Override
                     public void onSuccess(String body) {
-                        Log.d("adsasdfasdfsadfasd", "convert:进来了 ");
                         datas = JSON.parseArray(body, NewHouseInfo.class);
                         setAdapter();
                     }
@@ -202,7 +201,6 @@ public class TestFragment extends BaseFragment {
                 R.layout.item_rv_fangyuan, datas) {
             @Override
             protected void convert(ViewHolder holder, NewHouseInfo houseInfo, int position) {
-                Log.d("adsasdfasdfsadfasd", "convert:进来了 " + houseInfo.getTitle());
                 holder.setText(R.id.tv_item_fangyuan_title, houseInfo.getTitle());
                 holder.setText(R.id.tv_item_fangyuan_price, subZeroAndDot(houseInfo.getTotalprice()));
                 holder.setText(R.id.tv_item_fangyuan_msg, houseInfo.getRoom() + "室" + houseInfo.getHall() +
@@ -467,19 +465,30 @@ public class TestFragment extends BaseFragment {
         ivBanner.setOnPageClickListener(new CustomBanner.OnPageClickListener<BannerVo>() {
             @Override
             public void onPageClick(int position, BannerVo str) {
-                if (str.getNeedLogin() == 1) {
-                    if (SharePreUtil.getUserInfo(getActivity()).getUuid().equals("")) {
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
-                        return;
+                if(str.getAddress().equals("")){
+                    return;
+                }
+                if(str.getAddress().substring(0,7).equals("houseid")){
+                    Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                    intent.putExtra("istatle", "房屋详情");
+                    intent.putExtra("houseId", str.getAddress().substring(8,str.getAddress().length()));
+                    startActivity(intent);
+                }else {
+                    if (str.getNeedLogin() == 1) {
+                        if (SharePreUtil.getUserInfo(getActivity()).getUuid().equals("")) {
+                            startActivity(new Intent(getActivity(), LoginActivity.class));
+                            return;
+                        }
+                        LoginVo userInfo = SharePreUtil.getUserInfo(getActivity());
+                        Intent intent = new Intent(getActivity(), WebViewActivity4.class);
+                        intent.putExtra("url", str.getAddress() + "?uuid="+ userInfo.getUuid());
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(getActivity(), WebViewActivity4.class);
+                        intent.putExtra("url", str.getAddress());
+                        startActivity(intent);
                     }
-                    LoginVo userInfo = SharePreUtil.getUserInfo(getActivity());
-                    Intent intent = new Intent(getActivity(), WebViewActivity4.class);
-                    intent.putExtra("url", str.getAddress() + "?uuid="+ userInfo.getUuid());
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(getActivity(), WebViewActivity4.class);
-                    intent.putExtra("url", str.getAddress());
-                    startActivity(intent);
+
                 }
 
             }

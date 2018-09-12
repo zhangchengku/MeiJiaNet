@@ -16,6 +16,10 @@
         import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.View;
+        import android.view.Window;
+        import android.view.WindowManager;
+        import android.widget.ImageView;
+        import android.widget.TextView;
         import android.widget.Toast;
 
         import com.alibaba.fastjson.JSON;
@@ -218,14 +222,17 @@ public class UpdateManager {
                         minVersionCode = Integer.valueOf(appVersionBO.getAndroid().getMinVersionCode());
                         minVersionName = appVersionBO.getAndroid().getMinVersionName();
                         // 版本判断
-                        if (serverVersionCode > currentVersionCode) {//可选择更新
-                            showUpdateDialog();
-                            return;
-                        }
                         if (minVersionCode > currentVersionCode) {//必须更新
                             showMustUpdateDialog();
+                            Log.d("asdfasdf","可选择更新");
                             return;
                         }
+                        if (serverVersionCode > currentVersionCode) {//可选择更新
+                            showUpdateDialog();
+                            Log.d("asdfasdf","可选择更新");
+                            return;
+                        }
+
                     }
 
                     @Override
@@ -273,34 +280,30 @@ public class UpdateManager {
      */
     private void showUpdateDialog() {
         // 构造对话框
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("软件更新");
-        StringBuilder message = new StringBuilder();
-        message.append("当前版本:");
-        message.append(currentVersionName);
-        message.append(" 最新版本:");
-        message.append(serverVersionName);
-        message.append("\n新特性:\n");
-        message.append(updateMessage);
-        builder.setMessage(message.toString());
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.AlertDialog);
+        final LayoutInflater inflater = LayoutInflater.from(mContext);
+        View v = inflater.inflate(R.layout.softupdate_progre, null);
+        TextView  updatemessage = (TextView) v.findViewById(R.id.updatemessage);
+        TextView  ljgx = (TextView) v.findViewById(R.id.ljupdate);
+        ImageView  updatefinsh = (ImageView) v.findViewById(R.id.update_finsh);
+        updatemessage.setText(updateMessage.toString());
+        builder.setView(v);
         builder.setCancelable(false);
-        // 更新
-        builder.setPositiveButton("更新",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        // 显示下载对话框
-                        showDownloadDialog();
-                    }
-                });
-        // 稍后更新
-        builder.setNegativeButton("下次再说",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
         Dialog noticeDialog = builder.create();
+        ljgx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noticeDialog.dismiss();
+                // 显示下载对话框
+                showDownloadDialog();
+            }
+        });
+        updatefinsh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noticeDialog.dismiss();
+            }
+        });
         noticeDialog.show();
     }
 

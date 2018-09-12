@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:layout_marginRight="@dimen/view_size_55"
+        android:layout_marginTop="@dimen/view_size_22"
+        android:layout_alignParentRight="true"
+        android:id="@+id/update_finsh"
+        android:background="@drawable/update_finsh"
+        android:layout_width="@dimen/view_size_33"
+        android:layout_height="@dimen/view_size_33" />
+<ImageView
+    android:layout_centerHorizontal="true"
+    android:background="@mipmap/update_bg"
+    android:layout_width="@dimen/view_size_330"
+    android:layout_height="@dimen/view_size_406" />
+<TextView
+    android:id="@+id/asdf"
+    android:layout_marginTop="@dimen/view_size_165"
+    android:layout_centerHorizontal="true"
+    android:textSize="@dimen/text_size_20"
+    android:text="发现新版本"
+    android:textColor="#172E4b"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/updatemessage"
+        android:layout_below="@+id/asdf"
+       android:layout_marginTop="@dimen/view_size_23"
+        android:layout_centerHorizontal="true"
+        android:text="1.更精彩的呢，内容更新了。"
+        android:textSize="@dimen/text_size_18"
+        android:textColor="#b0b7bd"
+        android:layout_width="@dimen/view_size_260"
+        android:layout_height="wrap_content" />
+<TextView
+    android:id="@+id/ljupdate"
+    android:text="立即更新"
+    android:textColor="@color/white"
+    android:gravity="center"
+    android:textSize="@dimen/text_size_20"
+    android:layout_marginTop="@dimen/view_size_150"
+    android:layout_below="@+id/asdf"
+    android:background="@drawable/button_update"
+    android:layout_centerHorizontal="true"
+    android:layout_width="@dimen/view_size_216"
+    android:layout_height="@dimen/view_size_45" />
+</RelativeLayout>

@@ -49,11 +49,13 @@ public class SplashActivity extends BaseActivity {
     /***
      * 默认广告停留时间为3秒
      */
-    private static int COUNTDOWN_TIME = 3;
+//    private static int COUNTDOWN_TIME = 3;
     private ImageView guideImage;
     private ImageView ivsplash;
     private TextView countdowntext;
     private Timer timer;
+    private int COUNTDOWN_TIME;
+    private String url;
 
     @Override
     protected void setContent() {
@@ -92,7 +94,14 @@ public class SplashActivity extends BaseActivity {
                         AdverVo adverVo = JSON.parseObject(body, AdverVo.class);
                         if(adverVo.getStartStatus()==1){
                            String pic =  adverVo.getAdvertisement();
-                            String url =  adverVo.getRedirectUrl();
+                            if (adverVo.getRedirectUrl()==null){
+                                url = "10086";
+                            }else {
+                                 url =  adverVo.getRedirectUrl();
+                            }
+
+                            COUNTDOWN_TIME = adverVo.getAdvSeconds();
+                            countdowntext.setText(COUNTDOWN_TIME + " 跳过");
                             setAD_Img(pic,url);
                         }else {
                             Intent intent = new Intent(SplashActivity.this, ContentActivity.class);
@@ -113,6 +122,8 @@ public class SplashActivity extends BaseActivity {
                     }
                 });
     }
+
+
 
     @Override
     protected void initView() {
@@ -214,12 +225,24 @@ public class SplashActivity extends BaseActivity {
         guideImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(imgAddress.equals("10086")){
+                    return;
+                }
                 if (imgAddress.length() < 1) return;
 //                StateMessage.isGDMessahe = true;
-                Intent intent = new Intent(SplashActivity.this, WebViewActivity4.class);
-                intent.putExtra("url","http://"+imgAddress);
-                Log.d("asdfasdfasd", "          "+"http://"+imgAddress);
-                startActivity(intent);
+                if(imgAddress.equals("")){
+                    return;
+                }
+                if(imgAddress.substring(0,7).equals("houseid")){
+                    Intent intent = new Intent(SplashActivity.this, WebViewActivity.class);
+                    intent.putExtra("istatle", "房屋详情");
+                    intent.putExtra("houseId", imgAddress.substring(8,imgAddress.length()));
+                    startActivityForResult(intent,1);
+                }else {
+                    Intent intent = new Intent(SplashActivity.this, WebViewActivity4.class);
+                    intent.putExtra("url",imgAddress);
+                    startActivityForResult(intent,1);
+                }
                 if (timer != null)
                     timer.cancel();
             }
@@ -239,6 +262,7 @@ public class SplashActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+
             COUNTDOWN_TIME--;
             if (COUNTDOWN_TIME <= 0) {
                 timer.cancel();
@@ -249,6 +273,15 @@ public class SplashActivity extends BaseActivity {
             countdowntext.setText(COUNTDOWN_TIME + " 跳过");
         }
     };
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == 4) {
+            Intent intent = new Intent(SplashActivity.this, ContentActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
     @Override
     public void onClick(View v) {
 
